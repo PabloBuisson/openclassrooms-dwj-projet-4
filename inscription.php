@@ -98,7 +98,11 @@
                     },
                     pseudo: {
                         required: true,
-                        maxlength: 100
+                        maxlength: 100,
+                        remote: { // vérifie de façon asynchrone si le pseudo est déjà pris
+                            url: "check-pseudo.php",
+                            type: "post"
+                        }
                     },
                     password: {
                         required: true,
@@ -119,7 +123,8 @@
                     },
                     pseudo: {
                         required: "Veuillez saisir votre pseudo",
-                        maxlength: "Veuillez saisir un pseudo moins long"
+                        maxlength: "Veuillez saisir un pseudo moins long",
+                        remote: "Ce pseudo est déjà pris !"
                     },
                     password: {
                         required: "Veuillez saisir votre mot de passe",

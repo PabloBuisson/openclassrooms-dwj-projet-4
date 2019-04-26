@@ -16,14 +16,15 @@
                 }
 
                 // avant d'enregister les identifiants sur la base de données, il faut vérifier s'il n'existe pas un pseudo semblable avec une requête préparée (sécurisée)
-                $req = $bdd->prepare('SELECT pseudo FROM users WHERE pseudo = ?');
+                // on passe en lowercase le pseudo rentré et la recherche de pseudo correspondant pour éviter les doublons
+                $req = $bdd->prepare('SELECT pseudo FROM users WHERE LOWER(pseudo) = ?');
                 $req->execute(array(strtolower($_POST['pseudo'])));
                 $result = $req->fetch();
-
-                // on passe en lowercase le pseudo rentré et l'éventuel pseudo correspondant pour éviter les doublons
+                // fin de la requête
+                $req->closeCursor();
 
                 // si la recherche ne ramène aucun résultat, alors le pseudo est libre
-                if (empty(strtolower($result['pseudo']))) {
+                if (empty($result['pseudo'])) {
                     // hachage du mot de passe saisi
                     $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
