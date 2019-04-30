@@ -1,15 +1,87 @@
 <?php
-    session_start(); // active les variables de session
-
-    if (empty($_SESSION['inscription_error'])) {
-        $inscriptionError = false;
-    }
-    else if ($_SESSION['inscription_error'] > 0) {
-        $inscriptionError = $_SESSION['inscription_error'];
-    }
-
-    // détruit la variable de mauvaise inscription (en cas de rafraîchissement de page)
+    session_start();
     unset($_SESSION['inscription_error']);
+    unset($error);
+
+    // si l'utilisateur a posté le formulaire
+    if (isset($_POST['mail']) && isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['confirmedPassword'])) {
+
+        // on teste si toutes les cases ont été remplies
+        if (!empty($_POST['mail']) && !empty($_POST['pseudo']) && !empty($_POST['password']) && !empty($_POST['confirmedPassword'])) {
+
+            // puis si les valeurs remplissent les conditions
+            if (strlen($_POST['mail']) <= 255 && strlen($_POST['pseudo']) <= 100 && strlen($_POST['password']) <= 100 && ($_POST['password'] === $_POST['confirmedPassword'])) {
+
+                // puis on teste la conformité de l'adresse mail
+                if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $_POST['mail'])) {
+
+                    // si elle est conforme, on peut se connecter à la base de données
+                    try {
+                        $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
+                    } catch (Exception $e) {
+                        die('Erreur : ' . $e->getMessage());
+                    }
+
+                    // avant d'enregister les identifiants sur la base de données, il faut vérifier s'il n'existe pas un pseudo semblable avec une requête préparée (sécurisée)
+                    // on passe en lowercase le pseudo rentré et la recherche de pseudo correspondant pour éviter les doublons
+                    $req = $bdd->prepare('SELECT pseudo FROM users WHERE LOWER(pseudo) = ?');
+                    $req->execute(array(strtolower($_POST['pseudo'])));
+                    $result = $req->fetch();
+                    // fin de la requête
+                    $req->closeCursor();
+
+                    // si la recherche ne ramène aucun résultat, alors le pseudo est libre
+                    if (empty($result['pseudo'])) {
+                        // hachage du mot de passe saisi
+                        $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+                        // envoi des valeurs sur la base de données, en deux temps (sécurisé grâce à une requête séparée)
+                        $req = $bdd->prepare('INSERT INTO users(pseudo, pass, mail, date_inscription) VALUES(?, ?, ?, CURDATE())');
+                        $req->execute(array($_POST['pseudo'], $hashedPassword, $_POST['mail']));
+
+                        // fin de la requête
+                        $req->closeCursor();
+
+                        // redirection vers la page de connexion
+                        header('Location: login.php');
+                    }
+                    else {
+                        $_SESSION['inscription_error'] = 4;
+                    }
+
+                }
+                else {
+                    $_SESSION['inscription_error'] = 3;
+                }
+                
+            }
+            else {
+                $_SESSION['inscription_error'] = 2;
+            }
+        }
+        else {
+            $_SESSION['inscription_error'] = 1;
+        }
+    }
+    else {
+        $_SESSION['inscription_error'] = 0;
+    }
+
+
+    switch ($_SESSION['inscription_error']) {
+    case 1:
+        $error = '<p class="text-center text-danger">Une ou plusieurs cases n\'ont pas été remplies</p>';
+        break;
+    case 2:
+        $error = '<p class="text-center text-danger">Valeur(s) incorrecte(s)</p>';
+        break;
+    case 3:
+        $error = '<p class="text-center text-danger">Adresse mail incorrecte</p>';
+        break;
+    case 4:
+        $error = '<p class="text-center text-danger">Pseudo déjà pris</p>';
+        break;
+}
 ?>
 
 
@@ -30,26 +102,10 @@
             <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-4 bg-light shadow">
                 <h1 class="text-center pt-3">Lancez-vous !</h1>
                 <p class="text-center text-secondary">Votre blog à portée de clics</p>
-                <p class="error-message text-center text-danger"></p>
-                <?php
-                    if ($inscriptionError) {
-                        switch ($inscriptionError) {
-                            case 1:
-                                echo '<p class="text-center text-danger">Une ou plusieurs cases n\'ont pas été remplies</p>';
-                                break;
-                            case 2:
-                                echo '<p class="text-center text-danger">Valeur(s) incorrecte(s)</p>';
-                                break;
-                            case 3:
-                                echo '<p class="text-center text-danger">Adresse mail incorrecte</p>';
-                                break;
-                            case 4:
-                                echo '<p class="text-center text-danger">Pseudo déjà pris</p>';
-                                break;
-                        }
-                    }
-                ?>
-                <form id="form-inscription" action="inscription_post.php" method="post">
+                <?php if ($_SESSION['inscription_error'] > 0) {
+                    echo $error;
+                } ?>
+                <form id="form-inscription" action="inscription.php" method="post">
                     <div class="form-group mt-4">
                         <label for="mail">Adresse mail</label><br />
                         <input type="text" class="form-control" name="mail" id="mail" placeholder="Votre adresse mail" required>
@@ -77,67 +133,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-    <script>
-        $(document).ready(function () {
-
-            // création d'une méthode pour rendre la vérification de mail plus poussée
-            $.validator.addMethod("mailverified", function (value, element, params) {
-                let pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
-                return pattern.test(value);
-            }, "Veuillez saisir une adresse mail valide");
-
-            // la méthode principale de jQuey validation plugin
-            $('#form-inscription').validate({
-                rules: {
-                    mail: {
-                        required: true,
-                        mailverified: true, // remplace la propriété mail
-                        minlength: 3,
-                        maxlength: 100
-                    },
-                    pseudo: {
-                        required: true,
-                        maxlength: 100,
-                        remote: { // vérifie de façon asynchrone si le pseudo est déjà pris
-                            url: "check-pseudo.php",
-                            type: "post"
-                        }
-                    },
-                    password: {
-                        required: true,
-                        maxlength: 100
-                    },
-                    confirmedPassword: {
-                        required: true,
-                        maxlength: 100,
-                        equalTo : "#password"
-                    }
-                },
-                messages: {
-                    mail: {
-                        required: "Veuillez saisir votre adresse mail",
-                        mailverified: "Veuillez saisir une adresse mail valide", // remplace la propriété mail
-                        minlenght: "Veuillez saisir une adresse mail valide",
-                        maxlength: "Veuillez saisir une adresse mail valide"
-                    },
-                    pseudo: {
-                        required: "Veuillez saisir votre pseudo",
-                        maxlength: "Veuillez saisir un pseudo moins long",
-                        remote: "Ce pseudo est déjà pris !"
-                    },
-                    password: {
-                        required: "Veuillez saisir votre mot de passe",
-                        maxlength: "Veuillez saisir un mot de passe moins long"
-                    },
-                    confirmedPassword: {
-                        required: "Veuillez confirmer votre mot de passe",
-                        maxlength: "Veuillez saisir un mot de passe moins long",
-                        equalTo: "Veuillez saisir le même mot de passe"
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="js/inscription.js"></script>
 </body>
 </html>

@@ -1,12 +1,57 @@
 <?php
     session_start(); // active les variables de session
+    unset($_SESSION['login_error']);
 
-    if (empty($_SESSION['login_error'])) {
-        $loginError = false;
+    // si l'utilisateur a envoyé le formulaire
+    if (isset($_POST['pseudo']) && isset($_POST['password'])) {
+
+        // si les champs sont remplis
+        if (!empty($_POST['pseudo']) && !empty($_POST['password'])) {
+
+            // si les valeurs sont correctes
+            if (strlen($_POST['pseudo']) <= 100 && strlen($_POST['password']) <= 100) {
+                // connexion à la base de données pour récupérer les identifiants
+                try {
+                    $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
+                } catch (Exception $e) {
+                    die('Erreur : ' . $e->getMessage());
+                }
+
+                // récupération de l'utilisateur et de son mot de passe hâché
+                $req = $bdd->prepare('SELECT id, pass FROM users WHERE pseudo = ?');
+                $req->execute(array($_POST['pseudo']));
+                $result = $req->fetch();
+                // comparaison du mot de passe envoyé et du mot de passe stocké
+                $verifiedPassword = password_verify($_POST['password'], $result['pass']);
+
+                    // si la recherche de pseudo n'a rien donné
+                    if (!$result) {
+                        $_SESSION['login_error'] = 1;
+                    }
+                    else
+                        if ($verifiedPassword) { // si les deux mots de passe correspondent
+                            $_SESSION['id'] = $result['id'];
+                            header('Location: admin.php');
+                        }
+                        else { // s'il y a un pseudo correspondant, mais un mot de passe éronné
+                            $_SESSION['login_error'] = 1;
+                        }
+
+                $req->closeCursor(); // fin de la requête 
+            }
+            else {
+                $_SESSION['login_error'] = 1;    
+            }
+
+        }
+        else {
+            $_SESSION['login_error'] = 1;
+        }
     }
-    else if ($_SESSION['login_error'] > 0) {
-        $loginError = true;
+    else {
+        $_SESSION['login_error'] = 0;
     }
+
 
     if (empty($_COOKIE['pseudo']) && empty($_COOKIE['password'])) { // s'il n'y a pas de cookies
         $pseudo = NULL;
@@ -16,9 +61,6 @@
         $pseudo = $_COOKIE['pseudo'];
         $password = $_COOKIE['password'];
     }
-
-    // détruit la variable de mauvaise connexion (en cas de rafraîchissement de page)
-    unset($_SESSION['login_error']);
 ?>
 
 <!DOCTYPE html>
@@ -37,19 +79,17 @@
 
         <div class="row">
             <div class="col-md-6 offset-md-3">
-                <?php
-                    if ($loginError) {
-                         echo '<p class="text-center text-danger mt-3">Mauvais identifiant ou mot de passe. Veuillez réessayer à nouveau.</p>';
-                    };
-                ?>
-                <form action="admin.php" method="post">
+                <?php if ($_SESSION['login_error'] > 0) { ?>
+                    <p class="text-center text-danger mt-3">Mauvais identifiant ou mot de passe. Veuillez réessayer à nouveau.</p>
+                <?php } ?>
+                <form action="login.php" method="post">
                     <div class="form-group mt-5">
                         <label for="pseudo">Identifiant</label><br />
-                        <input type="text" value="<?php echo $pseudo; ?>" class="form-control" name="pseudo" id="pseudo" placeholder="Veuillez saisir votre identifiant" required>
+                        <input type="text" value="<?= $pseudo; ?>" class="form-control" name="pseudo" id="pseudo" placeholder="Veuillez saisir votre identifiant" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Mot de passe</label>
-                        <input type="password" value="<?php echo $password; ?>" class="form-control" name="password" id="password" placeholder="Veuillez saisir votre mot de passe" required>
+                        <input type="password" value="<?= $password; ?>" class="form-control" name="password" id="password" placeholder="Veuillez saisir votre mot de passe" required>
                     </div>
                     <div class="form-check form-check-inline d-block d-md-inline-block mt-1">
                         <input class="form-check-input" type="checkbox" name="okCookie" id="okCookie">
