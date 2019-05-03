@@ -40,81 +40,86 @@
             <hr class="my-4" />
             <p class="lead">Vous retrouverez ici l'ensemble de vos articles et commentaires associés.</p>
         </div>
-            <h2 class="mb-4">Vos articles</h2>
-            <div class="table-responsive-lg">
-                <table id="table-blogspots" class="table table-striped table-admin">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Titre</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Statut</th>
-                            <th scope="col">Voir</th>
-                            <th scope="col">Modifier</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            // on affiche chaque entrée une à une dans une boucle, avec htmlspecialchars pour les données publiées
-                            while ($result = $articles->fetch()) {
-                        ?> <!-- on ferme PHP car ce qui suit est long (pour rappel, on est dans le tbody) -->
-                                <tr>
-                                    <th scope="row"><?= htmlspecialchars($result['title']); ?></th>
-                                    <td><?= htmlspecialchars($result['date_blog']) ?></td>
-                                    <td>
-                                        <?php if ($result['on_line'] == 1) { ?>
-                                                <p>Publié <span class="fas fa-check"></span></p>
-                                        <?php } else { ?>
-                                                <p>Brouillon</p>
-                                        <?php } ?>
-                                    </td>
-                                    <td>
-                                        <a href="view.php?id=<?= $result['id'] ?>" class="btn btn-info"><span class="far fa-eye"></span></a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-warning"><span class="fas fa-pen"></span></a> <a href="#" class="btn btn-danger"><span class="fas fa-trash-alt"></span></a>
-                                    </td>
-                                </tr>
-                        <?php // on réouvre PHP avant de finir la boucle
-                            }
-                            $articles->closeCursor();
-                        ?>
-                    </tbody>
-                </table>
-            </div>
 
-            <h2 class="mb-4">Vos commentaires</h2>
-            <div class="table-responsive-lg">
-                <table id="table-comments" class="table table-striped table-admin">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Pseudo</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Commentaire</th>
-                            <th scope="col">Article</th>
-                            <th scope="col">Voir</th>
-                            <th scope="col">Supprimer</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            // on affiche chaque entrée dans une boucle, avec du htmlspecialchars sur les données publiées
-                            while ($result = $comments->fetch()) {
-                        ?><!-- on ferme PHP pour la clarté du code -->
+        
+
+        <h2 class="mb-4 mr-4 d-inline-block">Vos articles</h2><a href="new_article.php" class="d-inline-block btn btn-primary mb-2">Ajouter</a>
+        <div class="table-responsive-lg">
+            <table id="table-blogspots" class="table table-striped table-admin">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Titre</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Statut</th>
+                        <th scope="col">Voir</th>
+                        <th scope="col">Modifier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        // on affiche chaque entrée une à une dans une boucle, avec htmlspecialchars pour les données publiées
+                        while ($result = $articles->fetch()) {
+                    ?> <!-- on ferme PHP car ce qui suit est long (pour rappel, on est dans le tbody) -->
                             <tr>
-                                <th scope="row"><?= htmlspecialchars($result['pseudo']); ?></th>
-                                <td><?= htmlspecialchars($result['date_com_blog']); ?></td>
-                                <td><?= htmlspecialchars($result['comment']); ?></td>
-                                <td><?= htmlspecialchars($result['title']); ?></td>
-                                <td><a href="#" class="btn btn-info"><span class="far fa-eye"></span></a></td>
-                                <td><a href="#" class="btn btn-danger"><span class="fas fa-trash-alt"></span></a></td>
+                                <th scope="row"><?= htmlspecialchars($result['title']); ?></th>
+                                <td><?= htmlspecialchars($result['date_blog']) ?></td>
+                                <td>
+                                    <?php if ($result['on_line'] == 1) { ?>
+                                            <p>Publié <span class="fas fa-check"></span></p>
+                                    <?php } else { ?>
+                                            <p>Brouillon</p>
+                                    <?php } ?>
+                                </td>
+                                <td>
+                                    <a href="view.php?id=<?= $result['id'] ?>" class="btn btn-info"><span class="far fa-eye"></span></a>
+                                </td>
+                                <td>
+                                    <a href="update_article.php?id=<?= $result['id'] ?>" class="btn btn-warning"><span class="fas fa-pen"></span></a> <a href="remove_article.php?id=<?= $result['id'] ?>" class="btn btn-danger" data-toggle="modal" data-target="#removeModal"><span class="fas fa-trash-alt"></span></a>
+                                </td>
                             </tr>
-                        <?php // on réouvre PHP avant de finir la boucle
-                            }
-                            $comments->closeCursor();
-                        ?>
-                    </tbody>
-                </table>
-            </div>
+
+  
+                    <?php // on réouvre PHP avant de finir la boucle
+                        }
+                        $articles->closeCursor();
+                    ?>
+                </tbody>
+            </table>        
+        </div>
+
+        <h2 class="mb-4">Vos commentaires</h2>
+        <div class="table-responsive-lg">
+            <table id="table-comments" class="table table-striped table-admin">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Pseudo</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Commentaire</th>
+                        <th scope="col">Article</th>
+                        <th scope="col">Voir</th>
+                        <th scope="col">Supprimer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        // on affiche chaque entrée dans une boucle, avec du htmlspecialchars sur les données publiées
+                        while ($result = $comments->fetch()) {
+                    ?><!-- on ferme PHP pour la clarté du code -->
+                        <tr>
+                            <th scope="row"><?= htmlspecialchars($result['pseudo']); ?></th>
+                            <td><?= htmlspecialchars($result['date_com_blog']); ?></td>
+                            <td><?= htmlspecialchars($result['comment']); ?></td>
+                            <td><?= htmlspecialchars($result['title']); ?></td>
+                            <td><a href="#" class="btn btn-info"><span class="far fa-eye"></span></a></td>
+                            <td><a href="#" class="btn btn-danger"><span class="fas fa-trash-alt"></span></a></td>
+                        </tr>
+                    <?php // on réouvre PHP avant de finir la boucle
+                        }
+                        $comments->closeCursor();
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>

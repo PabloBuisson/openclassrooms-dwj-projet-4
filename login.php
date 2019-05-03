@@ -10,6 +10,7 @@
 
             // si les valeurs sont correctes
             if (strlen($_POST['pseudo']) <= 100 && strlen($_POST['password']) <= 100) {
+
                 // connexion à la base de données pour récupérer les identifiants
                 try {
                     $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
@@ -51,16 +52,6 @@
     else {
         $_SESSION['login_error'] = 0;
     }
-
-
-    if (empty($_COOKIE['pseudo']) && empty($_COOKIE['password'])) { // s'il n'y a pas de cookies
-        $pseudo = NULL;
-        $password = NULL;
-    }
-    else { // s'il y a des cookies
-        $pseudo = $_COOKIE['pseudo'];
-        $password = $_COOKIE['password'];
-    }
 ?>
 
 <!DOCTYPE html>
@@ -85,11 +76,11 @@
                 <form action="login.php" method="post">
                     <div class="form-group mt-5">
                         <label for="pseudo">Identifiant</label><br />
-                        <input type="text" value="<?= $pseudo; ?>" class="form-control" name="pseudo" id="pseudo" placeholder="Veuillez saisir votre identifiant" required>
+                        <input type="text" value="" class="form-control" name="pseudo" id="pseudo" placeholder="Veuillez saisir votre identifiant" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Mot de passe</label>
-                        <input type="password" value="<?= $password; ?>" class="form-control" name="password" id="password" placeholder="Veuillez saisir votre mot de passe" required>
+                        <input type="password" value="" class="form-control" name="password" id="password" placeholder="Veuillez saisir votre mot de passe" required>
                     </div>
                     <div class="form-check form-check-inline d-block d-md-inline-block mt-1">
                         <input class="form-check-input" type="checkbox" name="okCookie" id="okCookie">
