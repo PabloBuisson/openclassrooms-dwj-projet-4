@@ -1,74 +1,66 @@
 <?php
-    session_start();
-    unset($_SESSION['inscription_error']);
-    unset($error);
+session_start();
+$error = null;
 
-    // si l'utilisateur a posté le formulaire
-    if (isset($_POST['mail']) && isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['confirmedPassword'])) {
+if (!empty($_POST)) { // si l'utilisateur a posté le formulaire
+    $validation = true;
 
-        // on teste si toutes les cases ont été remplies
-        if (!empty($_POST['mail']) && !empty($_POST['pseudo']) && !empty($_POST['password']) && !empty($_POST['confirmedPassword'])) {
-
-            // puis si les valeurs remplissent les conditions
-            if (strlen($_POST['mail']) <= 255 && strlen($_POST['pseudo']) <= 100 && strlen($_POST['password']) <= 100 && ($_POST['password'] === $_POST['confirmedPassword'])) {
-
-                // puis on teste la conformité de l'adresse mail
-                if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $_POST['mail'])) {
-
-                    // si elle est conforme, on peut se connecter à la base de données
-                    try {
-                        $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
-                    } catch (Exception $e) {
-                        die('Erreur : ' . $e->getMessage());
-                    }
-
-                    // avant d'enregister les identifiants sur la base de données, il faut vérifier s'il n'existe pas un pseudo semblable avec une requête préparée (sécurisée)
-                    // on passe en lowercase le pseudo rentré et la recherche de pseudo correspondant pour éviter les doublons
-                    $req = $bdd->prepare('SELECT pseudo FROM users WHERE LOWER(pseudo) = ?');
-                    $req->execute(array(strtolower($_POST['pseudo'])));
-                    $result = $req->fetch();
-                    // fin de la requête
-                    $req->closeCursor();
-
-                    // si la recherche ne ramène aucun résultat, alors le pseudo est libre
-                    if (empty($result['pseudo'])) {
-                        // hachage du mot de passe saisi
-                        $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-                        // envoi des valeurs sur la base de données, en deux temps (sécurisé grâce à une requête séparée)
-                        $req = $bdd->prepare('INSERT INTO users(pseudo, pass, mail, date_inscription) VALUES(?, ?, ?, CURDATE())');
-                        $req->execute(array($_POST['pseudo'], $hashedPassword, $_POST['mail']));
-
-                        // fin de la requête
-                        $req->closeCursor();
-
-                        // redirection vers la page de connexion
-                        header('Location: login.php');
-                    }
-                    else {
-                        $_SESSION['inscription_error'] = 4;
-                    }
-
-                }
-                else {
-                    $_SESSION['inscription_error'] = 3;
-                }
-                
-            }
-            else {
-                $_SESSION['inscription_error'] = 2;
-            }
-        }
-        else {
-            $_SESSION['inscription_error'] = 1;
-        }
+    if (empty($_POST['mail']) || empty($_POST['pseudo']) || empty($_POST['password']) || empty($_POST['confirmedPassword'])) {
+        $validation = false;
+        $error = 1; // présence d'un champ vide
     }
-    else {
-        $_SESSION['inscription_error'] = 0;
+    if (strlen($_POST['mail']) > 255 || strlen($_POST['pseudo']) > 100 || strlen($_POST['password']) > 100) {
+        $validation = false;
+        $error = 2; // valeur erronée d'un champ
+    }
+    if (($_POST['password'] !== $_POST['confirmedPassword'])) {
+        $validation = false;
+        $error = 3; // mauvaise confirmation de mpd
+    }
+    if (!(preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $_POST['mail']))) {
+        $validation = false;
+        $error = 4; // mail non conforme
     }
 
+    if ($validation) {
 
-    switch ($_SESSION['inscription_error']) {
+        // si tout est en règle, on peut se connecter à la base de données
+        try {
+            $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
+        } catch (Exception $e) {
+            die('Erreur : ' . $e->getMessage());
+        }
+
+        // avant d'enregister les identifiants sur la base de données, il faut vérifier s'il n'existe pas un pseudo semblable avec une requête préparée (sécurisée)
+        // on passe en lowercase le pseudo rentré et la recherche de pseudo correspondant pour éviter les doublons
+        $req = $bdd->prepare('SELECT pseudo FROM users WHERE LOWER(pseudo) = ?');
+        $req->execute(array(strtolower($_POST['pseudo'])));
+        $result = $req->fetch();
+        // fin de la requête
+        $req->closeCursor();
+
+        // si la recherche ne ramène aucun résultat, alors le pseudo est libre
+        if (empty($result['pseudo'])) {
+            // hachage du mot de passe saisi
+            $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+            // envoi des valeurs sur la base de données, en deux temps (sécurisé grâce à une requête séparée)
+            $req = $bdd->prepare('INSERT INTO users(pseudo, pass, mail, date_inscription) VALUES(?, ?, ?, CURDATE())');
+            $req->execute(array($_POST['pseudo'], $hashedPassword, $_POST['mail']));
+
+            // fin de la requête
+            $req->closeCursor();
+
+            // redirection vers la page de connexion
+            header('Location: login.php');
+        } else {
+            $error = 5; // pseudo déjà pris
+        }
+    }
+}
+
+
+switch ($error) {
     case 1:
         $error = '<p class="text-center text-danger">Une ou plusieurs cases n\'ont pas été remplies</p>';
         break;
@@ -76,10 +68,13 @@
         $error = '<p class="text-center text-danger">Valeur(s) incorrecte(s)</p>';
         break;
     case 3:
-        $error = '<p class="text-center text-danger">Adresse mail incorrecte</p>';
+        $error = '<p class="text-center text-danger">Mauvaise confirmation de mot de passe</p>';
         break;
     case 4:
-        $error = '<p class="text-center text-danger">Pseudo déjà pris</p>';
+        $error = '<p class="text-center text-danger">Adresse mail incorrecte</p>';
+        break;
+    case 5:
+        $error = '<p class="text-center text-danger">Pseudo déjà pris !</p>';
         break;
 }
 ?>
@@ -87,6 +82,7 @@
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Inscription | Le site officiel de Jean Forteroche</title>
@@ -102,7 +98,7 @@
             <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-4 bg-light shadow">
                 <h1 class="text-center pt-3">Lancez-vous !</h1>
                 <p class="text-center text-secondary">Votre blog à portée de clics</p>
-                <?php if ($_SESSION['inscription_error'] > 0) {
+                <?php if ($error) {
                     echo $error;
                 } ?>
                 <form id="form-inscription" action="inscription.php" method="post">
@@ -135,4 +131,5 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="js/inscription.js"></script>
 </body>
+
 </html>

@@ -33,6 +33,10 @@ h1::after {
     background-color: white;
 }
 
+.navbar-brand, .nav-link {
+    text-transform: uppercase;
+}
+
 .home-alaska {
     margin-top: 120px;
 }

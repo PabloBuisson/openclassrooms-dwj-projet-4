@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Bienvenue sur le site officiel de Jean Forteroche</title>
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/home.css">
     <link href="https://fonts.googleapis.com/css?family=Exo:300,400,700" rel="stylesheet">  
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -16,7 +16,7 @@
         <nav id="navbar-example2" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
                 <!-- le navbar-expand-md permet de décider quand le menu collapse -->
             <div class="container">
-                <a class="navbar-brand text-white-50" href="#bloc-page">JEAN FORTEROCHE</a>
+                <a class="navbar-brand text-white-50" href="#bloc-page">Jean Forteroche</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarToggler" aria-controls="navbarToggler"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -24,16 +24,16 @@
                 </button>
                 <ul class="nav collapse navbar-collapse flex-sm-column flex-md-row justify-content-md-end align-items-sm-start" id="navbarToggler">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#bloc-page">ACCUEIL</a>
+                        <a class="nav-link text-white" href="#bloc-page">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">BIOGRAPHIE</a>
+                        <a class="nav-link text-white" href="#">Biographie</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">BILLET SIMPLE</a>
+                        <a class="nav-link text-white" href="#">Billet simple</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">CONTACT</a>
+                        <a class="nav-link text-white" href="#">Contact</a>
                     </li>
                 </ul>
             </div>

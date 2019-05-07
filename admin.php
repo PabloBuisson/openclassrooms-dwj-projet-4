@@ -1,28 +1,37 @@
 <?php
-    session_start();
-    
-    if (empty($_SESSION['id'])) {
-        header('Location: login.php');
-    }
+session_start();
 
-    try {
-        $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
-    } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-    }
+if (empty($_SESSION['id'])) {
+    header('Location: login.php');
+    exit(); // interrompt le reste du code
+}
 
-    // on récupère les articles et leurs options, du plus récent au plus daté
-    $articles = $bdd->query('SELECT id, title, DATE_FORMAT(date_creation, "Modifié le %d/%m/%Y à %H:%i:%s") AS date_blog, on_line FROM articles ORDER BY date_creation DESC');
+try {
+    $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
+} catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
+}
 
-    // on récupère les commentaires et leurs options, du plus récent au plus daté, en faisant une jointure pour récupérer le titre de l'article associé
-    $comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_FORMAT(date_comment, "Publié le %d/%m/%Y à %H:%i:%s") AS date_com_blog, articles.title
+// on récupère les articles et leurs options, du plus récent au plus daté
+$articles = $bdd->query("SELECT id, title, DATE_FORMAT(date_creation, 'Modifié le %d/%m/%Y à %H:%i:%s') AS date_blog, on_line FROM articles ORDER BY date_creation DESC");
+
+$report = false;
+$query = $bdd->query("SELECT * FROM comments WHERE report = 1");
+$queryReport = $query->fetch();
+if ($queryReport) {
+    $report = true;
+}
+
+// on récupère les commentaires et leurs options, du plus récent au plus daté, en faisant une jointure pour récupérer le titre de l'article associé
+$comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_FORMAT(date_comment, "Publié le %d/%m/%Y à %H:%i:%s") AS date_com_blog, report, articles.title
     FROM comments
     INNER JOIN articles ON comments.id_article = articles.id
-    ORDER BY date_comment DESC');
+    ORDER BY report DESC, date_comment DESC');
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,12 +48,13 @@
             <h1 class="h1">Bienvenue sur votre tableau de bord ! </h1>
             <hr class="my-4" />
             <p class="lead">Vous retrouverez ici l'ensemble de vos articles et commentaires associés.</p>
+            <?php if ($report) { ?><p class="lead text-danger">Vous avez un ou plusieurs commentaires signalés. Pour les traiter, rendez-vous dans votre section "Commentaires"</p><?php } ?>
         </div>
 
-        
+
 
         <h2 class="mb-4 mr-4 d-inline-block">Vos articles</h2><a href="new_article.php" class="d-inline-block btn btn-primary mb-2">Ajouter</a>
-        <div class="table-responsive-lg">
+        <div class="table-responsive">
             <table id="table-blogspots" class="table table-striped table-admin">
                 <thead class="thead-dark">
                     <tr>
@@ -57,38 +67,54 @@
                 </thead>
                 <tbody>
                     <?php
-                        // on affiche chaque entrée une à une dans une boucle, avec htmlspecialchars pour les données publiées
-                        while ($result = $articles->fetch()) {
-                    ?> <!-- on ferme PHP car ce qui suit est long (pour rappel, on est dans le tbody) -->
-                            <tr>
-                                <th scope="row"><?= htmlspecialchars($result['title']); ?></th>
-                                <td><?= htmlspecialchars($result['date_blog']) ?></td>
-                                <td>
-                                    <?php if ($result['on_line'] == 1) { ?>
-                                            <p>Publié <span class="fas fa-check"></span></p>
-                                    <?php } else { ?>
-                                            <p>Brouillon</p>
-                                    <?php } ?>
-                                </td>
-                                <td>
-                                    <a href="view.php?id=<?= $result['id'] ?>" class="btn btn-info"><span class="far fa-eye"></span></a>
-                                </td>
-                                <td>
-                                    <a href="update_article.php?id=<?= $result['id'] ?>" class="btn btn-warning"><span class="fas fa-pen"></span></a> <a href="remove_article.php?id=<?= $result['id'] ?>" class="btn btn-danger" data-toggle="modal" data-target="#removeModal"><span class="fas fa-trash-alt"></span></a>
-                                </td>
-                            </tr>
+                    // on affiche chaque entrée une à une dans une boucle, avec htmlspecialchars pour les données publiées
+                    while ($result = $articles->fetch()) {
+                        ?>
+                        <!-- on ferme PHP car ce qui suit est long (pour rappel, on est dans le tbody) -->
+                        <tr>
+                            <th scope="row"><?= htmlspecialchars($result['title']); ?></th>
+                            <td><?= htmlspecialchars($result['date_blog']) ?></td>
+                            <td>
+                                <?php if ($result['on_line'] == 1) { ?>
+                                    <p>Publié <span class="fas fa-check"></span></p>
+                                <?php } else { ?>
+                                    <p>Brouillon</p>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <a href="view.php?id=<?= $result['id'] ?>" title="Voir l'article" class="btn btn-info"><span class="far fa-eye"></span></a>
+                            </td>
+                            <td>
+                                <a href="update_article.php?id=<?= $result['id'] ?>" title="Modifier l'article" class="btn btn-warning"><span class="fas fa-pen"></span></a> <button type="button" title="Supprimer l'article" class="btn btn-danger" data-toggle="modal" data-target="#article<?= $result['id'] ?>"><span class="fas fa-trash-alt"></span></button>
+                            </td>
+                        </tr>
+                        <!-- Modal du bouton supprimer -->
+                        <div class="modal fade" id="article<?= $result['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Êtes-vous certain(e) de supprimer cet article ?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                        <a href="delete_article.php?id=<?= $result['id'] ?>" class="btn btn-danger">Supprimer</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-  
                     <?php // on réouvre PHP avant de finir la boucle
-                        }
-                        $articles->closeCursor();
-                    ?>
+                }
+                ?>
                 </tbody>
-            </table>        
+            </table>
         </div>
 
         <h2 class="mb-4">Vos commentaires</h2>
-        <div class="table-responsive-lg">
+        <div class="table-responsive">
             <table id="table-comments" class="table table-striped table-admin">
                 <thead class="thead-dark">
                     <tr>
@@ -97,26 +123,43 @@
                         <th scope="col">Commentaire</th>
                         <th scope="col">Article</th>
                         <th scope="col">Voir</th>
-                        <th scope="col">Supprimer</th>
+                        <th scope="col">Modifier</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                        // on affiche chaque entrée dans une boucle, avec du htmlspecialchars sur les données publiées
-                        while ($result = $comments->fetch()) {
-                    ?><!-- on ferme PHP pour la clarté du code -->
-                        <tr>
-                            <th scope="row"><?= htmlspecialchars($result['pseudo']); ?></th>
-                            <td><?= htmlspecialchars($result['date_com_blog']); ?></td>
-                            <td><?= htmlspecialchars($result['comment']); ?></td>
-                            <td><?= htmlspecialchars($result['title']); ?></td>
-                            <td><a href="#" class="btn btn-info"><span class="far fa-eye"></span></a></td>
-                            <td><a href="#" class="btn btn-danger"><span class="fas fa-trash-alt"></span></a></td>
+                    // on affiche chaque entrée dans une boucle, avec du htmlspecialchars sur les données publiées
+                    while ($result = $comments->fetch()) {
+                        ?>
+                        <!-- on ferme PHP pour la clarté du code -->
+                        <tr <?php if ($result['report'] > 0) { ?> class="bg-warning" <?php } ?>>
+                            <th scope="row"><?= htmlspecialchars($result['pseudo']) ?></th>
+                            <td><?= htmlspecialchars($result['date_com_blog']) ?></td>
+                            <td><?= substr(htmlspecialchars($result['comment']), 0, 50)  ?><span class="text-muted">[...]</span></td>
+                            <td><?= htmlspecialchars($result['title']) ?></td>
+                            <td><a href="view.php?id=<?= $result['id_article'] ?>#comment<?= $result['id'] ?>" title="Voir le commentaire" class="btn btn-info"><span class="far fa-eye"></span></a></td>
+                            <td><?php if ($result['report'] > 0) { ?><a href="comment.php?id=<?= $result['id'] ?>&action=update" title="Accepter le commentaire" class="btn btn-success"><span class="fas fa-check"></span></a> <?php } ?><button type="button" title="Supprimer le commentaire" class="btn btn-danger" data-toggle="modal" data-target="#comment<?= $result['id'] ?>"><span class="fas fa-trash-alt"></span></a></td>
                         </tr>
+                        <!-- Modal du bouton supprimer -->
+                        <div class="modal fade" id="comment<?= $result['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Êtes-vous certain(e) de supprimer ce commentaire ?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                        <a href="comment.php?id=<?= $result['id'] ?>&action=delete" class="btn btn-danger">Supprimer</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <?php // on réouvre PHP avant de finir la boucle
-                        }
-                        $comments->closeCursor();
-                    ?>
+                }
+                ?>
                 </tbody>
             </table>
         </div>
@@ -125,8 +168,11 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
     <script src="js/admin.js"></script>
 </body>
+
 </html>
