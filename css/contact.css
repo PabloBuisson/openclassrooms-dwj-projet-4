@@ -6,16 +6,22 @@ body {
     background: #294664;
     background-image: url(../img/image1.jpg);
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.3) 100%),
-    url(../img/image1.jpg);
+        url(../img/image1.jpg);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
+.navbar-brand, .nav-link {
+    text-transform: uppercase;
+}
+
 header {
-    padding-top: 100px;
+    padding: 150px 0 0 0;
     box-sizing: border-box;
-    height: 100vh;
+    height: auto;
+    position: relative;
+    z-index: 5;
 }
 
 h1::after {
@@ -28,45 +34,39 @@ h1::after {
     background-color: white;
 }
 
-.navbar-brand, .nav-link {
-    text-transform: uppercase;
+#text-form {
+    margin-top: 50px !important;
+    font-size: 1.5rem !important;
 }
 
-.home-alaska {
-    margin-top: 120px;
+#contact-form {
+    margin-top: 50px;
 }
 
-.title-alaska {
-    margin-bottom: 20px;
+#contact-form h5 {
+    font-size: 2.5rem !important;
 }
 
-#home-project-alaska {
-    background-color: rgb(52, 52, 122);
-    padding: 80px 0 80px 0;
-    color: white;
+#contact-form {
     -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
     clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
 }
 
-#home-project-alaska h3 {
-    margin-bottom: 30px;
+#contact-form .container {
+    background-color: #294664 !important;
 }
 
-#home-comment-alaska {
-    margin-top: -30px;
-    background-color: rgb(77, 16, 105);
-    padding: 80px 0 80px 0;
-    color: white;
-    -webkit-clip-path: polygon(0 6%, 100% 0, 100% 100%, 0% 100%);
-    clip-path: polygon(0 6%, 100% 0, 100% 100%, 0% 100%);
+#contact-form .form-control {
+    background-color: #e2ebf6;
 }
 
-#home-comment-alaska h3 {
-    margin-bottom: 30px;
+#contact-form .btn-primary {
+    background-color: #da7300;
+    border-color: #da7300;
 }
 
 footer {
-    margin-top: -30px;
+    margin-top: 100px;
     background-color: #343a40;
     color: white;
     padding: 80px 0 80px 0;

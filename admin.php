@@ -12,6 +12,32 @@ try {
     die('Erreur : ' . $e->getMessage());
 }
 
+// supression d'un article
+if (!empty($_GET['article']) && $_GET['action'] == 'delete') {
+    $query = $bdd->prepare("DELETE FROM articles WHERE id = ?");
+    $query->execute(array(
+        $_GET['article']
+    ));
+}
+
+// approbation ou supression d'un commentaire
+if (!empty($_GET['comment']) && !empty($_GET['action'])) {
+
+    if ($_GET['action'] == 'accept') {
+        $query = $bdd->prepare("UPDATE comments SET report = 0 WHERE id = ?");
+        $query->execute(array(
+            $_GET['comment']
+        ));
+    }
+
+    if ($_GET['action'] == 'delete') {
+        $query = $bdd->prepare("DELETE FROM comments WHERE id = ?");
+        $query->execute(array(
+            $_GET['comment']
+        ));
+    }
+}
+
 // on récupère les articles et leurs options, du plus récent au plus daté
 $articles = $bdd->query("SELECT id, title, DATE_FORMAT(date_creation, 'Modifié le %d/%m/%Y à %H:%i:%s') AS date_blog, on_line FROM articles ORDER BY date_creation DESC");
 
@@ -48,12 +74,12 @@ $comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_F
             <h1 class="h1">Bienvenue sur votre tableau de bord ! </h1>
             <hr class="my-4" />
             <p class="lead">Vous retrouverez ici l'ensemble de vos articles et commentaires associés.</p>
-            <?php if ($report) { ?><p class="lead text-danger">Vous avez un ou plusieurs commentaires signalés. Pour les traiter, rendez-vous dans votre section "Commentaires"</p><?php } ?>
+            <?php if ($report) { ?><p class="lead text-danger"><span class="fas fa-exclamation-circle"></span> Vous avez un ou plusieurs commentaires signalés. Pour les traiter, rendez-vous dans votre section "Commentaires"</p><?php } ?>
         </div>
 
 
 
-        <h2 class="mb-4 mr-4 d-inline-block">Vos articles</h2><a href="new_article.php" class="d-inline-block btn btn-primary mb-2">Ajouter</a>
+        <h2 class="mb-4 mr-4 d-inline-block">Vos articles</h2><a href="new_article.php" class="d-inline-block btn btn-primary mb-2" role="button">Ajouter</a>
         <div class="table-responsive">
             <table id="table-blogspots" class="table table-striped table-admin">
                 <thead class="thead-dark">
@@ -82,10 +108,10 @@ $comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_F
                                 <?php } ?>
                             </td>
                             <td>
-                                <a href="view.php?id=<?= $result['id'] ?>" title="Voir l'article" class="btn btn-info"><span class="far fa-eye"></span></a>
+                                <a href="view.php?id=<?= $result['id'] ?>" title="Voir l'article" class="btn btn-info"><span class="far fa-eye" role="button"></span></a>
                             </td>
                             <td>
-                                <a href="update_article.php?id=<?= $result['id'] ?>" title="Modifier l'article" class="btn btn-warning"><span class="fas fa-pen"></span></a> <button type="button" title="Supprimer l'article" class="btn btn-danger" data-toggle="modal" data-target="#article<?= $result['id'] ?>"><span class="fas fa-trash-alt"></span></button>
+                                <a href="update_article.php?id=<?= $result['id'] ?>" title="Modifier l'article" class="btn btn-warning" role="button"><span class="fas fa-pen"></span></a> <button type="button" title="Supprimer l'article" class="btn btn-danger" data-toggle="modal" data-target="#article<?= $result['id'] ?>"><span class="fas fa-trash-alt"></span></button>
                             </td>
                         </tr>
                         <!-- Modal du bouton supprimer -->
@@ -100,7 +126,7 @@ $comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_F
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                        <a href="delete_article.php?id=<?= $result['id'] ?>" class="btn btn-danger">Supprimer</a>
+                                        <a href="admin.php?article=<?= $result['id'] ?>&action=delete" class="btn btn-danger">Supprimer</a>
                                     </div>
                                 </div>
                             </div>
@@ -137,8 +163,8 @@ $comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_F
                             <td><?= htmlspecialchars($result['date_com_blog']) ?></td>
                             <td><?= substr(htmlspecialchars($result['comment']), 0, 50)  ?><span class="text-muted">[...]</span></td>
                             <td><?= htmlspecialchars($result['title']) ?></td>
-                            <td><a href="view.php?id=<?= $result['id_article'] ?>#comment<?= $result['id'] ?>" title="Voir le commentaire" class="btn btn-info"><span class="far fa-eye"></span></a></td>
-                            <td><?php if ($result['report'] > 0) { ?><a href="comment.php?id=<?= $result['id'] ?>&action=update" title="Accepter le commentaire" class="btn btn-success"><span class="fas fa-check"></span></a> <?php } ?><button type="button" title="Supprimer le commentaire" class="btn btn-danger" data-toggle="modal" data-target="#comment<?= $result['id'] ?>"><span class="fas fa-trash-alt"></span></a></td>
+                            <td><a href="view.php?id=<?= $result['id_article'] ?>#comment<?= $result['id'] ?>" title="Voir le commentaire" class="btn btn-info" role="button"><span class="far fa-eye"></span></a></td>
+                            <td><?php if ($result['report'] > 0) { ?><a href="admin.php?comment=<?= $result['id'] ?>&action=accept" title="Accepter le commentaire" class="btn btn-success" role="button"><span class="fas fa-check"></span></a> <?php } ?><button type="button" title="Supprimer le commentaire" class="btn btn-danger" data-toggle="modal" data-target="#comment<?= $result['id'] ?>"><span class="fas fa-trash-alt"></span></a></td>
                         </tr>
                         <!-- Modal du bouton supprimer -->
                         <div class="modal fade" id="comment<?= $result['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -152,7 +178,7 @@ $comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_F
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                        <a href="comment.php?id=<?= $result['id'] ?>&action=delete" class="btn btn-danger">Supprimer</a>
+                                        <a href="admin.php?comment=<?= $result['id'] ?>&action=delete" class="btn btn-danger">Supprimer</a>
                                     </div>
                                 </div>
                             </div>
