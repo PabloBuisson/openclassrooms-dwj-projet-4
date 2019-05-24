@@ -1,4 +1,13 @@
 <?php
+
+// enregistre l'autoload
+function loadClass($classname)
+{
+    require 'model/' . $classname . '.php';
+}
+
+spl_autoload_register('loadClass');
+
 session_start();
 $error = null;
 
@@ -14,36 +23,37 @@ if (!empty($_POST)) { // si l'utilisateur a envoyé le formulaire
         $error = 1;
     }
 
-    if ($validation) {
-        // connexion à la base de données pour récupérer les identifiants
-        try {
-            $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
-        } catch (Exception $e) {
-            die('Erreur : ' . $e->getMessage());
-        }
-
+    if ($validation)
+    {
         // récupération de l'utilisateur et de son mot de passe hâché
-        $req = $bdd->prepare('SELECT id, pass FROM users WHERE pseudo = ?');
-        $req->execute(array($_POST['pseudo']));
-        $result = $req->fetch();
-        // comparaison du mot de passe envoyé et du mot de passe stocké
-        $verifiedPassword = password_verify($_POST['password'], $result['pass']);
+        $userManager = new UserManager();
+        $user = $userManager->get($_POST['pseudo']);
 
-        // si la recherche de pseudo n'a rien donné
-        if (!$result) {
+        if (!$user) 
+        {
+            // si la recherche de pseudo n'a rien donné
             $error = 1;
-        } else
-            if ($verifiedPassword) { // si les deux mots de passe correspondent
-            $_SESSION['id'] = $result['id'];
-            header('Location: admin.php');
-        } else { // s'il y a un pseudo correspondant, mais un mot de passe éronné
-            $error = 1;
+        } 
+        else
+        {
+            // si on a trouvé un pseudo associé
+            // comparaison du mot de passe envoyé et du mot de passe stocké
+            $verifiedPassword = password_verify($_POST['password'], $user->getPass());
+
+            if ($verifiedPassword) 
+            { 
+                // si les deux mots de passe correspondent
+                $_SESSION['id'] = $user->getId();
+                header('Location: admin.php');
+            }
+            else 
+            {
+                // s'il y a un pseudo correspondant, mais un mot de passe éronné
+                $error = 1;
+            }
         }
-
-        $req->closeCursor(); // fin de la requête 
     }
 }
-
 ?>
 
 <!DOCTYPE html>

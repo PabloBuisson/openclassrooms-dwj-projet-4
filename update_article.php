@@ -1,12 +1,14 @@
 <?php
 session_start();
-$error = null;
-
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises
-} catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
+// enregistre l'autoload
+function loadClass($classname)
+{
+    require 'model/' . $classname . '.php';
 }
+
+spl_autoload_register('loadClass');
+
+$error = null;
 
 if (!empty($_POST)) { // si l'utilisateur a posté
     $validation = true;
@@ -20,8 +22,8 @@ if (!empty($_POST)) { // si l'utilisateur a posté
         $error = 2; // titre trop long
     }
 
-    if ($validation) {
-
+    if ($validation)
+    {
         // définit la variable qui indique si le billet est publié en ligne ou enregistré en brouillon
         if (isset($_POST['submit'])) {
             $online = 1;
@@ -29,40 +31,39 @@ if (!empty($_POST)) { // si l'utilisateur a posté
             $online = 0;
         }
 
-        $req = $bdd->prepare('UPDATE articles SET title = :newtitle, content = :newcontent, date_creation = NOW(), on_line = :newonline WHERE id = :idarticle') or die(print_r($bdd->errorInfo()));
-        $req->execute(array(
-            'newtitle' => $_POST['title'],
-            'newcontent' => $_POST['text'],
-            'newonline' => $online,
-            'idarticle' => $_SESSION['id_article']
-        ));
+        // crée l'Objet article et ses valeurs
+        $articleUpdate = new Article([
+            'id' => $_GET['id'],
+            'title' => $_POST['title'],
+            'content' => $_POST['text'],
+            'on_line' => $online
+        ]);
 
-        // fin de la requête
-        $req->closeCursor();
-
-        // destruction de la variable de session
-        unset($_SESSION['id_article']);
+        // instanciation de la classe ArticleManager, qui lance la connexion à la BDD
+        $articleManager = new ArticleManager();
+        $articleManager->update($articleUpdate); // lancement de la requête update
 
         // redirection vers la page d'administration
         header('Location: admin.php');
     }
 }
 
-$_SESSION['id_article'] = $_GET['id']; // on enregistre l'ID de l'article
-
-$req = $bdd->prepare('SELECT * FROM articles WHERE id = ?');
-$req->execute(array($_GET['id']));
-$articles = $req->fetch();
+$articleManager = new ArticleManager(); 
+$article = $articleManager->get($_GET['id']); // on récupére l'article sous forme d'objet
 
 // message indicatif à côté du titre
-if ($articles['on_line'] == 0) {
+if ($article->getOn_line() == 0)
+{
     $status = 'en brouillon';
-} else {
+}
+else
+{
     $status = 'en ligne';
 }
 
 // messages d'erreur
-switch ($error) {
+switch ($error)
+{
     case 1:
         $error = '<p class="text-danger">Message vide !</p>';
         break;
@@ -70,7 +71,6 @@ switch ($error) {
         $error = '<p class="text-danger">Titre trop long !</p>';
         break;
 }
-
 ?>
 
 
@@ -92,14 +92,14 @@ switch ($error) {
             echo $error;
         }
         ?>
-        <form action="update_article.php" method="post">
+        <form action="update_article.php?id=<?= htmlspecialchars($article->getId()) ?>" method="post">
             <div class="form-group">
                 <label for="title">Titre <small id="pseudodHelpBlock" class="text-muted">(Privilégiez un titre court et pertinent)</small></label><br />
-                <input type="text" class="form-control" name="title" id="title" placeholder="Saisissez votre titre ici" aria-describedby="pseudodHelpBlock" value="<?= htmlspecialchars($articles['title']) ?>" required /><br />
+                <input type="text" class="form-control" name="title" id="title" placeholder="Saisissez votre titre ici" aria-describedby="pseudodHelpBlock" value="<?= htmlspecialchars($article->getTitle()) ?>" required /><br />
             </div>
             <div class="form-group">
                 <label for="text">Texte</label><br />
-                <textarea name="text" class="form-control" id="text" rows="10" placeholder="Saisissez votre texte ici" required><?= htmlspecialchars($articles['content']) ?></textarea><br />
+                <textarea name="text" class="form-control" id="text" rows="10" placeholder="Saisissez votre texte ici" required><?= htmlspecialchars($article->getContent()) ?></textarea><br />
             </div>
             <button type="submit" name="submit" class="btn btn-primary float-right">Publier en ligne</button>
             <button type="submit" name="draft" class="btn btn-outline-secondary float-right mr-3">Sauvegarder en brouillon</button>

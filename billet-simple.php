@@ -1,13 +1,16 @@
 <?php
-// connexion à la base de données pour récupérer les articles
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
-} catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
+
+// enregistre l'autoload
+function loadClass($classname)
+{
+    require 'model/' . $classname . '.php';
 }
 
-// on récupère les articles [en ligne], du plus plus daté au plus récent (ordre logique des chapitres)
-$articles = $bdd->query("SELECT id, title, content, DATE_FORMAT(date_creation, '%d/%m/%Y') AS date_blog, on_line FROM articles WHERE on_line = 1 ORDER BY date_creation");
+spl_autoload_register('loadClass');
+
+$articleManager = new ArticleManager();
+// récupère les articles publiés, par ordre d'apparition
+$articles = $articleManager->getPosted();
 ?>
 
 <!DOCTYPE html>
@@ -45,17 +48,21 @@ $articles = $bdd->query("SELECT id, title, content, DATE_FORMAT(date_creation, '
             <div class="container bg-white">
                 <div class="row">
                     <div class="col-10 offset-1 mb-5 mt-5">
-                        <?php while ($result = $articles->fetch()) {
-                            ?>
-                            <article class="mb-5">
-                                <h3><?= htmlspecialchars($result['title']) ?></h3>
-                                <p>Publié le <?= $result['date_blog'] ?></p>
-                                <p><?= substr(htmlspecialchars($result['content']), 0, 250) ?>[...]</p>
-                                <a href="view.php?id=<?= $result['id'] ?>" title="Lire la suite de l'article" class="btn btn-primary" role="button">Lire la suite</a>
+                        <p class="lead">Retrouvez l'ensemble des chapitres qui compose le roman "Billet simple pour l'Alaska", par ordre de publication.<br />
+                        <br/>
+                        Bonne lecture !</p>
+                        <hr>
+                        <?php foreach ($articles as $article) { ?>
+                            <article class="mb-5 mt-5">
+                                <h3><?= htmlspecialchars($article->getTitle()) ?></h3>
+                                <p>Publié le <?= date_format(date_create($article->getDate_creation()), 'd/m/Y')  ?></p>
+                                <p class="text-justify"><?= substr(htmlspecialchars($article->getContent()), 0, 250) ?>[...]</p>
+                                <a href="view.php?id=<?= $article->getId() ?>" title="Lire la suite de l'article" class="btn btn-primary mb-2" role="button">Lire la suite</a>
+                                <hr>
                             </article>
                         <?php
-                    }
-                    ?>
+                        }
+                        ?>
                     </div>
                 </div>
         </section>

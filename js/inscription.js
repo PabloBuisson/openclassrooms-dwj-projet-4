@@ -8,7 +8,7 @@ $(document).ready(function () {
         return pattern.test(value);
     }, "Veuillez saisir une adresse mail valide");
 
-    // la méthode principale de jQuey validation plugin
+    // la méthode principale de jQuery validation plugin
     $('#form-inscription').validate({
         rules: {
             mail: {
@@ -21,7 +21,7 @@ $(document).ready(function () {
                 required: true,
                 maxlength: 100,
                 remote: { // vérifie de façon asynchrone si le pseudo est déjà pris
-                    url: "check-pseudo.php",
+                    url: "inscription.php?check=pseudo",
                     type: "post"
                 }
             },

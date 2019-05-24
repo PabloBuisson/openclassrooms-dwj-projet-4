@@ -1,4 +1,13 @@
 <?php
+
+// enregistre l'autoload
+function loadClass($classname)
+{
+    require 'model/' . $classname . '.php';
+}
+
+spl_autoload_register('loadClass');
+
 session_start();
 $error = null;
 
@@ -22,34 +31,26 @@ if (!empty($_POST)) { // si l'utilisateur a posté le formulaire
         $error = 4; // mail non conforme
     }
 
-    if ($validation) {
-
-        // si tout est en règle, on peut se connecter à la base de données
-        try {
-            $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
-        } catch (Exception $e) {
-            die('Erreur : ' . $e->getMessage());
-        }
-
-        // avant d'enregister les identifiants sur la base de données, il faut vérifier s'il n'existe pas un pseudo semblable avec une requête préparée (sécurisée)
-        // on passe en lowercase le pseudo rentré et la recherche de pseudo correspondant pour éviter les doublons
-        $req = $bdd->prepare('SELECT pseudo FROM users WHERE LOWER(pseudo) = ?');
-        $req->execute(array(strtolower($_POST['pseudo'])));
-        $result = $req->fetch();
-        // fin de la requête
-        $req->closeCursor();
+    if ($validation)
+    {
+        // avant d'enregister les identifiants sur la base de données, il faut vérifier s'il n'existe pas un pseudo semblable
+        $userManager = new UserManager;
 
         // si la recherche ne ramène aucun résultat, alors le pseudo est libre
-        if (empty($result['pseudo'])) {
+        if (empty($userManager->exists($_POST['pseudo']))) 
+        {
             // hachage du mot de passe saisi
             $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-            // envoi des valeurs sur la base de données, en deux temps (sécurisé grâce à une requête séparée)
-            $req = $bdd->prepare('INSERT INTO users(pseudo, pass, mail, date_inscription) VALUES(?, ?, ?, CURDATE())');
-            $req->execute(array($_POST['pseudo'], $hashedPassword, $_POST['mail']));
+            // création de l'objet Utilisateur
+            $user = new User([
+                'pseudo' => $_POST['pseudo'],
+                'pass' => $hashedPassword,
+                'mail' => $_POST['mail']
+            ]);
 
-            // fin de la requête
-            $req->closeCursor();
+            // envoi des valeurs sur la base de données
+            $userManager->add($user);
 
             // redirection vers la page de connexion
             header('Location: login.php');

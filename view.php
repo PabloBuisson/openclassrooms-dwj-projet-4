@@ -1,18 +1,23 @@
 <?php
 
-// connexion à la base de données pour récupérer les identifiants
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
-} catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
+// enregistre l'autoload
+function loadClass($classname)
+{
+    require 'model/' . $classname . '.php';
 }
+
+spl_autoload_register('loadClass');
+
+$commentManager = new CommentManager;
 
 // s'il y a un article signalé
 if (!empty($_GET['comment']) && !empty($_GET['article']) && $_GET['action'] == 'report') {
-    $query = $bdd->prepare("UPDATE comments SET report = 1 WHERE id = ?");
-    $query->execute(array(
-        $_GET['comment']
-    ));
+
+    $comment = new Comment([
+        'id' => $_GET['comment']
+    ]);
+    $commentManager->report($comment);
+
     header('Location: view.php?id=' . $_GET['article'] . '#comments');
     exit();
 }
@@ -31,24 +36,27 @@ if (!empty($_POST)) {
 
     // si les champs sont remplis et conformes
     if ($validation) {
-        $queryComment = $bdd->prepare("INSERT INTO comments(id_article, pseudo, comment, date_comment, report) VALUES(:id_article, :pseudo, :comment, NOW(), 0)");
-        $queryComment->execute(array(
+
+        $comment = new Comment([
             'id_article' => $_GET['id'],
             'pseudo' => $_POST['form-pseudo'],
             'comment' => $_POST['form-comment']
-        ));
+        ]);
+
+        $commentManager->add($comment);
     }
 
     header('Location: view.php?id=' . $_GET['id'] . '#comments');
 }
 
-// récupération de l'article via son ID
-$queryArticles = $bdd->prepare('SELECT id, title, content, DATE_FORMAT(date_creation, "%d/%m/%Y") AS date_online FROM articles WHERE id = ?');
-$queryArticles->execute(array($_GET['id']));
-$article = $queryArticles->fetch();
+$articleManager = new ArticleManager(); // instanciation de la classe ArticleManager et connexion à la BDD
+$article = $articleManager->get($_GET['id']);
+/* var_dump($article); objet
+die(); */
 
-$queryComments = $bdd->prepare('SELECT id, id_article, pseudo, comment, DATE_FORMAT(date_comment, "Publié le %d/%m/%Y à %H:%i:%s") AS date_com, report FROM comments WHERE id_article = ? ORDER BY report, date_comment DESC');
-$queryComments->execute(array($_GET['id']));
+// récupère les commentaires postés sur l'article
+$comments = $commentManager->getPosted($_GET['id']);
+// var_dump($comments);
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +66,7 @@ $queryComments->execute(array($_GET['id']));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><?= htmlspecialchars($article['title']) ?> | Le site officiel de Jean Forteroche</title>
+    <title><?= htmlspecialchars($article->getTitle()) ?> | Le site officiel de Jean Forteroche</title>
     <link rel="stylesheet" href="css/view.css">
     <link href="https://fonts.googleapis.com/css?family=Exo:300,400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -76,7 +84,7 @@ $queryComments->execute(array($_GET['id']));
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <h1 class="display-4 main-title text-center text-white d-inline-block position-relative">Billet simple pour l'Alaska</h1>
-                        <h2 class="text-center text-white"><?= htmlspecialchars($article['title']) ?></h2>
+                        <h2 class="text-center text-white"><?= htmlspecialchars($article->getTitle()) ?></h2>
                     </div>
                 </div>
             </div>
@@ -86,8 +94,8 @@ $queryComments->execute(array($_GET['id']));
             <div class="container-fluid bg-white">
                 <div class="row">
                     <div class="col-10 offset-1 mb-5 mt-5 article-content">
-                        <div class="text-justify mb-5">Publié le <?= $article['date_online'] ?></div>
-                        <div class="text-justify"><?= htmlspecialchars($article['content']) ?> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus provident quisquam error, vero ipsam suscipit, numquam et quod doloremque veritatis reprehenderit tempore aut nobis. Hic provident harum tempore saepe tempora! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam qui doloribus libero inventore magnam, at fuga veniam incidunt illum reprehenderit cum explicabo corporis aliquam accusamus rem sed. Fugit, perspiciatis iste? Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi ab veritatis magnam, deleniti illum nostrum fugit reprehenderit cum perspiciatis perferendis expedita. Ex vitae quas unde neque eligendi iure, non placeat.</div>
+                        <div class="text-justify mb-5">Publié le <?= $article->getDate_creation() ?></div>
+                        <div class="text-justify"><?= htmlspecialchars($article->getContent()) ?> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus provident quisquam error, vero ipsam suscipit, numquam et quod doloremque veritatis reprehenderit tempore aut nobis. Hic provident harum tempore saepe tempora! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam qui doloribus libero inventore magnam, at fuga veniam incidunt illum reprehenderit cum explicabo corporis aliquam accusamus rem sed. Fugit, perspiciatis iste? Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi ab veritatis magnam, deleniti illum nostrum fugit reprehenderit cum perspiciatis perferendis expedita. Ex vitae quas unde neque eligendi iure, non placeat.</div>
                     </div>
                 </div>
         </article>
@@ -97,16 +105,16 @@ $queryComments->execute(array($_GET['id']));
                 <div class="row">
                     <div class="col-lg-10 offset-lg-1 mb-5 mt-5">
                         <h5 class="text-center mt-4 mb-5 text-white">Commentaires</h5>
-                        <?php while ($comments = $queryComments->fetch()) { ?>
-                            <div class="comment <?php if ($comments['report'] > 0) { ?> reported<?php } ?>">
+                        <?php foreach ($comments as $comment) { ?>
+                            <div class="comment <?php if ($comment->getReport() > 0) { ?> reported<?php } ?>">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <p id="comment<?= $comments['id'] ?>" class="mt-3 ml-5"><span id="pseudo-comment"><?= htmlspecialchars($comments['pseudo']) ?></span><br /><small class="text-muted"><?= htmlspecialchars($comments['date_com']) ?></small></p>
+                                        <p id="comment<?= $comment->getId() ?>" class="mt-3 ml-5"><span id="pseudo-comment"><?= htmlspecialchars($comment->getPseudo()) ?></span><br /><small class="text-muted">Publié le <?= date_format(date_create($comment->getDate_comment()), 'd/m/Y à H:i:s') ?></small></p>
                                     </div>
                                     <div class="col-md-9">
-                                        <p id="comment-content" class="mt-3 ml-5 mr-5"> <?= $comments['comment']; ?> </p>
+                                        <p id="comment-content" class="mt-3 ml-5 mr-5"> <?= htmlspecialchars($comment->getComment()) ?> </p>
                                     </div>
-                                    <div class="col-2 col-sm-3 col-md-2 ml-5 ml-sm-auto offset-sm-8 offset-md-10 mt-3"><a href="view.php?comment=<?= $comments['id'] ?>&article=<?= $comments['id_article'] ?>&action=report" class="btn btn-danger btn-sm mr-5<?php if ($comments['report'] > 0) { ?> disabled" aria-disabled="true" <?php } ?> role="button"><?php if ($comments['report'] > 0) { ?> Signalé <?php } else { ?> Signaler <?php } ?></a></div>
+                                    <div class="col-2 col-sm-3 col-md-2 ml-5 ml-sm-auto offset-sm-8 offset-md-10 mt-3"><a href="view.php?comment=<?= $comment->getId() ?>&article=<?= $comment->getId_article() ?>&action=report" class="btn btn-danger btn-sm mr-5<?php if ($comment->getReport() > 0) { ?> disabled" aria-disabled="true" <?php } ?> role="button"><?php if ($comment->getReport() > 0) { ?> Signalé <?php } else { ?> Signaler <?php } ?></a></div>
                                 </div>
                             </div>
                         <?php } ?>
@@ -120,7 +128,7 @@ $queryComments->execute(array($_GET['id']));
                 <div class="row">
                     <div class="col-lg-10 offset-lg-1 mb-5 mt-5">
                         <h5 class="text-center mt-4 mb-5 text-white">Laisser un commentaire</h5>
-                        <form action="view.php?id=<?= $article['id'] ?>" method="post">
+                        <form action="view.php?id=<?= $article->getId() ?>" method="post">
                             <div class="form-group">
                                 <label for="form-pseudo" class="text-white">Votre pseudo <span>(en moins de 255 caractères)</span></label>
                                 <input type="text" class="form-control" name="form-pseudo" id="form-pseudo" placeholder="Pseudo" required>

@@ -1,4 +1,13 @@
 <?php
+
+// enregistre l'autoload
+function loadClass($classname)
+{
+    require 'model/' . $classname . '.php';
+}
+
+spl_autoload_register('loadClass');
+
 session_start();
 
 if (empty($_SESSION['id'])) {
@@ -6,53 +15,50 @@ if (empty($_SESSION['id'])) {
     exit(); // interrompt le reste du code
 }
 
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
-} catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-}
+$articleManager = new ArticleManager(); // création de l'Article Manager pour centraliser toutes les requêtes
+$commentManager = new CommentManager(); // création du Comment Manager pour centraliser toutes les requêtes
 
 // supression d'un article
-if (!empty($_GET['article']) && $_GET['action'] == 'delete') {
-    $query = $bdd->prepare("DELETE FROM articles WHERE id = ?");
-    $query->execute(array(
-        $_GET['article']
-    ));
+if (!empty($_GET['article']) && $_GET['action'] == 'delete')
+{
+    $article = new Article([
+        'id' => $_GET['article']
+    ]);
+
+    $articleManager->delete($article);
 }
 
 // approbation ou supression d'un commentaire
-if (!empty($_GET['comment']) && !empty($_GET['action'])) {
+if (!empty($_GET['comment']) && !empty($_GET['action']))
+{
+    if ($_GET['action'] == 'accept')
+    {
+        $comment = new Comment([
+            'id' => $_GET['comment']
+        ]);
 
-    if ($_GET['action'] == 'accept') {
-        $query = $bdd->prepare("UPDATE comments SET report = 0 WHERE id = ?");
-        $query->execute(array(
-            $_GET['comment']
-        ));
+        $commentManager->accept($comment);
     }
 
-    if ($_GET['action'] == 'delete') {
-        $query = $bdd->prepare("DELETE FROM comments WHERE id = ?");
-        $query->execute(array(
-            $_GET['comment']
-        ));
+    if ($_GET['action'] == 'delete')
+    {
+        $comment = new Comment([
+            'id' => $_GET['comment']
+        ]);
+        
+        $commentManager->delete($comment);
     }
 }
 
-// on récupère les articles et leurs options, du plus récent au plus daté
-$articles = $bdd->query("SELECT id, title, DATE_FORMAT(date_creation, 'Modifié le %d/%m/%Y à %H:%i:%s') AS date_blog, on_line FROM articles ORDER BY date_creation DESC");
+// récupère les articles et leurs options, du plus récent au plus daté
+$articles = $articleManager->getAll();
 
-$report = false;
-$query = $bdd->query("SELECT * FROM comments WHERE report = 1");
-$queryReport = $query->fetch();
-if ($queryReport) {
-    $report = true;
-}
+// retourne une valeur true s'il y a des commentaires signalés
+$reported = $commentManager->getReported(); 
 
-// on récupère les commentaires et leurs options, du plus récent au plus daté, en faisant une jointure pour récupérer le titre de l'article associé
-$comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_FORMAT(date_comment, "Publié le %d/%m/%Y à %H:%i:%s") AS date_com_blog, report, articles.title
-    FROM comments
-    INNER JOIN articles ON comments.id_article = articles.id
-    ORDER BY report DESC, date_comment DESC');
+// récupère les commentaires et leurs options, du plus récent au plus daté, en faisant une jointure pour récupérer le titre de l'article associé
+$comments = $commentManager->getAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -74,7 +80,7 @@ $comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_F
             <h1 class="h1">Bienvenue sur votre tableau de bord ! </h1>
             <hr class="my-4" />
             <p class="lead">Vous retrouverez ici l'ensemble de vos articles et commentaires associés.</p>
-            <?php if ($report) { ?><p class="lead text-danger"><span class="fas fa-exclamation-circle"></span> Vous avez un ou plusieurs commentaires signalés. Pour les traiter, rendez-vous dans votre section "Commentaires"</p><?php } ?>
+            <?php if ($reported) { ?><p class="lead text-danger"><span class="fas fa-exclamation-circle"></span> Vous avez un ou plusieurs commentaires signalés. Pour les traiter, rendez-vous dans votre section "Commentaires"</p><?php } ?>
         </div>
 
 
@@ -94,28 +100,28 @@ $comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_F
                 <tbody>
                     <?php
                     // on affiche chaque entrée une à une dans une boucle, avec htmlspecialchars pour les données publiées
-                    while ($result = $articles->fetch()) {
+                    foreach ($articles as $article) {
                         ?>
                         <!-- on ferme PHP car ce qui suit est long (pour rappel, on est dans le tbody) -->
                         <tr>
-                            <th scope="row"><?= htmlspecialchars($result['title']); ?></th>
-                            <td><?= htmlspecialchars($result['date_blog']) ?></td>
+                            <th scope="row"><?= htmlspecialchars($article->getTitle()) ?></th>
+                            <td>Modifié le <?= date_format(date_create($article->getDate_creation()), 'd/m/Y à H:i:s') ?></td>
                             <td>
-                                <?php if ($result['on_line'] == 1) { ?>
+                                <?php if ($article->getOn_line() == 1) { ?>
                                     <p>Publié <span class="fas fa-check"></span></p>
                                 <?php } else { ?>
                                     <p>Brouillon</p>
                                 <?php } ?>
                             </td>
                             <td>
-                                <a href="view.php?id=<?= $result['id'] ?>" title="Voir l'article" class="btn btn-info"><span class="far fa-eye" role="button"></span></a>
+                                <a href="view.php?id=<?= $article->getId() ?>" title="Voir l'article" class="btn btn-info"><span class="far fa-eye" role="button"></span></a>
                             </td>
                             <td>
-                                <a href="update_article.php?id=<?= $result['id'] ?>" title="Modifier l'article" class="btn btn-warning" role="button"><span class="fas fa-pen"></span></a> <button type="button" title="Supprimer l'article" class="btn btn-danger" data-toggle="modal" data-target="#article<?= $result['id'] ?>"><span class="fas fa-trash-alt"></span></button>
+                                <a href="update_article.php?id=<?= $article->getId() ?>" title="Modifier l'article" class="btn btn-warning" role="button"><span class="fas fa-pen"></span></a> <button type="button" title="Supprimer l'article" class="btn btn-danger" data-toggle="modal" data-target="#article<?= $article->getId() ?>"><span class="fas fa-trash-alt"></span></button>
                             </td>
                         </tr>
                         <!-- Modal du bouton supprimer -->
-                        <div class="modal fade" id="article<?= $result['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal fade" id="article<?= $article->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -126,7 +132,7 @@ $comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_F
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                        <a href="admin.php?article=<?= $result['id'] ?>&action=delete" class="btn btn-danger">Supprimer</a>
+                                        <a href="admin.php?article=<?= $article->getId() ?>&action=delete" class="btn btn-danger">Supprimer</a>
                                     </div>
                                 </div>
                             </div>
@@ -155,19 +161,19 @@ $comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_F
                 <tbody>
                     <?php
                     // on affiche chaque entrée dans une boucle, avec du htmlspecialchars sur les données publiées
-                    while ($result = $comments->fetch()) {
+                    foreach ($comments as $comment) {
                         ?>
                         <!-- on ferme PHP pour la clarté du code -->
-                        <tr <?php if ($result['report'] > 0) { ?> class="bg-warning" <?php } ?>>
-                            <th scope="row"><?= htmlspecialchars($result['pseudo']) ?></th>
-                            <td><?= htmlspecialchars($result['date_com_blog']) ?></td>
-                            <td><?= substr(htmlspecialchars($result['comment']), 0, 50)  ?><span class="text-muted">[...]</span></td>
-                            <td><?= htmlspecialchars($result['title']) ?></td>
-                            <td><a href="view.php?id=<?= $result['id_article'] ?>#comment<?= $result['id'] ?>" title="Voir le commentaire" class="btn btn-info" role="button"><span class="far fa-eye"></span></a></td>
-                            <td><?php if ($result['report'] > 0) { ?><a href="admin.php?comment=<?= $result['id'] ?>&action=accept" title="Accepter le commentaire" class="btn btn-success" role="button"><span class="fas fa-check"></span></a> <?php } ?><button type="button" title="Supprimer le commentaire" class="btn btn-danger" data-toggle="modal" data-target="#comment<?= $result['id'] ?>"><span class="fas fa-trash-alt"></span></a></td>
+                        <tr <?php if ($comment->getReport() > 0) { ?> class="bg-warning" <?php } ?>>
+                            <th scope="row"><?= htmlspecialchars($comment->getPseudo()) ?></th>
+                            <td>Publié le <?= date_format(date_create($comment->getDate_comment()), 'd/m/Y à H:i:s') ?></td>
+                            <td><?= substr(htmlspecialchars($comment->getComment()), 0, 50)  ?><span class="text-muted">[...]</span></td>
+                            <td><?= htmlspecialchars($comment->getTitle()) ?></td>
+                            <td><a href="view.php?id=<?= $comment->getId_article() ?>#comment<?= $comment->getId() ?>" title="Voir le commentaire" class="btn btn-info" role="button"><span class="far fa-eye"></span></a></td>
+                            <td><?php if ($comment->getReport() > 0) { ?><a href="admin.php?comment=<?= $comment->getId() ?>&action=accept" title="Accepter le commentaire" class="btn btn-success" role="button"><span class="fas fa-check"></span></a> <?php } ?><button type="button" title="Supprimer le commentaire" class="btn btn-danger" data-toggle="modal" data-target="#comment<?= $comment->getId() ?>"><span class="fas fa-trash-alt"></span></a></td>
                         </tr>
                         <!-- Modal du bouton supprimer -->
-                        <div class="modal fade" id="comment<?= $result['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal fade" id="comment<?= $comment->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -178,7 +184,7 @@ $comments = $bdd->query('SELECT comments.id, id_article, pseudo, comment, DATE_F
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                        <a href="admin.php?comment=<?= $result['id'] ?>&action=delete" class="btn btn-danger">Supprimer</a>
+                                        <a href="admin.php?comment=<?= $comment->getId() ?>&action=delete" class="btn btn-danger">Supprimer</a>
                                     </div>
                                 </div>
                             </div>

@@ -44,8 +44,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At voluptate pariatur saepe quod! Placeat error nihil optio temporibus culpa nemo ut et? Eaque blanditiis magni soluta quas animi aperiam inventore.</div>
-                    <div class="col-lg-6">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odio, numquam illum sunt, fugit minus, nam accusantium ipsam itaque vel tenetur odit fugiat nostrum natus? Reprehenderit voluptatem aliquid veritatis numquam animi!</div>
+                    <div class="col-lg-6">[PHOTO] Lorem ipsum dolor sit amet, consectetur adipisicing elit. At voluptate pariatur saepe quod! Placeat error nihil optio temporibus culpa nemo ut et? Eaque blanditiis magni soluta quas animi aperiam inventore.</div>
+                    <div class="col-lg-6">À l'heure du tout connecté et de l'omniprésence des réseaux sociaux, nous (Jean Forteroche et les personnes concernées par le projet) avons décidé de transposer le nouveau récit de Jean Forteroche en ligne, sous la forme de chapitres périodiques et interactifs, afin d'établir une communication bilatérale qu'empêche le support papier. <br />
+                    Ce roman est un cadeau pour vous, la communauté de lecteurs qui s'est constituée au fil des histoires abracadabrantesques dont seul Jean Forteroche détient le secret. Un cadeau pour faire entendre votre voix, et pour vous récompenser de votre indéféctible loyauté.</div>
                 </div>
             </div>
         </section>
@@ -58,10 +59,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At voluptate
-                        pariatur saepe quod! Placeat error nihil optio temporibus culpa nemo ut et? Eaque
-                        blanditiis magni soluta quas animi aperiam inventore.</div>
-                    <div class="col-lg-6">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odio,
+                    <div class="col-lg-6">Chaque publication périodique qui composera le roman "Billet simple pour l'Alaska" sera l'occasion de faire entendre votre voix. Exprimez votre ressenti sur la progression de l'histoire, réagissez sur les décisions des personnages, proposez vos interprétations, échangez vos idées.<br />
+                    Au gré de la pertinence de votre commentaire, Jean Forteroche vous répondra !</div>
+                    <div class="col-lg-6">[PHOTO] Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odio,
                         numquam illum sunt, fugit minus, nam accusantium ipsam itaque vel tenetur odit fugiat
                         nostrum natus? Reprehenderit voluptatem aliquid veritatis numquam animi!</div>
                 </div>

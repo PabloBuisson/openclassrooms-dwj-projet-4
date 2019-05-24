@@ -1,7 +1,17 @@
 <?php
+
+// enregistre l'autoload
+function loadClass($classname)
+{
+    require 'model/' . $classname . '.php';
+}
+
+spl_autoload_register('loadClass');
+
 $error = null;
 
-if (!empty($_POST)) { // on rentre dans la condition si POST n'est pas vide
+if (!empty($_POST)) // on rentre dans la condition si POST n'est pas vide
+{ 
     $validation = true;
 
     if (empty($_POST['title']) && empty($_POST['text'])) {
@@ -13,16 +23,8 @@ if (!empty($_POST)) { // on rentre dans la condition si POST n'est pas vide
         $validation = false;
     }
 
-    if ($validation) { // si pas d'erreurs
-        // alors on peut se connecter à la base de données
-        try {
-            $bdd = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises
-        } catch (Exception $e) {
-            die('Erreur : ' . $e->getMessage());
-        }
-
-        // envoi des valeurs sur la base de données, en deux temps (sécurisé grâce à une requête séparée)
-
+    if ($validation) // si pas d'erreurs
+    { 
         // définit la variable qui indique si le billet est publié en ligne ou enregistré en brouillon
         if (isset($_POST['submit'])) {
             $online = 1;
@@ -30,15 +32,16 @@ if (!empty($_POST)) { // on rentre dans la condition si POST n'est pas vide
             $online = 0;
         }
 
-        $req = $bdd->prepare('INSERT INTO articles(title, content, date_creation, on_line) VALUES(?, ?, NOW(), ?)');
-        $req->execute(array(
-            $_POST['title'], 
-            $_POST['text'], 
-            $online
-        ));
+        // crée l'objet Article et ses valeurs
+        $article = new Article([
+            'title' => $_POST['title'],
+            'content' => $_POST['text'],
+            'on_line' => $online
+        ]);
 
-        // fin de la requête
-        $req->closeCursor();
+        // instanciation de la classe ArticleManager, qui lance la connexion à la BDD
+        $articleManager = new ArticleManager();
+        $articleManager->add($article); // ajout de l'article à la BDD
 
         // redirection vers la page d'administration
         header('Location: admin.php');
@@ -53,7 +56,6 @@ switch ($error) {
         $error = '<p class="text-danger">Titre trop long !</p>';
         break;
 }
-
 ?>
 
 
