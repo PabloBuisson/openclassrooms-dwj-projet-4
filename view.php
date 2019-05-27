@@ -1,64 +1,3 @@
-<?php
-
-// enregistre l'autoload
-function loadClass($classname)
-{
-    require 'model/' . $classname . '.php';
-}
-
-spl_autoload_register('loadClass');
-
-$articleManager = new ArticleManager(); // création de l'Article Manager pour centraliser toutes les requêtes
-$commentManager = new CommentManager(); // création du Comment Manager pour centraliser toutes les requêtes
-
-// s'il y a un article signalé
-if (!empty($_GET['comment']) && !empty($_GET['article']) && $_GET['action'] == 'report') {
-
-    $comment = new Comment([
-        'id' => $_GET['comment']
-    ]);
-    $commentManager->report($comment);
-
-    header('Location: view.php?id=' . $_GET['article'] . '#comments');
-    exit();
-}
-
-// si l'utilisateur a posté un commentaire
-if (!empty($_POST)) {
-    $validation = true;
-
-    if (empty($_POST['form-pseudo']) || empty($_POST['form-comment'])) {
-        $validation = false;
-    }
-
-    if ($_POST['form-pseudo'] > 255) {
-        $validation = false;
-    }
-
-    // si les champs sont remplis et conformes
-    if ($validation) {
-
-        $comment = new Comment([
-            'id_article' => $_GET['id'],
-            'pseudo' => $_POST['form-pseudo'],
-            'comment' => $_POST['form-comment']
-        ]);
-
-        $commentManager->add($comment);
-    }
-
-    header('Location: view.php?id=' . $_GET['id'] . '#comments');
-}
-
-$article = $articleManager->get($_GET['id']);
-/* var_dump($article); objet
-die(); */
-
-// récupère les commentaires postés sur l'article
-$comments = $commentManager->getPosted($_GET['id']);
-// var_dump($comments);
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -114,7 +53,7 @@ $comments = $commentManager->getPosted($_GET['id']);
                                     <div class="col-md-9">
                                         <p id="comment-content" class="mt-3 ml-5 mr-5"> <?= htmlspecialchars($comment->getComment()) ?> </p>
                                     </div>
-                                    <div class="col-2 col-sm-3 col-md-2 ml-5 ml-sm-auto offset-sm-8 offset-md-10 mt-3"><a href="view.php?comment=<?= $comment->getId() ?>&article=<?= $comment->getId_article() ?>&action=report" class="btn btn-danger btn-sm mr-5<?php if ($comment->getReport() > 0) { ?> disabled" aria-disabled="true" <?php } ?> role="button"><?php if ($comment->getReport() > 0) { ?> Signalé <?php } else { ?> Signaler <?php } ?></a></div>
+                                    <div class="col-2 col-sm-3 col-md-2 ml-5 ml-sm-auto offset-sm-8 offset-md-10 mt-3"><a href="index.php?action=view&comment=<?= $comment->getId() ?>&article=<?= $comment->getId_article() ?>&event=report" class="btn btn-danger btn-sm mr-5<?php if ($comment->getReport() > 0) { ?> disabled" aria-disabled="true" <?php } ?> role="button"><?php if ($comment->getReport() > 0) { ?> Signalé <?php } else { ?> Signaler <?php } ?></a></div>
                                 </div>
                             </div>
                         <?php } ?>
@@ -128,7 +67,7 @@ $comments = $commentManager->getPosted($_GET['id']);
                 <div class="row">
                     <div class="col-lg-10 offset-lg-1 mb-5 mt-5">
                         <h5 class="text-center mt-4 mb-5 text-white">Laisser un commentaire</h5>
-                        <form action="view.php?id=<?= $article->getId() ?>" method="post">
+                        <form action="index.php?action=view&id=<?= $article->getId() ?>" method="post">
                             <div class="form-group">
                                 <label for="form-pseudo" class="text-white">Votre pseudo <span>(en moins de 255 caractères)</span></label>
                                 <input type="text" class="form-control" name="form-pseudo" id="form-pseudo" placeholder="Pseudo" required>

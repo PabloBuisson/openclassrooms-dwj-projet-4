@@ -1,66 +1,6 @@
-<?php
-
-// enregistre l'autoload
-function loadClass($classname)
-{
-    require 'model/' . $classname . '.php';
-}
-
-spl_autoload_register('loadClass');
-
-$error = null;
-
-if (!empty($_POST)) // on rentre dans la condition si POST n'est pas vide
-{ 
-    $validation = true;
-
-    if (empty($_POST['title']) && empty($_POST['text'])) {
-        $error = 1; // message vide
-        $validation = false;
-    }
-    if (strlen($_POST['title']) > 255) {
-        $error = 2; // titre trop long
-        $validation = false;
-    }
-
-    if ($validation) // si pas d'erreurs
-    { 
-        // définit la variable qui indique si le billet est publié en ligne ou enregistré en brouillon
-        if (isset($_POST['submit'])) {
-            $online = 1;
-        } else if (isset($_POST['draft'])) {
-            $online = 0;
-        }
-
-        // crée l'objet Article et ses valeurs
-        $article = new Article([
-            'title' => $_POST['title'],
-            'content' => $_POST['text'],
-            'on_line' => $online
-        ]);
-
-        // instanciation de la classe ArticleManager, qui lance la connexion à la BDD
-        $articleManager = new ArticleManager();
-        $articleManager->add($article); // ajout de l'article à la BDD
-
-        // redirection vers la page d'administration
-        header('Location: admin.php');
-    }
-}
-
-switch ($error) {
-    case 1:
-        $error = '<p class="text-danger">Message vide !</p>';
-        break;
-    case 2:
-        $error = '<p class="text-danger">Titre trop long !</p>';
-        break;
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,7 +16,7 @@ switch ($error) {
             echo $error;
         }
         ?>
-        <form action="new_article.php" method="post">
+        <form action="index.php?action=newArticle" method="post">
             <div class="form-group">
                 <label for="title">Titre <small id="pseudodHelpBlock" class="text-muted">(Privilégiez un titre court et pertinent)</small></label><br />
                 <input type="text" class="form-control" name="title" id="title" placeholder="Saisissez votre titre ici" aria-describedby="pseudodHelpBlock" required /><br />

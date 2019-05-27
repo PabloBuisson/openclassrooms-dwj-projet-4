@@ -1,44 +1,3 @@
-<?php
-
-if (!empty($_POST)) {
-    $validation = true;
-
-    if (empty($_POST['form-firstname']) || empty($_POST['form-name']) || empty($_POST['form-mail']) || empty($_POST['form-subject']) || empty($_POST['form-message'])) {
-        $validation = false;
-    }
-    if ($_POST['form-firstname'] > 255 || $_POST['form-name'] > 255 || $_POST['form-subject'] > 255) {
-        $validation = false;
-    }
-    if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $_POST['form-mail'])) {
-        $validation = false;
-    }
-    if (empty($_POST['request-check'])) {
-        $validation = false;
-    }
-
-    // si toutes les conditions sont remplies, on peut envoyer le mail
-    if ($validation) {
-        $to = "pablo.buisson@gmail.com";
-        $subject = $_POST['form-subject'];
-        // Si les lignes ont plus de 70 cactères, on utilise wordwrap()
-        $message = wordwrap($_POST['form-message'], 70, "\r\n");
-        $headers = "From:" . htmlspecialchars($_POST['form-firstname']) . " " . htmlspecialchars($_POST['form-name']) . "<" . htmlspecialchars($_POST['form-mail']) . ">\r\n";
-        $headers .= "Reply-to:" . htmlspecialchars($_POST['form-mail']) . "\r\n";
-        $headers .= "Content-type: text/html\r\n";
-        $success = mail($to, $subject, $message, $headers);
-        if (!$success) {
-            $errorMessage = error_get_last()['message'];
-            print_r(error_get_last());
-            echo '<p class="text-danger">Problème de envoi</p>';
-        }
-    }
-    else {
-        echo '<p class="text-danger">Problème de champ</p>';
-    }
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -77,7 +36,7 @@ if (!empty($_POST)) {
                 <div class="row">
                     <div class="col-lg-10 offset-lg-1 mb-5 mt-5">
                         <h5 class="text-center mt-4 mb-5 text-white">Formulaire de contact</h5>
-                        <form action="contact.php" method="post">
+                        <form action="index.php?action=contact" method="post">
                             <div class="form-row">
                                 <div class="form-group col-6">
                                     <label for="form-firstname" class="text-white">Votre prénom</label>

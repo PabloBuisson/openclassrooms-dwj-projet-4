@@ -1,18 +1,3 @@
-<?php
-
-// enregistre l'autoload
-function loadClass($classname)
-{
-    require 'model/' . $classname . '.php';
-}
-
-spl_autoload_register('loadClass');
-
-$articleManager = new ArticleManager();
-// récupère les articles publiés, par ordre d'apparition
-$articles = $articleManager->getPosted();
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 

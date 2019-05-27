@@ -4,10 +4,10 @@
             <div class="col-lg-4">
                 <h5 class="text-uppercase">Plan du site</h5>
                 <div>
-                    <a href="home.php" class="text-white">Accueil</a><br />
-                    <a href="biographie.php" class="text-white">Biographie</a><br/>
-                    <a href="billet-simple.php" class="text-white">Billet Simple</a><br />
-                    <a href="contact.php"class="text-white" >Contact</a>
+                    <a href="index.php?action=home" class="text-white">Accueil</a><br />
+                    <a href="index.php?action=biographie" class="text-white">Biographie</a><br/>
+                    <a href="index.php?action=billetSimple" class="text-white">Billet Simple</a><br />
+                    <a href="index.php?action=contact"class="text-white" >Contact</a>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -21,7 +21,7 @@
             <div class="col-lg-4">
                 <h5 class="text-uppercase">Admin</h5>
                 <div>
-                    <a href="login.php" class="text-white">Se connecter</a>
+                    <a href="index.php?action=login" class="text-white">Se connecter</a>
                 </div>
             </div>
         </div>

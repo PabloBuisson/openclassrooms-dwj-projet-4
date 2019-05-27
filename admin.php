@@ -1,72 +1,3 @@
-<?php
-
-// enregistre l'autoload
-function loadClass($classname)
-{
-    require 'model/' . $classname . '.php';
-}
-
-spl_autoload_register('loadClass');
-
-session_start();
-
-if (empty($_SESSION['id']))
-{
-    header('Location: login.php');
-    exit(); // interrompt le reste du code
-}
-
-if (!empty($_GET['session']) && $_GET['session'] == 'end')
-{
-    // Suppression des variables de session et de la session
-    $_SESSION = array();
-    session_destroy();
-    header('Location: login.php');
-    exit();
-}
-
-$articleManager = new ArticleManager(); // création de l'Article Manager pour centraliser toutes les requêtes
-$commentManager = new CommentManager(); // création du Comment Manager pour centraliser toutes les requêtes
-
-// supression d'un article
-if (!empty($_GET['article']) && $_GET['action'] == 'delete') {
-    $article = new Article([
-        'id' => $_GET['article']
-    ]);
-
-    $articleManager->delete($article);
-}
-
-// approbation ou supression d'un commentaire
-if (!empty($_GET['comment']) && !empty($_GET['action'])) {
-    if ($_GET['action'] == 'accept') {
-        $comment = new Comment([
-            'id' => $_GET['comment']
-        ]);
-
-        $commentManager->accept($comment);
-    }
-
-    if ($_GET['action'] == 'delete') {
-        $comment = new Comment([
-            'id' => $_GET['comment']
-        ]);
-
-        $commentManager->delete($comment);
-    }
-}
-
-// récupère les articles et leurs options, du plus récent au plus daté
-$articles = $articleManager->getAll();
-
-// retourne une valeur true s'il y a des commentaires signalés
-$reported = $commentManager->getReported();
-
-// récupère les commentaires et leurs options, du plus récent au plus daté, en faisant une jointure pour récupérer le titre de l'article associé
-$comments = $commentManager->getAll();
-
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -85,7 +16,7 @@ $comments = $commentManager->getAll();
         <div class="jumbotron">
             <div class="d-flex flex-column flex-xl-row flex-wrap justify-content-between align-items-xl-center">
                 <div class="d-flex flex-row justify-content-center justify-content-lg-start order-lg-1 order-xl-2 mb-4 mb-xl-0 flex-end">
-                    <button type="button" title="Déconnexion" class="btn btn-primary d-inline-block btn btn-primary mr-2" data-toggle="modal" data-target="#end-session"><span class="fas fa-power-off"></button></a><a href="home.php" class="d-inline-block btn btn-outline-primary" role="button">Revenir sur le site</a>
+                    <button type="button" title="Déconnexion" class="btn btn-primary d-inline-block btn btn-primary mr-2" data-toggle="modal" data-target="#end-session"><span class="fas fa-power-off"></button></a><a href="index.php?action=home" class="d-inline-block btn btn-outline-primary" role="button">Revenir sur le site</a>
                     <!-- Modal du bouton déconnexion -->
                     <div class="modal fade" id="end-session" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -98,7 +29,7 @@ $comments = $commentManager->getAll();
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                    <a href="admin.php?session=end" class="btn btn-danger">Se déconnecter</a>
+                                    <a href="index.php?action=admin&session=end" class="btn btn-danger">Se déconnecter</a>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +45,7 @@ $comments = $commentManager->getAll();
 
 
 
-        <h2 class="mb-4 mr-4 d-inline-block">Vos articles</h2><a href="new_article.php" class="d-inline-block btn btn-primary mb-2" role="button">Ajouter</a>
+        <h2 class="mb-4 mr-4 d-inline-block">Vos articles</h2><a href="index.php?action=newArticle" class="d-inline-block btn btn-primary mb-2" role="button">Ajouter</a>
         <div class="table-responsive">
             <table id="table-blogspots" class="table table-striped table-admin">
                 <thead class="thead-dark">
@@ -143,10 +74,10 @@ $comments = $commentManager->getAll();
                                 <?php } ?>
                             </td>
                             <td>
-                                <a href="view.php?id=<?= $article->getId() ?>" title="Voir l'article" class="btn btn-info"><span class="far fa-eye" role="button"></span></a>
+                                <a href="index.php?action=view&id=<?= $article->getId() ?>" title="Voir l'article" class="btn btn-info"><span class="far fa-eye" role="button"></span></a>
                             </td>
                             <td>
-                                <a href="update_article.php?id=<?= $article->getId() ?>" title="Modifier l'article" class="btn btn-warning" role="button"><span class="fas fa-pen"></span></a> <button type="button" title="Supprimer l'article" class="btn btn-danger" data-toggle="modal" data-target="#article<?= $article->getId() ?>"><span class="fas fa-trash-alt"></span></button>
+                                <a href="index.php?action=updateArticle&id=<?= $article->getId() ?>" title="Modifier l'article" class="btn btn-warning" role="button"><span class="fas fa-pen"></span></a> <button type="button" title="Supprimer l'article" class="btn btn-danger" data-toggle="modal" data-target="#article<?= $article->getId() ?>"><span class="fas fa-trash-alt"></span></button>
                             </td>
                         </tr>
                         <!-- Modal du bouton supprimer -->
@@ -161,7 +92,7 @@ $comments = $commentManager->getAll();
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                        <a href="admin.php?article=<?= $article->getId() ?>&action=delete" class="btn btn-danger">Supprimer</a>
+                                        <a href="index.php?action=admin&article=<?= $article->getId() ?>&event=delete" class="btn btn-danger">Supprimer</a>
                                     </div>
                                 </div>
                             </div>
@@ -198,8 +129,8 @@ $comments = $commentManager->getAll();
                             <td>Publié le <?= date_format(date_create($comment->getDate_comment()), 'd/m/Y à H:i:s') ?></td>
                             <td><?= substr(htmlspecialchars($comment->getComment()), 0, 50)  ?><span class="text-muted">[...]</span></td>
                             <td><?= htmlspecialchars($comment->getTitle()) ?></td>
-                            <td><a href="view.php?id=<?= $comment->getId_article() ?>#comment<?= $comment->getId() ?>" title="Voir le commentaire" class="btn btn-info" role="button"><span class="far fa-eye"></span></a></td>
-                            <td><?php if ($comment->getReport() > 0) { ?><a href="admin.php?comment=<?= $comment->getId() ?>&action=accept" title="Accepter le commentaire" class="btn btn-success" role="button"><span class="fas fa-check"></span></a> <?php } ?><button type="button" title="Supprimer le commentaire" class="btn btn-danger" data-toggle="modal" data-target="#comment<?= $comment->getId() ?>"><span class="fas fa-trash-alt"></span></a></td>
+                            <td><a href="index.php?action=view&id=<?= $comment->getId_article() ?>#comment<?= $comment->getId() ?>" title="Voir le commentaire" class="btn btn-info" role="button"><span class="far fa-eye"></span></a></td>
+                            <td><?php if ($comment->getReport() > 0) { ?><a href="index.php?action=admin&comment=<?= $comment->getId() ?>&event=accept" title="Accepter le commentaire" class="btn btn-success" role="button"><span class="fas fa-check"></span></a> <?php } ?><button type="button" title="Supprimer le commentaire" class="btn btn-danger" data-toggle="modal" data-target="#comment<?= $comment->getId() ?>"><span class="fas fa-trash-alt"></span></a></td>
                         </tr>
                         <!-- Modal du bouton supprimer -->
                         <div class="modal fade" id="comment<?= $comment->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -213,7 +144,7 @@ $comments = $commentManager->getAll();
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                        <a href="admin.php?comment=<?= $comment->getId() ?>&action=delete" class="btn btn-danger">Supprimer</a>
+                                        <a href="index.php?action=admin&comment=<?= $comment->getId() ?>&event=delete" class="btn btn-danger">Supprimer</a>
                                     </div>
                                 </div>
                             </div>
