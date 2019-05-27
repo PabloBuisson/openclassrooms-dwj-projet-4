@@ -8,7 +8,8 @@ function loadClass($classname)
 
 spl_autoload_register('loadClass');
 
-$commentManager = new CommentManager;
+$articleManager = new ArticleManager(); // création de l'Article Manager pour centraliser toutes les requêtes
+$commentManager = new CommentManager(); // création du Comment Manager pour centraliser toutes les requêtes
 
 // s'il y a un article signalé
 if (!empty($_GET['comment']) && !empty($_GET['article']) && $_GET['action'] == 'report') {
@@ -49,7 +50,6 @@ if (!empty($_POST)) {
     header('Location: view.php?id=' . $_GET['id'] . '#comments');
 }
 
-$articleManager = new ArticleManager(); // instanciation de la classe ArticleManager et connexion à la BDD
 $article = $articleManager->get($_GET['id']);
 /* var_dump($article); objet
 die(); */

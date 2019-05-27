@@ -10,17 +10,26 @@ spl_autoload_register('loadClass');
 
 session_start();
 
-if (empty($_SESSION['id'])) {
+if (empty($_SESSION['id']))
+{
     header('Location: login.php');
     exit(); // interrompt le reste du code
+}
+
+if (!empty($_GET['session']) && $_GET['session'] == 'end')
+{
+    // Suppression des variables de session et de la session
+    $_SESSION = array();
+    session_destroy();
+    header('Location: login.php');
+    exit();
 }
 
 $articleManager = new ArticleManager(); // création de l'Article Manager pour centraliser toutes les requêtes
 $commentManager = new CommentManager(); // création du Comment Manager pour centraliser toutes les requêtes
 
 // supression d'un article
-if (!empty($_GET['article']) && $_GET['action'] == 'delete')
-{
+if (!empty($_GET['article']) && $_GET['action'] == 'delete') {
     $article = new Article([
         'id' => $_GET['article']
     ]);
@@ -29,10 +38,8 @@ if (!empty($_GET['article']) && $_GET['action'] == 'delete')
 }
 
 // approbation ou supression d'un commentaire
-if (!empty($_GET['comment']) && !empty($_GET['action']))
-{
-    if ($_GET['action'] == 'accept')
-    {
+if (!empty($_GET['comment']) && !empty($_GET['action'])) {
+    if ($_GET['action'] == 'accept') {
         $comment = new Comment([
             'id' => $_GET['comment']
         ]);
@@ -40,12 +47,11 @@ if (!empty($_GET['comment']) && !empty($_GET['action']))
         $commentManager->accept($comment);
     }
 
-    if ($_GET['action'] == 'delete')
-    {
+    if ($_GET['action'] == 'delete') {
         $comment = new Comment([
             'id' => $_GET['comment']
         ]);
-        
+
         $commentManager->delete($comment);
     }
 }
@@ -54,7 +60,7 @@ if (!empty($_GET['comment']) && !empty($_GET['action']))
 $articles = $articleManager->getAll();
 
 // retourne une valeur true s'il y a des commentaires signalés
-$reported = $commentManager->getReported(); 
+$reported = $commentManager->getReported();
 
 // récupère les commentaires et leurs options, du plus récent au plus daté, en faisant une jointure pour récupérer le titre de l'article associé
 $comments = $commentManager->getAll();
@@ -77,10 +83,33 @@ $comments = $commentManager->getAll();
 <body>
     <div class="container">
         <div class="jumbotron">
-            <h1 class="h1">Bienvenue sur votre tableau de bord ! </h1>
+            <div class="d-flex flex-column flex-xl-row flex-wrap justify-content-between align-items-xl-center">
+                <div class="d-flex flex-row justify-content-center justify-content-lg-start order-lg-1 order-xl-2 mb-4 mb-xl-0 flex-end">
+                    <button type="button" title="Déconnexion" class="btn btn-primary d-inline-block btn btn-primary mr-2" data-toggle="modal" data-target="#end-session"><span class="fas fa-power-off"></button></a><a href="home.php" class="d-inline-block btn btn-outline-primary" role="button">Revenir sur le site</a>
+                    <!-- Modal du bouton déconnexion -->
+                    <div class="modal fade" id="end-session" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Souhaitez-vous vous déconnecter ?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                    <a href="admin.php?session=end" class="btn btn-danger">Se déconnecter</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="h1 order-lg-2 order-xl-1 text-center text-lg-left">Bienvenue sur votre tableau de bord ! </h1>
+            </div>
+
             <hr class="my-4" />
-            <p class="lead">Vous retrouverez ici l'ensemble de vos articles et commentaires associés.</p>
-            <?php if ($reported) { ?><p class="lead text-danger"><span class="fas fa-exclamation-circle"></span> Vous avez un ou plusieurs commentaires signalés. Pour les traiter, rendez-vous dans votre section "Commentaires"</p><?php } ?>
+            <p class="lead text-justify">Vous retrouverez ici l'ensemble de vos articles et commentaires associés.</p>
+            <?php if ($reported) { ?><p class="lead text-danger text-justify"><span class="fas fa-exclamation-circle"></span> Vous avez un ou plusieurs commentaires signalés. Pour les traiter, rendez-vous dans votre section "Commentaires"</p><?php } ?>
         </div>
 
 

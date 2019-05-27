@@ -1,3 +1,16 @@
+<?php 
+session_start();
+
+if (empty($_SESSION['id']))
+{
+    $connected = false;
+}
+else
+{
+    $connected = true;
+}
+?>
+
 <nav id="navbar-example2" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <!-- le navbar-expand-md permet de décider quand le menu collapse -->
     <div class="container">
@@ -16,6 +29,13 @@
             <li class="nav-item">
                 <a class="nav-link text-white" href="contact.php">Contact</a>
             </li>
+            <?php if ($connected) { ?>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="admin.php"><span class="fas fa-user-circle"></span> Admin</a>
+            </li>
+            <?php
+            }
+            ?>
         </ul>
     </div>
 </nav>

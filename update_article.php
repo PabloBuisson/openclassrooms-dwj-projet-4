@@ -8,6 +8,7 @@ function loadClass($classname)
 
 spl_autoload_register('loadClass');
 
+$articleManager = new ArticleManager(); // création de l'Article Manager pour centraliser toutes les requêtes
 $error = null;
 
 if (!empty($_POST)) { // si l'utilisateur a posté
@@ -39,8 +40,6 @@ if (!empty($_POST)) { // si l'utilisateur a posté
             'on_line' => $online
         ]);
 
-        // instanciation de la classe ArticleManager, qui lance la connexion à la BDD
-        $articleManager = new ArticleManager();
         $articleManager->update($articleUpdate); // lancement de la requête update
 
         // redirection vers la page d'administration
@@ -48,7 +47,6 @@ if (!empty($_POST)) { // si l'utilisateur a posté
     }
 }
 
-$articleManager = new ArticleManager(); 
 $article = $articleManager->get($_GET['id']); // on récupére l'article sous forme d'objet
 
 // message indicatif à côté du titre
