@@ -58,7 +58,7 @@ class BackendController
         // récupère les commentaires et leurs options, du plus récent au plus daté, en faisant une jointure pour récupérer le titre de l'article associé
         $comments = $commentManager->getAll();
 
-        require('admin.php');
+        require('view/backend/admin.php');
     }
 
     public function newArticle()
@@ -113,7 +113,7 @@ class BackendController
                 break;
         }
         
-        require('newArticle.php');
+        require('view/backend/newArticle.php');
     }
 
     public function updateArticle()
@@ -175,6 +175,6 @@ class BackendController
                 break;
         }
 
-        require('updateArticle.php');
+        require('view/backend/updateArticle.php');
     }
 }

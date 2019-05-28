@@ -5,12 +5,12 @@ class FrontendController
 
     public function home() // chaque page devient une méthode
     {
-        require('home.php');
+        require('view/frontend/home.php');
     }
 
     public function biographie()
     {
-        require('biographie.php');
+        require('view/frontend/biographie.php');
     }
 
     public function billetSimple()
@@ -20,7 +20,7 @@ class FrontendController
         // récupère les articles publiés, par ordre d'apparition
         $articles = $articleManager->getPosted();
 
-        require('billetSimple.php');
+        require('view/frontend/billetSimple.php');
     }
 
     public function contact()
@@ -63,7 +63,7 @@ class FrontendController
             }
         }
 
-        require('contact.php');
+        require('view/frontend/contact.php');
     }
 
     public function inscription()
@@ -136,7 +136,7 @@ class FrontendController
                 break;
         }
 
-        require('inscription.php');
+        require('view/frontend/inscription.php');
     }
 
     public function login()
@@ -180,7 +180,7 @@ class FrontendController
             }
         }
 
-        require('login.php');
+        require('view/frontend/login.php');
     }
 
     public function view()
@@ -232,6 +232,6 @@ class FrontendController
         // récupère les commentaires postés sur l'article
         $comments = $commentManager->getPosted($_GET['id']);
 
-        require('view.php');
+        require('view/frontend/view.php');
     }
 }

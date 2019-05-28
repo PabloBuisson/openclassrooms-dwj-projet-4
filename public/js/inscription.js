@@ -21,7 +21,7 @@ $(document).ready(function () {
                 required: true,
                 maxlength: 100,
                 remote: { // vérifie de façon asynchrone si le pseudo est déjà pris
-                    url: "checkPseudo.php",
+                    url: "view/frontend/checkPseudo.php",
                     type: "post"
                 }
             },

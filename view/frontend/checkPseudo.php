@@ -1,12 +1,7 @@
 <?php
 
-// enregistre l'autoload
-function loadClass($classname)
-{
-    require 'model/' . $classname . '.php';
-}
-
-spl_autoload_register('loadClass');
+require('../../model/User.php');
+require('../../model/UserManager.php');
 
 if ((!empty($_POST['pseudo'])) && strlen($_POST['pseudo']) <= 100)
 {

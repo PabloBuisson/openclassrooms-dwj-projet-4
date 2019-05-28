@@ -46,8 +46,7 @@ ob_start();
 </div>
 
 <?php
-$content = ob_get_clean(); // fin du contenu de la variable $content 
-$script = '<script src="public/js/inscription.js"></script>';
+$content = ob_get_clean(); // fin du contenu de la variable $content
 // appel du template
-require('view/frontend/templateFrontend.php');
+require('templateFrontend.php');
 ?>

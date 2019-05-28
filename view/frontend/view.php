@@ -78,5 +78,5 @@ ob_start();
 <?php
 $content = ob_get_clean(); // fin du contenu de la variable $content 
 // appel du template
-require('view/frontend/templateFrontend.php');
+require('templateFrontend.php');
 ?>
