@@ -1,0 +1,247 @@
+body {
+    font-family: 'Exo', sans-serif !important;
+}
+
+#bloc-page {
+    background: #294664;
+    background-image: url(../img/image1.jpg);
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.3) 100%),
+        url(../img/image1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+
+/* ---------- HEADER ---------- */
+
+h1::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    bottom: -10px;
+    background-color: white;
+}
+
+#inscription-form h1::after {
+    display: none;
+}
+
+/* Homepage */
+
+#home-header {
+    padding-top: 100px;
+    box-sizing: border-box;
+    height: 100vh;
+}
+
+.home-alaska {
+    margin-top: 120px;
+}
+
+.title-alaska {
+    margin-bottom: 20px;
+}
+
+/* Biographie */
+
+#biographie-header, #contact-header {
+    padding: 150px 0 0 0;
+    box-sizing: border-box;
+    height: auto;
+    position: relative;
+    z-index: 5;
+}
+
+#biographie-header h2, #billet-header h2, #view-header h2 {
+    margin-top: 50px !important;
+}
+
+/* Billet Simple */
+
+#billet-header, #view-header {
+    padding: 150px 0 50px 0;
+    box-sizing: border-box;
+    height: auto;
+}
+
+
+/* ---------- SECTIONS ---------- */
+
+/* Homepage */
+
+#home-project-alaska {
+    background-color: rgb(52, 52, 122);
+    padding: 80px 0 80px 0;
+    color: white;
+    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+}
+
+#home-project-alaska h3 {
+    margin-bottom: 30px;
+}
+
+#home-comment-alaska {
+    margin-top: -30px;
+    background-color: rgb(77, 16, 105);
+    padding: 80px 0 80px 0;
+    color: white;
+    -webkit-clip-path: polygon(0 6%, 100% 0, 100% 100%, 0% 100%);
+    clip-path: polygon(0 6%, 100% 0, 100% 100%, 0% 100%);
+}
+
+#home-comment-alaska h3 {
+    margin-bottom: 30px;
+}
+
+/* Biographie */
+
+#biographie-article {
+    position: relative;
+    margin-bottom: 100px;
+}
+
+#biographie-article .container-fluid.bg-white {
+    margin-top: 150px;
+    clip-path: polygon(0 0, 100% 2%, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 2%, 100% 100%, 0% 100%);
+}
+
+#biographie-article .article-picture {
+    background-color: orange;
+    top: 80px;
+    position: absolute;
+    z-index: 2;
+}
+
+/* Billet simple */
+
+#billet-section {
+    margin-bottom: 100px;
+}
+
+/* Contact */
+
+#text-form {
+    margin-top: 50px !important;
+    font-size: 1.5rem !important;
+}
+
+#contact-form {
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+#contact-form h5 {
+    font-size: 2.5rem !important;
+}
+
+#contact-form {
+    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+}
+
+#contact-form .container {
+    background-color: #294664 !important;
+}
+
+#contact-form .form-control {
+    background-color: #e2ebf6;
+}
+
+#contact-form .btn-primary {
+    background-color: #da7300;
+    border-color: #da7300;
+}
+
+/* View */
+
+#view-article {
+    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+}
+
+#view-article .article-content {
+    padding: 50px 0 50px 0;
+}
+
+#comments, #comment-form {
+    margin-top: 50px;
+}
+
+#comments h5, #comment-form h5 {
+    font-size: 2.5rem !important;
+}
+
+#comment-form {
+    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    margin-bottom: 100px;
+}
+
+#comments .container, #comment-form .container {
+    background-color: #294664 !important;
+}
+
+#comments .comment {
+    background-color: #e2ebf6;
+    padding: 20px 0 20px 0;
+    margin-bottom: 10px;
+}
+
+#pseudo-comment {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#comments .reported {
+    opacity: 0.2;
+}
+
+#comments .reported:hover {
+    opacity: 1;
+}
+
+#comment-form .form-control {
+    background-color: #e2ebf6;
+}
+
+#comment-form .btn-primary {
+    background-color: #da7300;
+    border-color: #da7300;
+}
+
+/* Login */
+
+#login-form {
+    padding-top: 200px;
+    box-sizing: border-box;
+    height: 100vh;
+}
+
+#inscription-form {
+    padding-top: 50px;
+    margin-bottom: 100px;
+    z-index: 5001;
+}
+
+#inscription-wrapper {
+    position: absolute;
+    z-index: 5000;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+}
+
+/* ---------- FOOTER ---------- */
+
+footer {
+    background-color: #343a40;
+    color: white;
+    padding: 80px 0 80px 0;
+    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+}

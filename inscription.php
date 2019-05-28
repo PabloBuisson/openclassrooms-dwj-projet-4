@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html lang="fr">
+<?php
 
-<head>
-    <meta charset="UTF-8">
-    <title>Inscription | Le site officiel de Jean Forteroche</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+/* variables à remplir */
+$title = 'Inscription';
+$metaDescription = '';
 
-<body>
-    <div class="container">
+/* début de la variable $content */
+ob_start();
+?>
+
+<div id="inscription-wrapper"></div>
+
+<div id="inscription-form">
+
+   <div class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-4 bg-light shadow">
                 <h1 class="text-center pt-3">Lancez-vous !</h1>
@@ -40,14 +41,13 @@
                 </form>
             </div>
         </div>
+    </div> 
 
-    </div>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="js/inscription.js"></script>
-</body>
-
-</html>
+<?php
+$content = ob_get_clean(); // fin du contenu de la variable $content 
+$script = '<script src="public/js/inscription.js"></script>';
+// appel du template
+require('view/frontend/templateFrontend.php');
+?>

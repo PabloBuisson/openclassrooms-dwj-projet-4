@@ -1,49 +1,44 @@
-<!DOCTYPE html>
-<html lang="fr">
+<?php
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Se connecter | Le site officiel de Jean Forteroche</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+/* variables à remplir */
+$title = 'Se connecter';
+$metaDescription = '';
 
-<body>
+/* début de la variable $content */
+ob_start();
+?>
 
-    <div class="container">
+<div id="login-form" class="container">
 
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <?php if ($error) { ?>
-                    <p class="text-center text-danger mt-3">Mauvais identifiant ou mot de passe. Veuillez réessayer à nouveau.</p>
-                <?php } ?>
-                <form action="index.php?action=login" method="post">
-                    <div class="form-group mt-5">
-                        <label for="pseudo">Identifiant</label><br />
-                        <input type="text" value="" class="form-control" name="pseudo" id="pseudo" placeholder="Veuillez saisir votre identifiant" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Mot de passe</label>
-                        <input type="password" value="" class="form-control" name="password" id="password" placeholder="Veuillez saisir votre mot de passe" required>
-                    </div>
-                    <div class="form-check form-check-inline d-block d-md-inline-block mt-1">
-                        <input class="form-check-input" type="checkbox" name="okCookie" id="okCookie">
-                        <label class="form-check-label" for="okCookie">
-                            Se souvenir de moi
-                        </label>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-3 mt-md-2 float-none float-md-right">Se connecter</button>
-                </form>
-            </div>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <?php if ($error) { ?>
+                <p class="text-center text-danger mt-3">Mauvais identifiant ou mot de passe. Veuillez réessayer à nouveau.</p>
+            <?php } ?>
+            <form action="index.php?action=login" method="post">
+                <div class="form-group mt-5">
+                    <label for="pseudo" class="text-white">Identifiant</label><br />
+                    <input type="text" value="" class="form-control" name="pseudo" id="pseudo" placeholder="Veuillez saisir votre identifiant" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="text-white">Mot de passe</label>
+                    <input type="password" value="" class="form-control" name="password" id="password" placeholder="Veuillez saisir votre mot de passe" required>
+                </div>
+                <div class="form-check form-check-inline d-block d-md-inline-block mt-1">
+                    <input class="form-check-input" type="checkbox" name="okCookie" id="okCookie">
+                    <label class="form-check-label text-white" for="okCookie">
+                        Se souvenir de moi
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3 mt-md-2 float-none float-md-right">Se connecter</button>
+            </form>
         </div>
-
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</div>
 
-</body>
-
-</html>
+<?php
+$content = ob_get_clean(); // fin du contenu de la variable $content 
+// appel du template
+require('view/frontend/templateFrontend.php');
+?>
