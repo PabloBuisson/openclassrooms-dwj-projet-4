@@ -6,7 +6,7 @@ class BackendController
     public function admin()
     {
         if (empty($_SESSION['id'])) {
-            header('Location: login.php');
+            header('Location: index.php?action=login');
             exit(); // interrompt le reste du code
         }
 
@@ -63,6 +63,11 @@ class BackendController
 
     public function newArticle()
     {
+        if (empty($_SESSION['id'])) {
+            header('Location: index.php?action=login');
+            exit(); // interrompt le reste du code
+        }
+
         $error = null;
 
         if (!empty($_POST)) // on rentre dans la condition si POST n'est pas vide
@@ -118,6 +123,11 @@ class BackendController
 
     public function updateArticle()
     {
+        if (empty($_SESSION['id'])) {
+            header('Location: index.php?action=login');
+            exit(); // interrompt le reste du code
+        }
+
         $articleManager = new ArticleManager(); // création de l'Article Manager pour centraliser toutes les requêtes
         $error = null;
 

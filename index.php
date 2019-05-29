@@ -35,50 +35,55 @@ if (isset($_GET['action']))
         $frontend->home();
     }
 
-    if ($_GET['action'] == 'biographie')
+    elseif ($_GET['action'] == 'biographie')
     {
         $frontend->biographie();
     }
 
-    if ($_GET['action'] == 'billetSimple')
+    elseif ($_GET['action'] == 'billetSimple')
     {
         $frontend->billetSimple();
     }
 
-    if ($_GET['action'] == 'contact')
+    elseif ($_GET['action'] == 'contact')
     {
         $frontend->contact();
     }
 
-    if ($_GET['action'] == 'inscription')
+    elseif ($_GET['action'] == 'inscription')
     {
         $frontend->inscription();
     }
 
-    if ($_GET['action'] == 'login')
+    elseif ($_GET['action'] == 'login')
     {
         $frontend->login();
     }
 
-    if ($_GET['action'] == 'view')
+    elseif ($_GET['action'] == 'view')
     {
         $frontend->view();
     }
 
     // BACKEND
-    if ($_GET['action'] == 'admin')
+    elseif ($_GET['action'] == 'admin')
     {
         $backend->admin();
     }
 
-    if ($_GET['action'] == 'newArticle')
+    elseif ($_GET['action'] == 'newArticle')
     {
         $backend->newArticle();
     }
 
-    if ($_GET['action'] == 'updateArticle')
+    elseif ($_GET['action'] == 'updateArticle')
     {
         $backend->updateArticle();
+    }
+
+    // page error 404
+    else {
+        $frontend->error();
     }
 }
 else

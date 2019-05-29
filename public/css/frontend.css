@@ -47,7 +47,7 @@ h1::after {
 
 /* Biographie */
 
-#biographie-header, #contact-header {
+#biographie-header, #contact-header, #error-header {
     padding: 150px 0 0 0;
     box-sizing: border-box;
     height: auto;
@@ -67,6 +67,24 @@ h1::after {
     height: auto;
 }
 
+/* Erreur 404 */
+
+#error-header a {
+    color: rgb(255, 255, 255);
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+}
+
+#error-header a::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    bottom: 0;
+    background-color: white;
+}
 
 /* ---------- SECTIONS ---------- */
 
@@ -131,6 +149,8 @@ h1::after {
 }
 
 #contact-form {
+    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
     margin-top: 50px;
     margin-bottom: 100px;
 }
@@ -139,16 +159,11 @@ h1::after {
     font-size: 2.5rem !important;
 }
 
-#contact-form {
-    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
-}
-
 #contact-form .container {
     background-color: #294664 !important;
 }
 
-#contact-form .form-control {
+#contact-form .form-control, #login-form .form-control {
     background-color: #e2ebf6;
 }
 
@@ -209,7 +224,7 @@ h1::after {
     background-color: #e2ebf6;
 }
 
-#comment-form .btn-primary {
+#comment-form .btn-primary, #login-form .btn-primary {
     background-color: #da7300;
     border-color: #da7300;
 }
@@ -217,23 +232,42 @@ h1::after {
 /* Login */
 
 #login-form {
-    padding-top: 200px;
-    box-sizing: border-box;
+    padding-top: 180px;
+    padding-bottom: 100px;
     height: 100vh;
+}
+
+#login-form .login-content {
+    background-color: #294664 !important;
+    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+}
+
+/* Inscription */
+
+#inscription-background {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
 
 #inscription-form {
     padding-top: 50px;
-    margin-bottom: 100px;
-    z-index: 5001;
 }
 
 #inscription-wrapper {
     position: absolute;
     z-index: 5000;
-    background-color: rgba(0, 0, 0, 0.5);
+    background: rgb(0, 0, 0);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 1) 100%);
     width: 100%;
     height: 100%;
+}
+
+#inscription-header {
+    padding-top: 100px;
+    box-sizing: border-box;
+    height: 120vh;
 }
 
 /* ---------- FOOTER ---------- */

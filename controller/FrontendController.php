@@ -234,4 +234,9 @@ class FrontendController
 
         require('view/frontend/view.php');
     }
+
+    public function error()
+    {
+        require('view/frontend/error.php');
+    }
 }

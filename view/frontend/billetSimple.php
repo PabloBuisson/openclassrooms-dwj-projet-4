@@ -32,7 +32,7 @@ ob_start();
                         <h3><?= htmlspecialchars($article->getTitle()) ?></h3>
                         <p>Publié le <?= date_format(date_create($article->getDate_creation()), 'd/m/Y')  ?></p>
                         <p class="text-justify"><?= substr(htmlspecialchars($article->getContent()), 0, 250) ?>[...]</p>
-                        <a href="view.php?id=<?= $article->getId() ?>" title="Lire la suite de l'article" class="btn btn-primary mb-2" role="button">Lire la suite</a>
+                        <a href="index.php?action=view&id=<?= $article->getId() ?>" title="Lire la suite de l'article" class="btn btn-primary mb-2" role="button">Lire la suite</a>
                         <hr>
                     </article>
                 <?php

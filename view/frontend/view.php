@@ -34,6 +34,7 @@ ob_start();
         <div class="row">
             <div class="col-lg-10 offset-lg-1 mb-5 mt-5">
                 <h5 class="text-center mt-4 mb-5 text-white">Commentaires</h5>
+                <?php if (empty($comments)) { ?><p class="text-center text-white">Pas de commentaires à afficher. Laissez le vôtre !</p><?php } ?>
                 <?php foreach ($comments as $comment) { ?>
                     <div class="comment <?php if ($comment->getReport() > 0) { ?> reported<?php } ?>">
                         <div class="row">
