@@ -85,9 +85,11 @@ class CommentManager
     public function accept(Comment $comment)
     {
         $query = $this->db->prepare("UPDATE comments SET report = 0 WHERE id = ?");
-        $query->execute([
+        $result = $query->execute([
             $comment->getId()
         ]);
+
+        return (bool) $result;
     }
 
     public function report(Comment $comment)
@@ -101,8 +103,10 @@ class CommentManager
     public function delete(Comment $comment)
     {
         $query = $this->db->prepare("DELETE FROM comments WHERE id = ?");
-        $query->execute([
+        $result = $query->execute([
             $comment->getId()
         ]);
+
+        return (bool) $result;
     }
 }

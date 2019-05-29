@@ -13,12 +13,13 @@ ob_start();
         <div class="d-flex flex-column flex-xl-row flex-wrap justify-content-between align-items-xl-center">
             <div class="d-flex flex-row justify-content-center justify-content-lg-start order-lg-1 order-xl-2 mb-4 mb-xl-0 flex-end">
                 <button type="button" title="Déconnexion" class="btn btn-primary d-inline-block btn btn-primary mr-2" data-toggle="modal" data-target="#end-session"><span class="fas fa-power-off"></button></a><a href="index.php?action=home" class="d-inline-block btn btn-outline-primary" role="button">Revenir sur le site</a>
+                
                 <!-- Modal du bouton déconnexion -->
-                <div class="modal fade" id="end-session" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="end-session" tabindex="-1" role="dialog" aria-labelledby="se déconnecter de la session" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Souhaitez-vous vous déconnecter ?</h5>
+                                <h5 class="modal-title" id="modalEndSession">Souhaitez-vous vous déconnecter ?</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -26,6 +27,23 @@ ob_start();
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                                 <a href="index.php?action=admin&session=end" class="btn btn-danger">Se déconnecter</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de l'alerte après un événement -->
+                <div class="modal fade <?php if ($success) { ?>success<?php } ?>" id="after-event" tabindex="-1" role="dialog" aria-labelledby="votre action a été enregistrée" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalAlertEvent"><?= $success ?></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary close-button" data-dismiss="modal">Fermer</button>
                             </div>
                         </div>
                     </div>
@@ -77,11 +95,11 @@ ob_start();
                         </td>
                     </tr>
                     <!-- Modal du bouton supprimer -->
-                    <div class="modal fade" id="article<?= $article->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="article<?= $article->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="supprimer un article" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Êtes-vous certain(e) de supprimer cet article ?</h5>
+                                    <h5 class="modal-title" id="modalDeleteArticle">Êtes-vous certain(e) de supprimer cet article ?</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -129,11 +147,11 @@ ob_start();
                         <td><?php if ($comment->getReport() > 0) { ?><a href="index.php?action=admin&comment=<?= $comment->getId() ?>&event=accept" title="Accepter le commentaire" class="btn btn-success" role="button"><span class="fas fa-check"></span></a> <?php } ?><button type="button" title="Supprimer le commentaire" class="btn btn-danger" data-toggle="modal" data-target="#comment<?= $comment->getId() ?>"><span class="fas fa-trash-alt"></span></a></td>
                     </tr>
                     <!-- Modal du bouton supprimer -->
-                    <div class="modal fade" id="comment<?= $comment->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="comment<?= $comment->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="supprimer un commentaire" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Êtes-vous certain(e) de supprimer ce commentaire ?</h5>
+                                    <h5 class="modal-title" id="modalDeleteComment">Êtes-vous certain(e) de supprimer ce commentaire ?</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
                                         <span aria-hidden="true">&times;</span>
                                     </button>

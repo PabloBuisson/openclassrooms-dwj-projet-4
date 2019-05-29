@@ -18,11 +18,11 @@ class ArticleManager
 
     public function get($id)
     {
-        $req = $this->db->prepare('SELECT id, title, content, DATE_FORMAT(date_creation, "%d/%m/%Y") AS date_creation, on_line FROM articles WHERE id = ?');
-        $req->execute([
+        $query = $this->db->prepare('SELECT id, title, content, DATE_FORMAT(date_creation, "%d/%m/%Y") AS date_creation, on_line FROM articles WHERE id = ?');
+        $query->execute([
             $id
         ]);
-        $article = $req->fetch();
+        $article = $query->fetch();
 
         // var_dump($article);
         return new Article($article);
@@ -82,8 +82,10 @@ class ArticleManager
     public function delete(Article $article)
     {
         $query = $this->db->prepare("DELETE FROM articles WHERE id = ?");
-        $query->execute([
+        $result = $query->execute([
             $article->getId()
-        ]); 
+        ]);
+        
+        return (bool) $result;
     }
 }

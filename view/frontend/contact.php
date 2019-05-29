@@ -21,6 +21,23 @@ ob_start();
     </div>
 </header>
 
+<!-- Modal de l'alerte après l'envoi réussi du mail -->
+<div class="modal fade <?php if ($success) { ?>success<?php } ?>" id="after-email" tabindex="-1" role="dialog" aria-labelledby="votre mail a bien été envoyé" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAlertEmail"><?= $success ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-button" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <section id="contact-form">
     <div class="container bg-dark">
         <div class="row">

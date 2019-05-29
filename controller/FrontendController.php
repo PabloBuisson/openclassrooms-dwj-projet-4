@@ -25,6 +25,8 @@ class FrontendController
 
     public function contact()
     {
+        $success = false;
+        
         if (!empty($_POST)) 
         {
             $validation = true;
@@ -51,11 +53,15 @@ class FrontendController
                 $headers = "From:" . htmlspecialchars($_POST['form-firstname']) . " " . htmlspecialchars($_POST['form-name']) . "<" . htmlspecialchars($_POST['form-mail']) . ">\r\n";
                 $headers .= "Reply-to:" . htmlspecialchars($_POST['form-mail']) . "\r\n";
                 $headers .= "Content-type: text/html\r\n";
-                $success = mail($to, $subject, $message, $headers);
-                if (!$success) {
+                $send = mail($to, $subject, $message, $headers);
+                if (!$send) {
                     $errorMessage = error_get_last()['message'];
                     print_r(error_get_last());
                     echo '<p class="text-danger">Problème de envoi</p>';
+                }
+                else 
+                {
+                    $success = 'Message bien envoyé !';
                 }
             }
             else {
