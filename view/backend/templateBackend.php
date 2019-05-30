@@ -42,6 +42,18 @@
             "url": "url.com"
         }
     </script>
+    <script src="public/js/tinymce/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            language: 'fr_FR',
+            // update validation status on change
+            onchange_callback: function(editor) {
+                tinyMCE.triggerSave();
+                $("#" + editor.id).valid();
+            }
+        });
+    </script>
 </head>
 
 <body>

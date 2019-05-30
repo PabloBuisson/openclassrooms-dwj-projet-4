@@ -1,4 +1,9 @@
 $(document).ready(function () {
+
+    // prend en compte les champs cachés
+    $.validator.setDefaults({
+        ignore: ''
+    });
     
     // la méthode principale de jQuery validation plugin
     $('#form-article').validate({

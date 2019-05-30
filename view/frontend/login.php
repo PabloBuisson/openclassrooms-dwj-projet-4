@@ -25,13 +25,9 @@ ob_start();
                         <label for="password" class="text-white">Mot de passe</label>
                         <input type="password" value="" class="form-control" name="password" id="password" placeholder="Veuillez saisir votre mot de passe" required>
                     </div>
-                    <div class="form-check form-check-inline d-block d-md-inline-block mt-1">
-                        <input class="form-check-input" type="checkbox" name="okCookie" id="okCookie">
-                        <label class="form-check-label text-white" for="okCookie">
-                            Se souvenir de moi
-                        </label>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary mt-3 float-none float-md-right">Se connecter</button>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3 mt-md-2 float-none float-md-right">Se connecter</button>
                 </form>
             </div>
         </div>
