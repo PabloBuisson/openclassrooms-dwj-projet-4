@@ -5,6 +5,7 @@ class Article
     private $title;
     private $content;
     private $date_creation;
+    private $date_update;
     private $on_line;
     
     public function __construct(Array $data) // oblige à ce que soit un tableau
@@ -33,6 +34,11 @@ class Article
         {
             $this->setDate_creation($data['date_creation']);
         }
+
+        if (isset($data['date_update']))
+        {
+            $this->setDate_update($data['date_update']);
+        }
         
         if (isset($data['on_line']))
         {
@@ -60,6 +66,11 @@ class Article
     public function getDate_creation()
     {
         return $this->date_creation;
+    }
+
+    public function getDate_update()
+    {
+        return $this->date_update;
     }
 
     public function getOn_line()
@@ -93,6 +104,13 @@ class Article
     public function setDate_creation($date_creation)
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    public function setDate_update($date_update)
+    {
+        $this->date_update = $date_update;
 
         return $this;
     }

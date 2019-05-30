@@ -39,7 +39,7 @@ $(document).ready(function () {
             mail: {
                 required: "Veuillez saisir votre adresse mail",
                 mailverified: "Veuillez saisir une adresse mail valide", // remplace la propriété mail
-                minlenght: "Veuillez saisir une adresse mail valide",
+                minlength: "Veuillez saisir une adresse mail valide",
                 maxlength: "Veuillez saisir une adresse mail valide"
             },
             pseudo: {

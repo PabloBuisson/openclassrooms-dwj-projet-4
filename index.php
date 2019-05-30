@@ -3,21 +3,33 @@
 session_start();
 
 // enregistre l'autoload
-function loadClass($classname)
+spl_autoload_register(function ($class)
+{
+    $files = array('controller/' . $class . '.php', 'model/' . $class . '.php');
+
+    foreach ($files as $file)
+    {
+        if (file_exists($file))
+        {
+            require_once $file;
+        }
+    }
+});
+
+/* function loadClass($classname)
 {
     $pathController = 'controller/' . $classname . '.php';
     $pathModel = 'model/' . $classname . '.php';
 
-    if (file_exists($pathController))
-    {
+    if (file_exists($pathController)) {
         require_once $pathController;
-    }
-    else if (file_exists($pathModel))
-    {
+    } else if (file_exists($pathModel)) {
         require_once $pathModel;
     }
 }
-spl_autoload_register('loadClass');
+spl_autoload_register('loadClass'); */
+
+
 
 // on instancie les controller
 $frontend = new FrontendController();

@@ -58,7 +58,7 @@ ob_start();
         <div class="row">
             <div class="col-lg-10 offset-lg-1 mb-5 mt-5">
                 <h5 class="text-center mt-4 mb-5 text-white">Laisser un commentaire</h5>
-                <form action="index.php?action=view&id=<?= $article->getId() ?>" method="post">
+                <form id="form-comment" action="index.php?action=view&id=<?= $article->getId() ?>" method="post">
                     <div class="form-group">
                         <label for="form-pseudo" class="text-white">Votre pseudo <span>(en moins de 255 caractères)</span></label>
                         <input type="text" class="form-control" name="form-pseudo" id="form-pseudo" placeholder="Pseudo" required>
@@ -77,7 +77,8 @@ ob_start();
 </section>
 
 <?php
-$content = ob_get_clean(); // fin du contenu de la variable $content 
+$content = ob_get_clean(); // fin du contenu de la variable $content
+$script = '<script src="public/js/comment.js"></script>';
 // appel du template
 require('templateFrontend.php');
 ?>

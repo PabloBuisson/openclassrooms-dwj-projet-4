@@ -13,7 +13,7 @@ ob_start();
         <div class="d-flex flex-column flex-xl-row flex-wrap justify-content-between align-items-xl-center">
             <div class="d-flex flex-row justify-content-center justify-content-lg-start order-lg-1 order-xl-2 mb-4 mb-xl-0 flex-end">
                 <button type="button" title="Déconnexion" class="btn btn-primary d-inline-block btn btn-primary mr-2" data-toggle="modal" data-target="#end-session"><span class="fas fa-power-off"></button></a><a href="index.php?action=home" class="d-inline-block btn btn-outline-primary" role="button">Revenir sur le site</a>
-                
+
                 <!-- Modal du bouton déconnexion -->
                 <div class="modal fade" id="end-session" tabindex="-1" role="dialog" aria-labelledby="se déconnecter de la session" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -79,7 +79,7 @@ ob_start();
                     <!-- on ferme PHP car ce qui suit est long (pour rappel, on est dans le tbody) -->
                     <tr>
                         <th scope="row"><?= htmlspecialchars($article->getTitle()) ?></th>
-                        <td>Modifié le <?= date_format(date_create($article->getDate_creation()), 'd/m/Y à H:i:s') ?></td>
+                        <td>Modifié le <?= date_format(date_create($article->getDate_update()), 'd/m/Y à H:i:s') ?></td>
                         <td>
                             <?php if ($article->getOn_line() == 1) { ?>
                                 <p>Publié <span class="fas fa-check"></span></p>
@@ -172,7 +172,8 @@ ob_start();
 </div>
 
 <?php
-$content = ob_get_clean(); // fin du contenu de la variable $content 
+$content = ob_get_clean(); // fin du contenu de la variable $content
+$script = '<script src="public/js/admin.js"></script>';
 // appel du template
 require('templateBackend.php');
 ?>

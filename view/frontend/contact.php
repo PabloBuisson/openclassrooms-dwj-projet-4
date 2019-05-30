@@ -43,7 +43,7 @@ ob_start();
         <div class="row">
             <div class="col-lg-10 offset-lg-1 mb-5 mt-5">
                 <h5 class="text-center mt-4 mb-5 text-white">Formulaire de contact</h5>
-                <form action="index.php?action=contact" method="post">
+                <form id="form-contact" action="index.php?action=contact" method="post">
                     <div class="form-row">
                         <div class="form-group col-6">
                             <label for="form-firstname" class="text-white">Votre prénom</label>
@@ -82,7 +82,8 @@ ob_start();
 </section>
 
 <?php
-$content = ob_get_clean(); // fin du contenu de la variable $content 
+$content = ob_get_clean(); // fin du contenu de la variable $content
+$script = '<script src="public/js/contact.js"></script>';
 // appel du template
 require('templateFrontend.php');
 ?>

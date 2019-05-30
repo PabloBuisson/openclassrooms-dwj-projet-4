@@ -1,8 +1,7 @@
 <?php
 class FrontendController
 {
-    private $db;
-
+    
     public function home() // chaque page devient une méthode
     {
         require('view/frontend/home.php');
@@ -57,7 +56,7 @@ class FrontendController
                 if (!$send) {
                     $errorMessage = error_get_last()['message'];
                     print_r(error_get_last());
-                    echo '<p class="text-danger">Problème de envoi</p>';
+                    echo '<p class="text-danger">Problème d\'envoi</p>';
                 }
                 else 
                 {

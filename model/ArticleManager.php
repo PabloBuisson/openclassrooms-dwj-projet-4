@@ -33,7 +33,7 @@ class ArticleManager
 		// retourne la liste de tous les articles sous forme de tableau d'objets
 		$articles = [];
 
-		$query = $this->db->query("SELECT id, title, date_creation, on_line FROM articles ORDER BY date_creation DESC");
+		$query = $this->db->query("SELECT id, title, date_creation, date_update, on_line FROM articles ORDER BY date_update DESC");
 
 		while ($data = $query->fetch(PDO::FETCH_ASSOC))
 		{
@@ -60,7 +60,7 @@ class ArticleManager
 
     public function add(Article $article) // oblige à recevoir un objet Article
     {
-        $req = $this->db->prepare("INSERT INTO articles(title, content, date_creation, on_line) VALUES(?, ?, NOW(), ?)");
+        $req = $this->db->prepare("INSERT INTO articles(title, content, date_creation, date_update, on_line) VALUES(?, ?, NOW(), NOW(), ?)");
         $req->execute([
             $article->getTitle(),
             $article->getContent(),
@@ -70,7 +70,7 @@ class ArticleManager
 
     public function update(Article $article)
     {
-        $req = $this->db->prepare("UPDATE articles SET title = :title, content = :content, date_creation = NOW(), on_line = :on_line WHERE id = :id") or die(print_r($db->errorInfo()));
+        $req = $this->db->prepare("UPDATE articles SET title = :title, content = :content, date_update = NOW(), on_line = :on_line WHERE id = :id") or die(print_r($this->db->errorInfo()));
         $req->execute([
             ':title' => $article->getTitle(),
             ':content' => $article->getContent(),

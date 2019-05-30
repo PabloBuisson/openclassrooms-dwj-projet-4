@@ -1,7 +1,6 @@
 <?php
 class BackendController
 {
-    private $db;
 
     public function admin()
     {

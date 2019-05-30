@@ -14,7 +14,7 @@ ob_start();
             echo $error;
         }
         ?>
-        <form action="index.php?action=newArticle" method="post">
+        <form id="form-article" action="index.php?action=newArticle" method="post">
             <div class="form-group">
                 <label for="title">Titre <small id="pseudodHelpBlock" class="text-muted">(Privilégiez un titre court et pertinent)</small></label><br />
                 <input type="text" class="form-control" name="title" id="title" placeholder="Saisissez votre titre ici" aria-describedby="pseudodHelpBlock" required /><br />
@@ -29,7 +29,8 @@ ob_start();
     </div>
 
 <?php
-$content = ob_get_clean(); // fin du contenu de la variable $content 
+$content = ob_get_clean(); // fin du contenu de la variable $content
+$script = '<script src="public/js/article.js"></script>';
 // appel du template
 require('templateBackend.php');
 ?>
