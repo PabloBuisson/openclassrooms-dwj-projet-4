@@ -1,19 +1,11 @@
 <?php
-class UserManager
+class UserManager extends Manager
 {
-    private $db;
-
+    
     public function __construct()
     {
-        // exécuté à l'instanciation
-        try 
-        { 
-            $this->db = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
-        } 
-        catch (Exception $e) 
-        {
-            die('Erreur : ' . $e->getMessage());
-        }
+        // connexion à la BDD exécutée à l'instanciation
+        $this->log();
     }
 
     public function get($pseudo)
@@ -55,10 +47,5 @@ class UserManager
             'pass' => $user->getPass(),
             'mail' => $user->getMail()
         ]);
-    }
-
-    public function delete(User $user)
-    {
-
     }
 }

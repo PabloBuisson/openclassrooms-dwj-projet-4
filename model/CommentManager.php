@@ -1,31 +1,18 @@
 <?php
-class CommentManager
+class CommentManager extends Manager
 {
-    private $db;
-
+    
     public function __construct()
     {
-        // exécuté à l'instanciation
-        try 
-        { 
-            $this->db = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
-        } 
-        catch (Exception $e) 
-        {
-            die('Erreur : ' . $e->getMessage());
-        }
-    }
-
-    public function get($id)
-    {
-
+        // connexion à la BDD exécutée à l'instanciation
+        $this->log();
     }
 
     public function getReported()
     {
         $report = false;
         $query = $this->db->query("SELECT * FROM comments WHERE report = 1");
-        $queryReport = $query->fetch();
+        $queryReport = $query->fetch(PDO::FETCH_ASSOC);
         if ($queryReport)
         {
             $report = true;

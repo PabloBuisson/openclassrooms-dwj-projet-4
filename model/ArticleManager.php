@@ -1,19 +1,11 @@
 <?php
-class ArticleManager
+class ArticleManager extends Manager
 {
-    private $db;
-
+    
     public function __construct()
     {
-        // exécuté à l'instanciation
-        try 
-        { 
-            $this->db = new PDO('mysql:host=localhost;dbname=blog_forteroche;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises)
-        } 
-        catch (Exception $e)
-        {
-            die('Erreur : ' . $e->getMessage());
-        }
+        // connexion à la BDD exécutée à l'instanciation
+        $this->log();
     }
 
     public function get($id)
@@ -22,10 +14,27 @@ class ArticleManager
         $query->execute([
             $id
         ]);
-        $article = $query->fetch();
+        $article = $query->fetch(PDO::FETCH_ASSOC);
 
         // var_dump($article);
         return new Article($article);
+    }
+
+    public function exists($id)
+    {
+        if (is_numeric($id))
+        {
+            $query = $this->db->prepare('SELECT id FROM articles WHERE id = ?');
+            $query->execute([
+                $id
+            ]);
+
+            return $query->fetch(PDO::FETCH_ASSOC);
+        }
+        else
+        {
+            return false;
+        }  
     }
 
     public function getAll()
@@ -60,8 +69,8 @@ class ArticleManager
 
     public function add(Article $article) // oblige à recevoir un objet Article
     {
-        $req = $this->db->prepare("INSERT INTO articles(title, content, date_creation, date_update, on_line) VALUES(?, ?, NOW(), NOW(), ?)");
-        $req->execute([
+        $query = $this->db->prepare("INSERT INTO articles(title, content, date_creation, date_update, on_line) VALUES(?, ?, NOW(), NOW(), ?)");
+        $query->execute([
             $article->getTitle(),
             $article->getContent(),
             $article->getOn_line()
@@ -70,8 +79,8 @@ class ArticleManager
 
     public function update(Article $article)
     {
-        $req = $this->db->prepare("UPDATE articles SET title = :title, content = :content, date_update = NOW(), on_line = :on_line WHERE id = :id") or die(print_r($this->db->errorInfo()));
-        $req->execute([
+        $query = $this->db->prepare("UPDATE articles SET title = :title, content = :content, date_update = NOW(), on_line = :on_line WHERE id = :id") or die(print_r($this->db->errorInfo()));
+        $query->execute([
             ':title' => $article->getTitle(),
             ':content' => $article->getContent(),
             ':on_line' => $article->getOn_line(),
