@@ -13,6 +13,11 @@ body {
     position: relative;
 }
 
+.modal-content .close span {
+    font-family: 'Tahoma', sans-serif !important;
+    font-weight: 700;
+}
+
 label.error {
     color: #da7300;
 }

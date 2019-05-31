@@ -193,14 +193,6 @@ class FrontendController
         $articleManager = new ArticleManager(); // création de l'Article Manager pour centraliser toutes les requêtes
         $commentManager = new CommentManager(); // création du Comment Manager pour centraliser toutes les requêtes
 
-        // on vérifie si l'utilisateur a demandé une id chiffrée et si l'article existe
-        $article = $articleManager->exists($_GET['id']);
-        if (!$article)
-        {
-            header('Location: index.php?action=error');
-            exit();
-        }
-
         // s'il y a un commentaire signalé
         if (!empty($_GET['comment']) && !empty($_GET['article']) && $_GET['event'] == 'report') {
 
@@ -240,8 +232,19 @@ class FrontendController
             header('Location: index.php?action=view&id=' . $_GET['id'] . '#comments');
         }
 
-        $article = $articleManager->get($_GET['id']);
+        // on vérifie si l'utilisateur a demandé une id chiffrée et si l'article existe
+        $article = $articleManager->exists($_GET['id']);
 
+        if (!$article)
+        {
+            header('Location: index.php?action=error');
+            exit();
+        }
+        else
+        {
+            $article = $articleManager->get($_GET['id']);
+        }
+        
         // récupère les commentaires postés sur l'article
         $comments = $commentManager->getPosted($_GET['id']);
 

@@ -2,6 +2,11 @@ body {
     font-family: 'Exo', sans-serif !important;
 }
 
+.modal-content .close span {
+    font-family: 'Tahoma', sans-serif !important;
+    font-weight: 700;
+}
+
 label.error {
     color: #da7300;
 }
