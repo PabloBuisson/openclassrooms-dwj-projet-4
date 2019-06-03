@@ -1,8 +1,13 @@
 <?php
 
 /* variables à remplir */
-$title = 'Billet Simple';
-$metaDescription = '';
+$title = "Billet simple pour l'Alaska";
+$metaDescription = "Retrouvez l'ensemble des chapitres du nouveau roman de Jean Forteroche, \"Billet simple pour l'Alaska\".";
+$ogUrl = 'http://jean-forteroche.pablobuisson.fr/?action=billetSimple';
+/* No more 65 words */
+$ogTitle = "Billet simple pour l'Alaska";
+/* 150-200 words */
+$ogDescription = "Retrouvez l'ensemble des chapitres du nouveau roman de Jean Forteroche, \"Billet simple pour l'Alaska\".";
 
 /* début de la variable $content */
 ob_start();

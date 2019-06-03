@@ -2,7 +2,12 @@
 
 /* variables à remplir */
 $title = 'Admin';
-$metaDescription = '';
+$metaDescription = "Bienvenue sur le tableau de bord du blog de Jean Forteroche, où vous pourrez gérer vos articles et les commentaires associés.";
+$ogUrl = 'http://jean-forteroche.pablobuisson.fr/?action=admin';
+/* No more 65 words */
+$ogTitle = 'Tableau de bord';
+/* 150-200 words */
+$ogDescription = "Bienvenue sur le tableau de bord du blog de Jean Forteroche, où vous pourrez gérer vos articles et les commentaires associés.";
 
 /* début de la variable $content */
 ob_start();
@@ -12,7 +17,7 @@ ob_start();
     <div class="jumbotron">
         <div class="d-flex flex-column flex-xl-row flex-wrap justify-content-between align-items-xl-center">
             <div class="d-flex flex-row justify-content-center justify-content-lg-start order-lg-1 order-xl-2 mb-4 mb-xl-0 flex-end">
-                <button type="button" title="Déconnexion" class="btn btn-primary d-inline-block btn btn-primary mr-2" data-toggle="modal" data-target="#end-session"><span class="fas fa-power-off"></button></a><a href="index.php?action=home" class="d-inline-block btn btn-outline-primary" role="button">Revenir sur le site</a>
+                <button type="button" title="Déconnexion" class="btn btn-secondary d-inline-block mr-2" data-toggle="modal" data-target="#end-session"><span class="fas fa-power-off"></button></a><a href="index.php?action=home" class="d-inline-block btn btn-outline-secondary" role="button">Revenir sur le site</a>
 
                 <!-- Modal du bouton déconnexion -->
                 <div class="modal fade" id="end-session" tabindex="-1" role="dialog" aria-labelledby="se déconnecter de la session" aria-hidden="true">
@@ -59,7 +64,7 @@ ob_start();
 
 
 
-    <h2 class="mb-4 mr-4 d-inline-block">Vos articles</h2><a href="index.php?action=newArticle" class="d-inline-block btn btn-primary mb-2" role="button">Ajouter</a>
+    <h2 id="admin-title-article" class="mb-4 mr-4 d-inline-block">Vos articles</h2><a href="index.php?action=newArticle" class="d-inline-block btn btn-primary mb-2" role="button">Ajouter</a>
     <div class="table-responsive">
         <table id="table-blogspots" class="table table-striped table-admin">
             <thead class="thead-dark">
@@ -88,10 +93,10 @@ ob_start();
                             <?php } ?>
                         </td>
                         <td>
-                            <a href="index.php?action=view&id=<?= $article->getId() ?>" title="Voir l'article" class="btn btn-info"><span class="far fa-eye" role="button"></span></a>
+                            <a href="index.php?action=view&id=<?= $article->getId() ?>" title="Voir l'article" class="btn btn-secondary"><span class="far fa-eye" role="button"></span></a>
                         </td>
                         <td>
-                            <a href="index.php?action=updateArticle&id=<?= $article->getId() ?>" title="Modifier l'article" class="btn btn-warning" role="button"><span class="fas fa-pen"></span></a> <button type="button" title="Supprimer l'article" class="btn btn-danger" data-toggle="modal" data-target="#article<?= $article->getId() ?>"><span class="fas fa-trash-alt"></span></button>
+                            <a href="index.php?action=updateArticle&id=<?= $article->getId() ?>" title="Modifier l'article" class="btn btn-info mb-2" role="button"><span class="fas fa-pen"></span></a> <button type="button" title="Supprimer l'article" class="btn btn-danger mb-2" data-toggle="modal" data-target="#article<?= $article->getId() ?>"><span class="fas fa-trash-alt"></span></button>
                         </td>
                     </tr>
                     <!-- Modal du bouton supprimer -->
@@ -119,7 +124,7 @@ ob_start();
         </table>
     </div>
 
-    <h2 class="mb-4">Vos commentaires</h2>
+    <h2 id="admin-title-comment" class="mb-4">Vos commentaires</h2>
     <div class="table-responsive">
         <table id="table-comments" class="table table-striped table-admin">
             <thead class="thead-dark">
@@ -143,8 +148,8 @@ ob_start();
                         <td>Publié le <?= date_format(date_create($comment->getDate_comment()), 'd/m/Y à H:i:s') ?></td>
                         <td><?= substr(htmlspecialchars($comment->getComment()), 0, 50)  ?><span class="text-muted">[...]</span></td>
                         <td><?= htmlspecialchars($comment->getTitle()) ?></td>
-                        <td><a href="index.php?action=view&id=<?= $comment->getId_article() ?>#comment<?= $comment->getId() ?>" title="Voir le commentaire" class="btn btn-info" role="button"><span class="far fa-eye"></span></a></td>
-                        <td><?php if ($comment->getReport() > 0) { ?><a href="index.php?action=admin&comment=<?= $comment->getId() ?>&event=accept" title="Accepter le commentaire" class="btn btn-success" role="button"><span class="fas fa-check"></span></a> <?php } ?><button type="button" title="Supprimer le commentaire" class="btn btn-danger" data-toggle="modal" data-target="#comment<?= $comment->getId() ?>"><span class="fas fa-trash-alt"></span></a></td>
+                        <td><a href="index.php?action=view&id=<?= $comment->getId_article() ?>#comment<?= $comment->getId() ?>" title="Voir le commentaire" class="btn btn-secondary" role="button"><span class="far fa-eye"></span></a></td>
+                        <td><?php if ($comment->getReport() > 0) { ?><a href="index.php?action=admin&comment=<?= $comment->getId() ?>&event=accept" title="Accepter le commentaire" class="btn btn-success mb-2" role="button"><span class="fas fa-check"></span></a> <?php } ?><button type="button" title="Supprimer le commentaire" class="btn btn-danger mb-2" data-toggle="modal" data-target="#comment<?= $comment->getId() ?>"><span class="fas fa-trash-alt"></span></a></td>
                     </tr>
                     <!-- Modal du bouton supprimer -->
                     <div class="modal fade" id="comment<?= $comment->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="supprimer un commentaire" aria-hidden="true">

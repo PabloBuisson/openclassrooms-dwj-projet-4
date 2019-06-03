@@ -2,7 +2,12 @@
 
 /* variables à remplir */
 $title = 'Se connecter';
-$metaDescription = '';
+$metaDescription = "Connectez-vous avec vos idenfifiants pour profiter des fonctionnalités du blog de Jean Forteroche.";
+$ogUrl = 'http://jean-forteroche.pablobuisson.fr/?action=login';
+/* No more 65 words */
+$ogTitle = 'Se connecter au blog de Jean Forteroche';
+/* 150-200 words */
+$ogDescription = "Connectez-vous avec vos idenfifiants pour profiter des fonctionnalités du blog de Jean Forteroche.";
 
 /* début de la variable $content */
 ob_start();

@@ -2,7 +2,12 @@
 
 /* variables à remplir */
 $title = 'Page introuvable';
-$metaDescription = '';
+$metaDescription = "La page que vous souhaitez voir n'existe pas.";
+$ogUrl = 'http://jean-forteroche.pablobuisson.fr/?action=error';
+/* No more 65 words */
+$ogTitle = 'Page introuvable';
+/* 150-200 words */
+$ogDescription = "La page que vous souhaitez voir n'existe pas.";
 
 /* début de la variable $content */
 ob_start();
@@ -16,7 +21,7 @@ ob_start();
             </div>
             <div class="col-lg-8 offset-2 text-center mb-5">
                 <p id="text-form" class="text-center text-white">La page que vous souhaitez voir n'existe pas.<br />
-                Peut-être que vous trouverez ce que vous cherchez sur la <a href="index.php?action=home" title="Revenir à l'accueil">page d'Accueil</a>.
+                    Peut-être que vous trouverez ce que vous cherchez sur la <a href="index.php?action=home" title="Revenir à l'accueil">page d'Accueil</a>.
                 </p>
             </div>
         </div>

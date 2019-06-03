@@ -2,7 +2,12 @@
 
 /* variables à remplir */
 $title = htmlspecialchars($article->getTitle());
-$metaDescription = '';
+$metaDescription = "Plongez dans l'un des chapitres du nouveau roman interactif de Jean Forteroche, intitulé \"Billet simple pour l'Alaska\" et publié en ligne.";
+$ogUrl = 'http://jean-forteroche.pablobuisson.fr/?action=view$id=' . $article->getId();
+/* No more 65 words */
+$ogTitle = htmlspecialchars($article->getTitle());
+/* 150-200 words */
+$ogDescription = "Plongez dans l'un des chapitres du nouveau roman interactif de Jean Forteroche, intitulé \"Billet simple pour l'Alaska\" et publié en ligne.";
 
 /* début de la variable $content */
 ob_start();
@@ -24,7 +29,7 @@ ob_start();
         <div class="row">
             <div class="col-10 offset-1 mb-5 mt-5 article-content">
                 <div class="text-justify mb-5">Publié le <?= $article->getDate_creation() ?></div>
-                <div class="text-justify"><?= htmlspecialchars_decode($article->getContent()) ?> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus provident quisquam error, vero ipsam suscipit, numquam et quod doloremque veritatis reprehenderit tempore aut nobis. Hic provident harum tempore saepe tempora! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam qui doloribus libero inventore magnam, at fuga veniam incidunt illum reprehenderit cum explicabo corporis aliquam accusamus rem sed. Fugit, perspiciatis iste? Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi ab veritatis magnam, deleniti illum nostrum fugit reprehenderit cum perspiciatis perferendis expedita. Ex vitae quas unde neque eligendi iure, non placeat.</div>
+                <div class="text-justify article-text"><?= htmlspecialchars_decode($article->getContent()) ?> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus provident quisquam error, vero ipsam suscipit, numquam et quod doloremque veritatis reprehenderit tempore aut nobis. Hic provident harum tempore saepe tempora! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam qui doloribus libero inventore magnam, at fuga veniam incidunt illum reprehenderit cum explicabo corporis aliquam accusamus rem sed. Fugit, perspiciatis iste? Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi ab veritatis magnam, deleniti illum nostrum fugit reprehenderit cum perspiciatis perferendis expedita. Ex vitae quas unde neque eligendi iure, non placeat.</div>
             </div>
         </div>
 </article>

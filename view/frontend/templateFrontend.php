@@ -13,22 +13,22 @@ if (empty($_SESSION['id'])) {
 <head>
     <meta charset="UTF-8">
     <title><?= $title ?> | Le site officiel de Jean Forteroche</title>
-    <meta name="description" content="<?= $metaDescription ?>" />
+    <meta name="description" content="<?= htmlspecialchars($metaDescription) ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- meta réseaux sociaux -->
     <meta name="twitter:card" content="summary" />
-    <meta property="og:url" content="http://location-velo-toulouse.pablobuisson.fr/" />
+    <meta property="og:url" content="<?= $ogUrl ?>" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Réservez votre vélo en libre service à Toulouse" />
-    <meta property="og:description" content="Consultez notre carte de location de vélos sur Toulouse et réservez votre vélo dans la station la plus proche" />
-    <meta property="og:image" content="http://location-velo-toulouse.pablobuisson.fr/img/carte-location-velo-fb.jpg" />
+    <meta property="og:title" content="<?= $ogTitle ?>" />
+    <meta property="og:description" content="<?= htmlspecialchars($ogDescription) ?>" />
+    <meta property="og:image" content="http://jean-forteroche.pablobuisson.fr/public/img/jean-forteroche-social-media.jpg" />
     <!-- favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <!-- règles CSS et CDN -->
     <!-- <link rel="stylesheet" href="../../public/css/frontend.css"> essai en local -->
     <link rel="stylesheet" href="public/css/frontend.css">
-    <link href="https://fonts.googleapis.com/css?family=Exo:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Exo:300,400,700|Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
@@ -47,7 +47,7 @@ if (empty($_SESSION['id'])) {
         {
             "@context": "http://www.schema.org",
             "@type": "WebSite",
-            "name": "Bienvenue sur le site officiel de Jean Forteroche",
+            "name": "<?= $ogTitle ?>",
             "url": "url.com"
         }
     </script>
@@ -90,7 +90,7 @@ if (empty($_SESSION['id'])) {
         <footer>
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="text-center mb-5 col-8 offset-2 text-md-left col-md-4 offset-md-0">
                         <h5 class="text-uppercase">Plan du site</h5>
                         <div>
                             <a href="index.php?action=home" class="text-white">Accueil</a><br />
@@ -99,7 +99,7 @@ if (empty($_SESSION['id'])) {
                             <a href="index.php?action=contact" class="text-white">Contact</a>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="text-center mb-5 col-8 offset-2 text-md-left col-md-4 offset-md-0">
                         <h5 class="text-uppercase">Me retrouver sur</h5>
                         <div>
                             <a href="#" class="text-white">Facebook</a><br />
@@ -107,7 +107,7 @@ if (empty($_SESSION['id'])) {
                             <a href="#" class="text-white">Senscritique</a>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="text-center mb-5 col-8 offset-2 text-md-left col-md-4 offset-md-0">
                         <h5 class="text-uppercase">Admin</h5>
                         <div>
                             <a href="index.php?action=login" class="text-white">Se connecter</a>
@@ -124,7 +124,9 @@ if (empty($_SESSION['id'])) {
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <?php if (!empty($script)) { echo $script; } ?>
+    <?php if (!empty($script)) {
+        echo $script;
+    } ?>
 </body>
 
 </html>

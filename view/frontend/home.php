@@ -2,7 +2,12 @@
 
 /* variables à remplir */
 $title = 'Accueil';
-$metaDescription = '';
+$metaDescription = "Bienvenue sur le site web de Jean Forteroche, écrivain. Découvrez son nouveau roman \"Billet simple pour l'Alaska\", publié en ligne.";
+$ogUrl = 'http://jean-forteroche.pablobuisson.fr/';
+/* No more 65 words */
+$ogTitle = 'Bienvenue sur le site web de Jean Forteroche';
+/* 150-200 words */
+$ogDescription = "Découvrez en ligne les chapitres du nouveau roman de Jean Forteroche, \"Billet simple pour l'Alaska\".";
 
 /* début de la variable $content */
 ob_start();
@@ -20,8 +25,8 @@ ob_start();
                 <h2 class="text-center text-white">Billet simple pour l'Alaska : découvrez mon nouveau roman en ligne !</h2>
             </div>
             <div class="col-lg-6 offset-lg-3 text-center">
-                <a href="#home-project-alaska" class="btn btn-lg btn-primary" role="button">Découvrir le projet</a>
-                <a href="index.php?action=billetSimple" class="btn btn-lg btn-secondary" role="button">Accéder aux chapitres</a>
+                <a href="#home-project-alaska" id="home-to-project" class="btn btn-lg btn-primary mb-3" role="button">Découvrir le projet</a>
+                <a href="index.php?action=billetSimple" class="btn btn-lg btn-secondary mb-3" role="button">Accéder aux chapitres</a>
             </div>
         </div>
     </div>
@@ -30,13 +35,13 @@ ob_start();
 <section id="home-project-alaska">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 offset-lg-6">
+            <div class="col-md-6 offset-md-6">
                 <h3>Billet simple pour l'Alaska : le choix d'un roman en ligne</h3>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">[PHOTO] Lorem ipsum dolor sit amet, consectetur adipisicing elit. At voluptate pariatur saepe quod! Placeat error nihil optio temporibus culpa nemo ut et? Eaque blanditiis magni soluta quas animi aperiam inventore.</div>
-            <div class="col-lg-6">À l'heure du tout connecté et de l'omniprésence des réseaux sociaux, nous (Jean Forteroche et les personnes concernées par le projet) avons décidé de transposer le nouveau récit de Jean Forteroche en ligne, sous la forme de chapitres périodiques et interactifs, afin d'établir une communication bilatérale qu'empêche le support papier. <br />
+            <div class="col-md-6 mb-5 mb-md-0"><img src="public/img/roman-en-ligne.jpg" class="img-responsive" alt="Un roman en ligne"></div>
+            <div class="col-md-6">À l'heure du tout connecté et de l'omniprésence des réseaux sociaux, nous (Jean Forteroche et les personnes concernées par le projet) avons décidé de transposer le nouveau récit de Jean Forteroche en ligne, sous la forme de chapitres périodiques et interactifs, afin d'établir une communication bilatérale qu'empêche le support papier. <br />
                 Ce roman est un cadeau pour vous, la communauté de lecteurs qui s'est constituée au fil des histoires abracadabrantesques dont seul Jean Forteroche détient le secret. Un cadeau pour faire entendre votre voix, et pour vous récompenser de votre indéféctible loyauté.</div>
         </div>
     </div>
@@ -45,22 +50,21 @@ ob_start();
 <section id="home-comment-alaska">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-md-6">
                 <h3>Intéragissez en direct</h3>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">Chaque publication périodique qui composera le roman "Billet simple pour l'Alaska" sera l'occasion de faire entendre votre voix. Exprimez votre ressenti sur la progression de l'histoire, réagissez sur les décisions des personnages, proposez vos interprétations, échangez vos idées.<br />
+            <div class="col-md-6 order-2 order-mb-1">Chaque publication périodique qui composera le roman "Billet simple pour l'Alaska" sera l'occasion de faire entendre votre voix. Exprimez votre ressenti sur la progression de l'histoire, réagissez sur les décisions des personnages, proposez vos interprétations, échangez vos idées.<br />
                 Au gré de la pertinence de votre commentaire, Jean Forteroche vous répondra !</div>
-            <div class="col-lg-6">[PHOTO] Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odio,
-                numquam illum sunt, fugit minus, nam accusantium ipsam itaque vel tenetur odit fugiat
-                nostrum natus? Reprehenderit voluptatem aliquid veritatis numquam animi!</div>
+            <div class="col-md-6 order-1 order-mb-2 mb-5 mb-0"><img src="public/img/roman-interactif-smartphone.jpg" class="img-responsive" alt="Un roman interactif que l'on peut commenter"></div>
         </div>
     </div>
 </section>
 
 <?php
-$content = ob_get_clean(); // fin du contenu de la variable $content 
+$content = ob_get_clean(); // fin du contenu de la variable $content
+$script = '<script src="public/js/home.js"></script>';
 // appel du template
 require('templateFrontend.php');
 ?>

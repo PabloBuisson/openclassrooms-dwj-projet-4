@@ -4,9 +4,9 @@ body {
 
 #bloc-page {
     background: #294664;
-    background-image: url(../img/image1.jpg);
+    background-image: url(../img/jean-forteroche-alaska.jpg);
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.3) 100%),
-        url(../img/image1.jpg);
+        url(../img/jean-forteroche-alaska.jpg);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -46,11 +46,11 @@ h1::after {
     height: 100vh;
 }
 
-.home-alaska {
+#home-header .home-alaska {
     margin-top: 120px;
 }
 
-.title-alaska {
+#home-header .title-alaska {
     margin-bottom: 20px;
 }
 
@@ -95,13 +95,64 @@ h1::after {
     background-color: white;
 }
 
+/* Media Queries Header */
+
+/* Very small devices (0px and up) */
+@media (min-width: 0px) {
+
+    #home-header {
+    height: auto;
+    margin-bottom: 100px;
+    }
+
+    #biographie-article .article-picture {
+        position: relative;
+    }
+
+    #biographie-article .container-fluid.bg-white {
+        clip-path: none;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    #home-header {
+    height: 100vh;
+    margin-bottom: 0;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}
+
+/* responsive écrans HD */
+@media (min-width: 1367px) {
+
+    #home-header {
+        height: auto;
+        margin-bottom: 100px;
+    }
+}
+
+
 /* ---------- SECTIONS ---------- */
 
 /* Homepage */
 
 #home-project-alaska {
     background-color: rgb(52, 52, 122);
-    padding: 80px 0 80px 0;
+    padding: 120px 0 100px 0;
     color: white;
     -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
     clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
@@ -111,10 +162,16 @@ h1::after {
     margin-bottom: 30px;
 }
 
+#home-project-alaska img, #home-comment-alaska img {
+    filter: opacity(0.6);
+    max-width: 400px;
+    width: 100%;
+}
+
 #home-comment-alaska {
-    margin-top: -30px;
+    margin: -50px 0 100px 0;
     background-color: rgb(77, 16, 105);
-    padding: 80px 0 80px 0;
+    padding: 120px 0 80px 0;
     color: white;
     -webkit-clip-path: polygon(0 6%, 100% 0, 100% 100%, 0% 100%);
     clip-path: polygon(0 6%, 100% 0, 100% 100%, 0% 100%);
@@ -138,8 +195,8 @@ h1::after {
 }
 
 #biographie-article .article-picture {
-    background-color: orange;
-    padding: 20px;
+    background-color: white;
+    padding: 10px;
     top: 80px;
     position: absolute;
     z-index: 2;
@@ -147,6 +204,15 @@ h1::after {
 
 #biographie-article .article-picture img {
     width: 100%;
+}
+
+#biographie-article .article-content::first-letter, #view-article .article-text p::first-letter {
+    font-size: calc(60px + 1vw);
+    line-height: 40px;
+    color: indianred;
+    float: left;
+    padding: 5px 15px 3px 5px;
+    font-family: 'Pacifico', cursive;
 }
 
 /* Billet simple */
@@ -288,12 +354,76 @@ h1::after {
     height: 120vh;
 }
 
+/* Media Queries Sections */
+
+/* Very small devices (0px and up) */
+@media (min-width: 0px) {
+
+    #biographie-article .article-picture {
+        position: relative;
+    }
+
+    #biographie-article .container-fluid.bg-white {
+        clip-path: none;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+    #biographie-article .article-picture {
+        position: absolute;
+    }
+
+    #biographie-article .container-fluid.bg-white {
+        clip-path: polygon(0 0, 100% 2%, 100% 100%, 0% 100%);
+        -webkit-clip-path: polygon(0 0, 100% 2%, 100% 100%, 0% 100%);
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    
+}
+
+/* responsive écrans HD */
+@media (min-width: 1367px) {
+
+    #home-project-alaska, #view-article {
+        width: 1200px;
+        margin: auto;
+    }
+
+    #home-comment-alaska {
+        width: 1200px;
+        margin: auto;
+        margin-top: -45px;
+        margin-bottom: 100px;
+    }
+
+    #biographie-article {
+        width: 1200px;
+        margin: auto;
+        margin-bottom: 100px;
+    }
+}
+
+
 /* ---------- FOOTER ---------- */
 
 footer {
     background-color: #343a40;
     color: white;
-    padding: 80px 0 80px 0;
-    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    padding: 80px 0 20px 0;
 }

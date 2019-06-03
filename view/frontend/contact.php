@@ -2,7 +2,12 @@
 
 /* variables à remplir */
 $title = 'Contact';
-$metaDescription = '';
+$metaDescription = "Vous rechechez une information, vous avez une demande particulière ? Contactez directement Jean Forteroche en remplissant notre formulaire de contact.";
+$ogUrl = 'http://jean-forteroche.pablobuisson.fr/?action=contact';
+/* No more 65 words */
+$ogTitle = 'Contactez Jean Forteroche';
+/* 150-200 words */
+$ogDescription = "Vous rechechez une information, vous avez une demande particulière ? Contactez directement Jean Forteroche en remplissant notre formulaire de contact.";
 
 /* début de la variable $content */
 ob_start();
@@ -41,15 +46,15 @@ ob_start();
 <section id="contact-form">
     <div class="container bg-dark">
         <div class="row">
-            <div class="col-lg-10 offset-lg-1 mb-5 mt-5">
-                <h5 class="text-center mt-4 mb-5 text-white">Formulaire de contact</h5>
+            <div class="px-sm-5 px-lg-0 col-lg-10 offset-lg-1 mb-5 mt-5">
+                <h5 class="text-center mt-5 mb-5 text-white">Formulaire de contact</h5>
                 <form id="form-contact" action="index.php?action=contact" method="post">
                     <div class="form-row">
-                        <div class="form-group col-6">
+                        <div class="form-group col-12 col-md-6">
                             <label for="form-firstname" class="text-white">Votre prénom</label>
                             <input type="text" class="form-control" name="form-firstname" id="form-firstname" placeholder="Prénom" required>
                         </div>
-                        <div class="form-group col-6">
+                        <div class="form-group col-12 col-md-6">
                             <label for="form-name" class="text-white">Votre nom</label>
                             <input type="text" class="form-control" name="form-name" id="form-name" placeholder="Nom" required>
                         </div>

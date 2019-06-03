@@ -2,6 +2,10 @@ body {
     font-family: 'Exo', sans-serif !important;
 }
 
+#bloc-page-newArticle, #bloc-page-updateArticle {
+    padding-bottom: 100px;
+}
+
 .modal-content .close span {
     font-family: 'Tahoma', sans-serif !important;
     font-weight: 700;
@@ -9,4 +13,73 @@ body {
 
 label.error {
     color: #da7300;
+}
+
+/* Admin page */
+
+/* Data-tables */
+
+.pagination-custom {
+    margin-bottom: 50px !important;
+}
+
+#table-blogspots .fa-check {
+    color: #28a745;
+}
+
+#table-comments .bg-warning {
+    background-color: #ffaa76 !important;
+}
+
+/* Admin */
+
+#admin-title-article {
+    margin-top: 20px;
+}
+
+#admin-title-comment {
+    margin-top: 50px !important;
+}
+
+/* Page New Article */
+
+#new-article-title, #update-article-title {
+    margin-top: 40px !important;
+}
+
+/* Media Queries Header */
+
+/* Very small devices (0px and up) */
+@media (min-width: 0px) {
+    #table-blogspots_filter, #table-comments_filter {
+    margin-left: -15px;
+    }
+
+    div.dataTables_wrapper div.dataTables_length, div.dataTables_wrapper div.dataTables_filter {
+    text-align: left !important;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    #table-blogspots_filter, #table-comments_filter {
+    margin-left: 0;
+    }
+
+    div.dataTables_wrapper div.dataTables_filter {
+        text-align: right !important;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {}
+
+/* responsive écrans HD */
+@media (min-width: 1367px) {
 }

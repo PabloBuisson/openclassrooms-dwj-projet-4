@@ -9,11 +9,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- meta réseaux sociaux -->
     <meta name="twitter:card" content="summary" />
-    <meta property="og:url" content="http://location-velo-toulouse.pablobuisson.fr/" />
+    <meta property="og:url" content="<?= $ogUrl ?>" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Réservez votre vélo en libre service à Toulouse" />
-    <meta property="og:description" content="Consultez notre carte de location de vélos sur Toulouse et réservez votre vélo dans la station la plus proche" />
-    <meta property="og:image" content="http://location-velo-toulouse.pablobuisson.fr/img/carte-location-velo-fb.jpg" />
+    <meta property="og:title" content="<?= $ogTitle ?>" />
+    <meta property="og:description" content="<?= htmlspecialchars($ogDescription) ?>" />
+    <meta property="og:image" content="http://jean-forteroche.pablobuisson.fr/public/img/jean-forteroche-social-media.jpg" />
     <!-- favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <!-- règles CSS et CDN -->
