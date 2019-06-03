@@ -73,6 +73,8 @@ class FrontendController
 
     public function inscription()
     {
+        require('log/log.php');
+
         $error = null;
 
         if (!empty($_POST)) { // si l'utilisateur a posté le formulaire
@@ -93,6 +95,10 @@ class FrontendController
             if (!(preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $_POST['mail']))) {
                 $validation = false;
                 $error = 4; // mail non conforme
+            }
+            if (!(password_verify($_POST['code'], $code))) {
+                $validation = false;
+                $error = 5; // mauvais code
             }
 
             if ($validation) {
@@ -117,7 +123,7 @@ class FrontendController
                     // redirection vers la page de connexion
                     header('Location: index.php?action=login');
                 } else {
-                    $error = 5; // pseudo déjà pris
+                    $error = 6; // pseudo déjà pris
                 }
             }
         }
@@ -137,6 +143,9 @@ class FrontendController
                 $error = '<p class="text-center text-danger">Adresse mail incorrecte</p>';
                 break;
             case 5:
+                $error = '<p class="text-center text-danger">Code erroné</p>';
+                break;
+            case 6:
                 $error = '<p class="text-center text-danger">Pseudo déjà pris !</p>';
                 break;
         }
@@ -254,5 +263,10 @@ class FrontendController
     public function error()
     {
         require('view/frontend/error.php');
+    }
+
+    public function checkPseudo()
+    {
+        require('view/frontend/checkPseudo.php');
     }
 }

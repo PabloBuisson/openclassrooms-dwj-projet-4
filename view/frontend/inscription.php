@@ -42,6 +42,10 @@ ob_start();
                             <label for="password">Confirmez votre mot de passe</label>
                             <input type="password" class="form-control" name="confirmedPassword" id="confirmed-password" placeholder="Confirmez votre mot de passe" required>
                         </div>
+                        <div class="form-group">
+                            <label for="code">Entrez votre code</label>
+                            <input type="password" class="form-control" name="code" id="code" placeholder="Entrez votre code" required>
+                        </div>
                         <button type="submit" class="btn btn-primary mt-4 mb-4 btn-block">Créez votre compte</button>
                     </form>
                 </div>

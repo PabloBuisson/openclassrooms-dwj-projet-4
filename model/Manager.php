@@ -7,7 +7,7 @@ class Manager
     {
         // exécuté à l'instanciation des models
         
-        require('log.php');
+        require('log/log.php');
         
         try
         {

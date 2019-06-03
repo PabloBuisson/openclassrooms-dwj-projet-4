@@ -77,6 +77,11 @@ if (isset($_GET['action']))
         $frontend->view();
     }
 
+    elseif ($_GET['action'] == 'checkPseudo')
+    {
+        $frontend->checkPseudo();
+    }
+
     // BACKEND
     elseif ($_GET['action'] == 'admin')
     {

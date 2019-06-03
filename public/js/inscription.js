@@ -21,7 +21,7 @@ $(document).ready(function () {
                 required: true,
                 maxlength: 100,
                 remote: { // vérifie de façon asynchrone si le pseudo est déjà pris
-                    url: "view/frontend/checkPseudo.php",
+                    url: "index.php?action=checkPseudo",
                     type: "post"
                 }
             },
@@ -33,6 +33,9 @@ $(document).ready(function () {
                 required: true,
                 maxlength: 100,
                 equalTo: "#password"
+            },
+            code: {
+                required: true
             }
         },
         messages: {
@@ -55,6 +58,9 @@ $(document).ready(function () {
                 required: "Veuillez confirmer votre mot de passe",
                 maxlength: "Veuillez saisir un mot de passe moins long",
                 equalTo: "Veuillez saisir le même mot de passe"
+            },
+            code: {
+                required: "Code obligatoire"
             }
         }
     });
