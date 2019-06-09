@@ -89,14 +89,14 @@ class Article
 
     public function setTitle($title)
     {
-        $this->title = $title;
+        $this->title = htmlspecialchars($title);
 
         return $this;
     }
 
     public function setContent($content)
     {
-        $this->content = $content;
+        $this->content = htmlspecialchars_decode($content);
 
         return $this;
     }

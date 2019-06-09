@@ -107,14 +107,14 @@ class Comment
 
     public function setPseudo($pseudo)
     {
-        $this->pseudo = $pseudo;
+        $this->pseudo = htmlspecialchars($pseudo);
 
         return $this;
     }
 
     public function setComment($comment)
     {
-        $this->comment = $comment;
+        $this->comment = htmlspecialchars_decode($comment);
 
         return $this;
     }
@@ -135,7 +135,7 @@ class Comment
 
     public function setTitle($title)
     {
-        $this->title = $title;
+        $this->title = htmlspecialchars($title);
 
         return $this;
     }

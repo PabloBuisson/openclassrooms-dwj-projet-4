@@ -3,9 +3,9 @@
 /* variables à remplir */
 $title = 'Admin';
 $metaDescription = "Bienvenue sur le tableau de bord du blog de Jean Forteroche, où vous pourrez gérer vos articles et les commentaires associés.";
-$ogUrl = 'http://jean-forteroche.pablobuisson.fr/?action=admin';
+$ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=admin';
 /* No more 65 words */
-$ogTitle = 'Tableau de bord';
+$ogTitle = 'Admin';
 /* 150-200 words */
 $ogDescription = "Bienvenue sur le tableau de bord du blog de Jean Forteroche, où vous pourrez gérer vos articles et les commentaires associés.";
 
@@ -83,7 +83,7 @@ ob_start();
                     ?>
                     <!-- on ferme PHP car ce qui suit est long (pour rappel, on est dans le tbody) -->
                     <tr>
-                        <th scope="row"><?= htmlspecialchars($article->getTitle()) ?></th>
+                        <th scope="row"><?= $article->getTitle() ?></th>
                         <td>Modifié le <?= date_format(date_create($article->getDate_update()), 'd/m/Y à H:i:s') ?></td>
                         <td>
                             <?php if ($article->getOn_line() == 1) { ?>
@@ -144,10 +144,10 @@ ob_start();
                     ?>
                     <!-- on ferme PHP pour la clarté du code -->
                     <tr <?php if ($comment->getReport() > 0) { ?> class="bg-warning" <?php } ?>>
-                        <th scope="row"><?= htmlspecialchars($comment->getPseudo()) ?></th>
+                        <th scope="row"><?= $comment->getPseudo() ?></th>
                         <td>Publié le <?= date_format(date_create($comment->getDate_comment()), 'd/m/Y à H:i:s') ?></td>
-                        <td><?= substr(htmlspecialchars($comment->getComment()), 0, 50)  ?><span class="text-muted">[...]</span></td>
-                        <td><?= htmlspecialchars($comment->getTitle()) ?></td>
+                        <td><?= substr($comment->getComment(), 0, 50) ?><span class="text-muted">[...]</span></td>
+                        <td><?= $comment->getTitle() ?></td>
                         <td><a href="index.php?action=view&id=<?= $comment->getId_article() ?>#comment<?= $comment->getId() ?>" title="Voir le commentaire" class="btn btn-secondary" role="button"><span class="far fa-eye"></span></a></td>
                         <td><?php if ($comment->getReport() > 0) { ?><a href="index.php?action=admin&comment=<?= $comment->getId() ?>&event=accept" title="Accepter le commentaire" class="btn btn-success mb-2" role="button"><span class="fas fa-check"></span></a> <?php } ?><button type="button" title="Supprimer le commentaire" class="btn btn-danger mb-2" data-toggle="modal" data-target="#comment<?= $comment->getId() ?>"><span class="fas fa-trash-alt"></span></a></td>
                     </tr>

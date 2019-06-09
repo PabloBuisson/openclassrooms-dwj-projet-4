@@ -22,6 +22,10 @@ label.error {
     color: #da7300;
 }
 
+.text-reader {
+    font-size: 18px !important;
+}
+
 /* ---------- HEADER ---------- */
 
 h1::after {
@@ -41,7 +45,7 @@ h1::after {
 /* Homepage */
 
 #home-header {
-    padding-top: 100px;
+    padding-top: 120px;
     box-sizing: border-box;
     height: 100vh;
 }
@@ -154,8 +158,8 @@ h1::after {
     background-color: rgb(52, 52, 122);
     padding: 120px 0 100px 0;
     color: white;
-    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
 }
 
 #home-project-alaska h3 {
@@ -173,8 +177,8 @@ h1::after {
     background-color: rgb(77, 16, 105);
     padding: 120px 0 80px 0;
     color: white;
-    -webkit-clip-path: polygon(0 6%, 100% 0, 100% 100%, 0% 100%);
-    clip-path: polygon(0 6%, 100% 0, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 20px, 100% 0, 100% 100%, 0% 100%);
+    clip-path: polygon(0 20px, 100% 0, 100% 100%, 0% 100%);
 }
 
 #home-comment-alaska h3 {
@@ -190,8 +194,8 @@ h1::after {
 
 #biographie-article .container-fluid.bg-white {
     margin-top: 150px;
-    clip-path: polygon(0 0, 100% 2%, 100% 100%, 0% 100%);
-    -webkit-clip-path: polygon(0 0, 100% 2%, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
 }
 
 #biographie-article .article-picture {
@@ -206,12 +210,12 @@ h1::after {
     width: 100%;
 }
 
-#biographie-article .article-content::first-letter, #view-article .article-text p::first-letter {
-    font-size: calc(60px + 1vw);
+#biographie-article .article-content::first-letter, #view-article .article-text p:first-child::first-letter {
+    font-size: calc(60px + 0.75vw);
     line-height: 40px;
     color: indianred;
     float: left;
-    padding: 5px 15px 3px 5px;
+    padding: 5px 15px 5px 5px;
     font-family: 'Pacifico', cursive;
 }
 
@@ -229,8 +233,8 @@ h1::after {
 }
 
 #contact-form {
-    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 40px, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 40px, 100% 100%, 0% 100%);
     margin-top: 50px;
     margin-bottom: 100px;
 }
@@ -255,8 +259,8 @@ h1::after {
 /* View */
 
 #view-article {
-    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
 }
 
 #view-article .article-content {
@@ -272,8 +276,8 @@ h1::after {
 }
 
 #comment-form {
-    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 30px, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 30px, 100% 100%, 0% 100%);
     margin-bottom: 100px;
 }
 
@@ -319,8 +323,8 @@ h1::after {
 
 #login-form .login-content {
     background-color: #294664 !important;
-    -webkit-clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 100% 6%, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
 }
 
 #login-form .text-danger {
@@ -382,8 +386,8 @@ h1::after {
     }
 
     #biographie-article .container-fluid.bg-white {
-        clip-path: polygon(0 0, 100% 2%, 100% 100%, 0% 100%);
-        -webkit-clip-path: polygon(0 0, 100% 2%, 100% 100%, 0% 100%);
+        clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
+        -webkit-clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
     }
 }
 
@@ -426,4 +430,16 @@ footer {
     background-color: #343a40;
     color: white;
     padding: 80px 0 20px 0;
+}
+
+footer .logo {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+footer .logo-img {
+    width: 28px;
+    height: 28px;
+    margin: -2px 3px 0 -7px;
 }

@@ -22,6 +22,66 @@ class FrontendController
         require('view/frontend/billetSimple.php');
     }
 
+    public function view()
+    {
+        $articleManager = new ArticleManager(); // création de l'Article Manager pour centraliser toutes les requêtes
+        $commentManager = new CommentManager(); // création du Comment Manager pour centraliser toutes les requêtes
+
+        // s'il y a un commentaire signalé
+        if (!empty($_GET['comment']) && !empty($_GET['article']) && $_GET['event'] == 'report') {
+
+            $comment = new Comment([
+                'id' => $_GET['comment']
+            ]);
+            $commentManager->report($comment);
+
+            header('Location: index.php?action=view&id=' . $_GET['article'] . '#comments');
+            exit();
+        }
+
+        // si l'utilisateur a posté un commentaire
+        if (!empty($_POST)) {
+            $validation = true;
+
+            if (empty($_POST['form-pseudo']) || empty($_POST['form-comment'])) {
+                $validation = false;
+            }
+
+            if ($_POST['form-pseudo'] > 255) {
+                $validation = false;
+            }
+
+            // si les champs sont remplis et conformes
+            if ($validation) {
+
+                $comment = new Comment([
+                    'id_article' => $_GET['id'],
+                    'pseudo' => $_POST['form-pseudo'],
+                    'comment' => $_POST['form-comment']
+                ]);
+
+                $commentManager->add($comment);
+            }
+
+            header('Location: index.php?action=view&id=' . $_GET['id'] . '#comments');
+        }
+
+        // on vérifie si l'utilisateur a demandé une id chiffrée et si l'article existe
+        $article = $articleManager->exists($_GET['id']);
+
+        if (!$article) {
+            header('Location: index.php?action=error');
+            exit();
+        } else {
+            $article = $articleManager->get($_GET['id']);
+        }
+
+        // récupère les commentaires postés sur l'article
+        $comments = $commentManager->getPosted($_GET['id']);
+
+        require('view/frontend/view.php');
+    }
+
     public function contact()
     {
         $success = false;
@@ -51,7 +111,7 @@ class FrontendController
                 $message = wordwrap($_POST['form-message'], 70, "\r\n");
                 $headers = "From:" . htmlspecialchars($_POST['form-firstname']) . " " . htmlspecialchars($_POST['form-name']) . "<" . htmlspecialchars($_POST['form-mail']) . ">\r\n";
                 $headers .= "Reply-to:" . htmlspecialchars($_POST['form-mail']) . "\r\n";
-                $headers .= "Content-type: text/html\r\n";
+                $headers .= "Content-type: text/plain; charset=\"ISO-8859-1\"" . "\r\n";
                 $send = mail($to, $subject, $message, $headers);
                 if (!$send) {
                     $errorMessage = error_get_last()['message'];
@@ -128,7 +188,6 @@ class FrontendController
             }
         }
 
-
         switch ($error) {
             case 1:
                 $error = '<p class="text-center text-danger">Une ou plusieurs cases n\'ont pas été remplies</p>';
@@ -174,10 +233,13 @@ class FrontendController
                 $userManager = new UserManager();
                 $user = $userManager->get($_POST['pseudo']);
 
-                if (!$user) {
+                if (!$user)
+                {
                     // si la recherche de pseudo n'a rien donné
                     $error = 1;
-                } else {
+                } 
+                else 
+                {
                     // si on a trouvé un pseudo associé
                     // comparaison du mot de passe envoyé et du mot de passe stocké
                     $verifiedPassword = password_verify($_POST['password'], $user->getPass());
@@ -186,7 +248,9 @@ class FrontendController
                         // si les deux mots de passe correspondent
                         $_SESSION['id'] = $user->getId();
                         header('Location: index.php?action=admin');
-                    } else {
+                    } 
+                    else 
+                    {
                         // s'il y a un pseudo correspondant, mais un mot de passe éronné
                         $error = 1;
                     }
@@ -195,69 +259,6 @@ class FrontendController
         }
 
         require('view/frontend/login.php');
-    }
-
-    public function view()
-    {
-        $articleManager = new ArticleManager(); // création de l'Article Manager pour centraliser toutes les requêtes
-        $commentManager = new CommentManager(); // création du Comment Manager pour centraliser toutes les requêtes
-
-        // s'il y a un commentaire signalé
-        if (!empty($_GET['comment']) && !empty($_GET['article']) && $_GET['event'] == 'report') {
-
-            $comment = new Comment([
-                'id' => $_GET['comment']
-            ]);
-            $commentManager->report($comment);
-
-            header('Location: index.php?action=view&id=' . $_GET['article'] . '#comments');
-            exit();
-        }
-
-        // si l'utilisateur a posté un commentaire
-        if (!empty($_POST)) {
-            $validation = true;
-
-            if (empty($_POST['form-pseudo']) || empty($_POST['form-comment'])) {
-                $validation = false;
-            }
-
-            if ($_POST['form-pseudo'] > 255) {
-                $validation = false;
-            }
-
-            // si les champs sont remplis et conformes
-            if ($validation) {
-
-                $comment = new Comment([
-                    'id_article' => $_GET['id'],
-                    'pseudo' => $_POST['form-pseudo'],
-                    'comment' => $_POST['form-comment']
-                ]);
-
-                $commentManager->add($comment);
-            }
-
-            header('Location: index.php?action=view&id=' . $_GET['id'] . '#comments');
-        }
-
-        // on vérifie si l'utilisateur a demandé une id chiffrée et si l'article existe
-        $article = $articleManager->exists($_GET['id']);
-
-        if (!$article)
-        {
-            header('Location: index.php?action=error');
-            exit();
-        }
-        else
-        {
-            $article = $articleManager->get($_GET['id']);
-        }
-        
-        // récupère les commentaires postés sur l'article
-        $comments = $commentManager->getPosted($_GET['id']);
-
-        require('view/frontend/view.php');
     }
 
     public function error()

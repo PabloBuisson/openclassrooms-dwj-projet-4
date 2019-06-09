@@ -3,7 +3,7 @@
 /* variables à remplir */
 $title = 'Inscription';
 $metaDescription = "Procédez à votre inscription en remplissant le formulaire d'inscription.";
-$ogUrl = 'http://jean-forteroche.pablobuisson.fr/?action=inscription';
+$ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=inscription';
 /* No more 65 words */
 $ogTitle = 'Inscription';
 /* 150-200 words */

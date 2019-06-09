@@ -3,7 +3,7 @@
 /* variables à remplir */
 $title = 'Accueil';
 $metaDescription = "Bienvenue sur le site web de Jean Forteroche, écrivain. Découvrez son nouveau roman \"Billet simple pour l'Alaska\", publié en ligne.";
-$ogUrl = 'http://jean-forteroche.pablobuisson.fr/';
+$ogUrl = 'https://jean-forteroche.pablobuisson.fr/';
 /* No more 65 words */
 $ogTitle = 'Bienvenue sur le site web de Jean Forteroche';
 /* 150-200 words */
@@ -25,8 +25,8 @@ ob_start();
                 <h2 class="text-center text-white">Billet simple pour l'Alaska : découvrez mon nouveau roman en ligne !</h2>
             </div>
             <div class="col-lg-6 offset-lg-3 text-center">
-                <a href="#home-project-alaska" id="home-to-project" class="btn btn-lg btn-primary mb-3" role="button">Découvrir le projet</a>
-                <a href="index.php?action=billetSimple" class="btn btn-lg btn-secondary mb-3" role="button">Accéder aux chapitres</a>
+                <a href="#home-project-alaska" id="home-to-project" class="d-block d-md-inline-block btn btn-lg btn-primary mb-3" role="button">Découvrir le projet</a>
+                <a href="index.php?action=billetSimple" class="d-block d-md-inline-block btn btn-lg btn-secondary mb-3" role="button">Accéder aux chapitres</a>
             </div>
         </div>
     </div>
@@ -35,14 +35,14 @@ ob_start();
 <section id="home-project-alaska">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 offset-md-6">
+            <div class="text-center text-md-left col-md-6 offset-md-6">
                 <h3>Billet simple pour l'Alaska : le choix d'un roman en ligne</h3>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 mb-5 mb-md-0"><img src="public/img/roman-en-ligne.jpg" class="img-responsive" alt="Un roman en ligne"></div>
-            <div class="col-md-6">À l'heure du tout connecté et de l'omniprésence des réseaux sociaux, nous (Jean Forteroche et les personnes concernées par le projet) avons décidé de transposer le nouveau récit de Jean Forteroche en ligne, sous la forme de chapitres périodiques et interactifs, afin d'établir une communication bilatérale qu'empêche le support papier. <br />
-                Ce roman est un cadeau pour vous, la communauté de lecteurs qui s'est constituée au fil des histoires abracadabrantesques dont seul Jean Forteroche détient le secret. Un cadeau pour faire entendre votre voix, et pour vous récompenser de votre indéféctible loyauté.</div>
+            <div class="text-center text-md-left col-md-6 mb-5 mb-md-0"><img src="public/img/roman-en-ligne.jpg" class="img-responsive" alt="Un roman en ligne"></div>
+            <div class="col-md-6 text-justify text-reader">À l'heure du tout connecté et de l'omniprésence des réseaux sociaux, nous (Jean Forteroche et les personnes concernées par le projet) avons décidé de transposer le nouveau récit de Jean Forteroche en ligne, sous la forme de chapitres périodiques et interactifs, afin d'établir une communication bilatérale qu'empêche le support papier. <br />
+                Ce roman est un cadeau pour vous, la communauté de lecteurs qui s'est constituée au fil des histoires abracadabrantesques dont seul Jean Forteroche détient le secret. Un cadeau pour faire entendre votre voix, et pour vous récompenser de votre indéfectible loyauté.</div>
         </div>
     </div>
 </section>
@@ -50,14 +50,14 @@ ob_start();
 <section id="home-comment-alaska">
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <h3>Intéragissez en direct</h3>
+            <div class="text-center text-md-left col-md-6">
+                <h3>Interagissez en direct</h3>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 order-2 order-mb-1">Chaque publication périodique qui composera le roman "Billet simple pour l'Alaska" sera l'occasion de faire entendre votre voix. Exprimez votre ressenti sur la progression de l'histoire, réagissez sur les décisions des personnages, proposez vos interprétations, échangez vos idées.<br />
+            <div class="col-md-6 order-2 order-mb-1 text-justify text-reader">Chaque publication périodique qui composera le roman "Billet simple pour l'Alaska" sera l'occasion de faire entendre votre voix. Exprimez votre ressenti sur la progression de l'histoire, réagissez sur les décisions des personnages, proposez vos interprétations, échangez vos idées.<br />
                 Au gré de la pertinence de votre commentaire, Jean Forteroche vous répondra !</div>
-            <div class="col-md-6 order-1 order-mb-2 mb-5 mb-0"><img src="public/img/roman-interactif-smartphone.jpg" class="img-responsive" alt="Un roman interactif que l'on peut commenter"></div>
+            <div class="text-center text-md-left col-md-6 order-1 order-mb-2 mb-5 mb-0"><img src="public/img/roman-interactif-smartphone.jpg" class="img-responsive" alt="Un roman interactif que l'on peut commenter"></div>
         </div>
     </div>
 </section>

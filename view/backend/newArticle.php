@@ -3,7 +3,7 @@
 /* variables à remplir */
 $title = 'Ajouter un nouvel article';
 $metaDescription = "Mettez en valeur votre texte et vos idées grâce aux nombreux outils et publiez votre nouvel article.";
-$ogUrl = 'http://jean-forteroche.pablobuisson.fr/?action=newArticle';
+$ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=newArticle';
 /* No more 65 words */
 $ogTitle = 'Ajouter un nouvel article';
 /* 150-200 words */

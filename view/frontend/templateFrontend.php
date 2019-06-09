@@ -22,9 +22,12 @@ if (empty($_SESSION['id'])) {
     <meta property="og:type" content="website" />
     <meta property="og:title" content="<?= $ogTitle ?>" />
     <meta property="og:description" content="<?= htmlspecialchars($ogDescription) ?>" />
-    <meta property="og:image" content="http://jean-forteroche.pablobuisson.fr/public/img/jean-forteroche-social-media.jpg" />
+    <meta property="og:image" content="https://jean-forteroche.pablobuisson.fr/public/img/jean-forteroche-social-media.jpg" />
     <!-- favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <!-- règles CSS et CDN -->
     <!-- <link rel="stylesheet" href="../../public/css/frontend.css"> essai en local -->
     <link rel="stylesheet" href="public/css/frontend.css">
@@ -39,7 +42,7 @@ if (empty($_SESSION['id'])) {
             "@type": "person",
             "name": "Jean Forteroche",
             "jobTitle": "Writer",
-            "url": "url.com",
+            "url": "https://jean-forteroche.pablobuisson.fr/",
             "email": "email.com"
         }
     </script>
@@ -48,7 +51,7 @@ if (empty($_SESSION['id'])) {
             "@context": "http://www.schema.org",
             "@type": "WebSite",
             "name": "<?= $ogTitle ?>",
-            "url": "url.com"
+            "url": "<?= $ogUrl ?>"
         }
     </script>
 </head>
@@ -102,9 +105,9 @@ if (empty($_SESSION['id'])) {
                     <div class="text-center mb-5 col-8 offset-2 text-md-left col-md-4 offset-md-0">
                         <h5 class="text-uppercase">Me retrouver sur</h5>
                         <div>
-                            <a href="#" class="text-white">Facebook</a><br />
-                            <a href="#" class="text-white">Twitter</a><br />
-                            <a href="#" class="text-white">Senscritique</a>
+                            <a href="https://www.facebook.com/pabloush.page/" title="Page Facebook du développeur du site" class="text-white"><span class="fab fa-facebook-square logo"></span>Facebook</a><br />
+                            <a href="https://twitter.com/pablobuisson" title="Compte Twitter du développeur du site" class="text-white"><span class="fab fa-twitter-square logo"></span>Twitter</a><br />
+                            <a href="https://www.senscritique.com/Pablo_Buisson" title="Profil Senscritique du développeur du site" class="text-white"><img class="logo-img" src="public/img/senscritique-square-brands.svg" alt="Logo de Sencritique">Senscritique</a>
                         </div>
                     </div>
                     <div class="text-center mb-5 col-8 offset-2 text-md-left col-md-4 offset-md-0">

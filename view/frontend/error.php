@@ -3,9 +3,9 @@
 /* variables à remplir */
 $title = 'Page introuvable';
 $metaDescription = "La page que vous souhaitez voir n'existe pas.";
-$ogUrl = 'http://jean-forteroche.pablobuisson.fr/?action=error';
+$ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=error';
 /* No more 65 words */
-$ogTitle = 'Page introuvable';
+$ogTitle = 'Page introuvable | Le site officiel de Jean Forteroche';
 /* 150-200 words */
 $ogDescription = "La page que vous souhaitez voir n'existe pas.";
 

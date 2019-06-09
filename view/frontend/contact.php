@@ -3,7 +3,7 @@
 /* variables à remplir */
 $title = 'Contact';
 $metaDescription = "Vous rechechez une information, vous avez une demande particulière ? Contactez directement Jean Forteroche en remplissant notre formulaire de contact.";
-$ogUrl = 'http://jean-forteroche.pablobuisson.fr/?action=contact';
+$ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=contact';
 /* No more 65 words */
 $ogTitle = 'Contactez Jean Forteroche';
 /* 150-200 words */

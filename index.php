@@ -16,21 +16,6 @@ spl_autoload_register(function ($class)
     }
 });
 
-/* function loadClass($classname)
-{
-    $pathController = 'controller/' . $classname . '.php';
-    $pathModel = 'model/' . $classname . '.php';
-
-    if (file_exists($pathController)) {
-        require_once $pathController;
-    } else if (file_exists($pathModel)) {
-        require_once $pathModel;
-    }
-}
-spl_autoload_register('loadClass'); */
-
-
-
 // on instancie les controller
 $frontend = new FrontendController();
 $backend = new BackendController();
