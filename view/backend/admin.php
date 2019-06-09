@@ -1,5 +1,4 @@
 <?php
-
 /* variables à remplir */
 $title = 'Admin';
 $metaDescription = "Bienvenue sur le tableau de bord du blog de Jean Forteroche, où vous pourrez gérer vos articles et les commentaires associés.";
@@ -8,7 +7,6 @@ $ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=admin';
 $ogTitle = 'Admin';
 /* 150-200 words */
 $ogDescription = "Bienvenue sur le tableau de bord du blog de Jean Forteroche, où vous pourrez gérer vos articles et les commentaires associés.";
-
 /* début de la variable $content */
 ob_start();
 ?>
@@ -178,7 +176,11 @@ ob_start();
 
 <?php
 $content = ob_get_clean(); // fin du contenu de la variable $content
-$script = '<script src="public/js/admin.js"></script>';
+$script = '
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="public/js/admin.js"></script>
+';
 // appel du template
 require('templateBackend.php');
 ?>

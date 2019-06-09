@@ -1,5 +1,4 @@
 <?php
-
 /* variables à remplir */
 $title = 'Contact';
 $metaDescription = "Vous rechechez une information, vous avez une demande particulière ? Contactez directement Jean Forteroche en remplissant notre formulaire de contact.";
@@ -8,7 +7,6 @@ $ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=contact';
 $ogTitle = 'Contactez Jean Forteroche';
 /* 150-200 words */
 $ogDescription = "Vous rechechez une information, vous avez une demande particulière ? Contactez directement Jean Forteroche en remplissant notre formulaire de contact.";
-
 /* début de la variable $content */
 ob_start();
 ?>
@@ -19,7 +17,7 @@ ob_start();
             <div class="col-lg-12 text-center">
                 <h1 class="display-4 main-title text-center text-white d-inline-block position-relative">Contactez-moi</h1>
             </div>
-            <div class="col-lg-8 offset-2 text-center">
+            <div class="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2 text-center">
                 <p id="text-form" class="text-center text-white">Adressez votre demande via le formulaire de contact ci-dessous et je vous répondrai dans les plus brefs délais !</p>
             </div>
         </div>

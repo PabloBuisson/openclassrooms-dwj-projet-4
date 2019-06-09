@@ -1,5 +1,4 @@
 <?php
-
 /* variables à remplir */
 $title = 'Se connecter';
 $metaDescription = "Connectez-vous avec vos idenfifiants pour profiter des fonctionnalités du blog de Jean Forteroche.";
@@ -8,7 +7,6 @@ $ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=login';
 $ogTitle = 'Se connecter au blog de Jean Forteroche';
 /* 150-200 words */
 $ogDescription = "Connectez-vous avec vos idenfifiants pour profiter des fonctionnalités du blog de Jean Forteroche.";
-
 /* début de la variable $content */
 ob_start();
 ?>
@@ -17,8 +15,8 @@ ob_start();
 
     <div class="container">
         <div class="row">
-            <div class="col-md-6 offset-md-3 login-content pb-5 px-5">
-                <form action="index.php?action=login" method="post">
+            <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 login-content pb-5 px-5">
+                <form id="form-login" action="index.php?action=login" method="post">
                     <div class="form-group mt-5">
                         <?php if ($error) { ?>
                             <p class="text-center text-danger mt-3">Mauvais identifiant ou mot de passe. Veuillez réessayer à nouveau.</p>
@@ -41,7 +39,8 @@ ob_start();
 </section>
 
 <?php
-$content = ob_get_clean(); // fin du contenu de la variable $content 
+$content = ob_get_clean(); // fin du contenu de la variable $content
+$script = '<script src="public/js/login.js"></script>';
 // appel du template
 require('templateFrontend.php');
 ?>

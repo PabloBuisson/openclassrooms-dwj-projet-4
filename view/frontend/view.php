@@ -1,5 +1,4 @@
 <?php
-
 /* variables à remplir */
 $title = htmlspecialchars($article->getTitle());
 $metaDescription = "Plongez dans l'un des chapitres du nouveau roman interactif de Jean Forteroche, intitulé \"Billet simple pour l'Alaska\" et publié en ligne.";
@@ -8,7 +7,6 @@ $ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=view$id=' . $
 $ogTitle = htmlspecialchars($article->getTitle()) .  " | Le site officiel de Jean Forteroche";
 /* 150-200 words */
 $ogDescription = "Plongez dans l'un des chapitres du nouveau roman interactif de Jean Forteroche, intitulé \"Billet simple pour l'Alaska\" et publié en ligne.";
-
 /* début de la variable $content */
 ob_start();
 ?>

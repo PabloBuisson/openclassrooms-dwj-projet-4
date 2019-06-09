@@ -1,5 +1,4 @@
 <?php
-
 /* variables à remplir */
 $title = "Billet simple pour l'Alaska";
 $metaDescription = "Retrouvez l'ensemble des chapitres du nouveau roman de Jean Forteroche, \"Billet simple pour l'Alaska\".";
@@ -8,7 +7,6 @@ $ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=billetSimple'
 $ogTitle = "Billet simple pour l'Alaska, le nouveau roman de Jean Forteroche en ligne";
 /* 150-200 words */
 $ogDescription = "Retrouvez l'ensemble des chapitres du nouveau roman de Jean Forteroche, \"Billet simple pour l'Alaska\".";
-
 /* début de la variable $content */
 ob_start();
 ?>
@@ -28,7 +26,7 @@ ob_start();
     <div class="container bg-white">
         <div class="row">
             <div class="col-10 offset-1 mb-5 mt-5">
-                <p class="lead">Retrouvez l'ensemble des chapitres qui compose le roman "Billet simple pour l'Alaska", par ordre de publication.<br />
+                <p class="lead text-justify">Retrouvez l'ensemble des chapitres qui compose le roman "Billet simple pour l'Alaska", par ordre de publication.<br />
                     <br />
                     <u>Le résumé</u> : Deux amis décident de visiter l'Alaska. Voilà. Oui, c'est tout, et c'est largement suffisant. Si vous souhaitez un synopsis qui vous dévoile la majorité de l'intrigue, optez pour les bandes-annonces de votre cinéma le plus proche.<br />
                     <br />
@@ -38,7 +36,7 @@ ob_start();
                     <article class="mb-5 mt-5">
                         <h3><?= $article->getTitle() ?></h3>
                         <p>Publié le <?= date_format(date_create($article->getDate_creation()), 'd/m/Y')  ?></p>
-                        <p class="text-justify"><?= substr($article->getContent(), 0, 250) ?>[...]</p>
+                        <div class="text-justify"><?= substr($article->getContent(), 0, 250) ?>[...]</div>
                         <a href="index.php?action=view&id=<?= $article->getId() ?>" title="Lire la suite de l'article" class="btn btn-primary mb-2" role="button">Lire la suite</a>
                         <hr>
                     </article>

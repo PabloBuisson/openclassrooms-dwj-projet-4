@@ -16,7 +16,6 @@ class ArticleManager extends Manager
         ]);
         $article = $query->fetch(PDO::FETCH_ASSOC);
 
-        // var_dump($article);
         return new Article($article);
     }
 
@@ -67,7 +66,7 @@ class ArticleManager extends Manager
         return $articles;
 	}
 
-    public function add(Article $article) // oblige à recevoir un objet Article
+    public function add(Article $article) // oblige à recevoir un objet Article en paramètre
     {
         $query = $this->db->prepare("INSERT INTO articles(title, content, date_creation, date_update, on_line) VALUES(?, ?, NOW(), NOW(), ?)");
         $query->execute([

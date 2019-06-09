@@ -36,7 +36,6 @@ class CommentManager extends Manager
             $comments[] = new Comment($data);
         }
 
-        // var_dump($comments);
         return $comments;
     }
 
@@ -55,7 +54,6 @@ class CommentManager extends Manager
             $comments[] = new Comment($data);
         }
 
-        // var_dump($comments);
         return $comments;
     }
 

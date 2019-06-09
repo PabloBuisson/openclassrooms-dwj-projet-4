@@ -1,5 +1,4 @@
 <?php
-
 /* variables à remplir */
 $title = 'Inscription';
 $metaDescription = "Procédez à votre inscription en remplissant le formulaire d'inscription.";
@@ -8,7 +7,6 @@ $ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=inscription';
 $ogTitle = 'Inscription';
 /* 150-200 words */
 $ogDescription = "Procédez à votre inscription en remplissant le formulaire d'inscription.";
-
 /* début de la variable $content */
 ob_start();
 ?>

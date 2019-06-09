@@ -118,26 +118,12 @@ h1::after {
     }
 }
 
-/* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) {
-
-}
-
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
     #home-header {
     height: 100vh;
     margin-bottom: 0;
     }
-}
-
-/* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-}
-
-/* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-
 }
 
 /* responsive écrans HD */
@@ -223,6 +209,10 @@ h1::after {
 
 #billet-section {
     margin-bottom: 100px;
+}
+
+#billet-section {
+    word-wrap: break-word;
 }
 
 /* Contact */
@@ -358,6 +348,12 @@ h1::after {
     height: 120vh;
 }
 
+/* Error */
+
+.text-error {
+    padding: 50px 0 50px 0;
+}
+
 /* Media Queries Sections */
 
 /* Very small devices (0px and up) */
@@ -372,12 +368,6 @@ h1::after {
     }
 }
 
-/* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) {
-
-
-}
-
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
 
@@ -389,16 +379,6 @@ h1::after {
         clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
         -webkit-clip-path: polygon(0 0, 100% 20px, 100% 100%, 0% 100%);
     }
-}
-
-/* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-    
-}
-
-/* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-    
 }
 
 /* responsive écrans HD */

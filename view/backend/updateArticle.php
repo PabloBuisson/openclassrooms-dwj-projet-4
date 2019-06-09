@@ -1,5 +1,4 @@
 <?php
-
 /* variables à remplir */
 $title = 'Modifier un article';
 $metaDescription = "Votre texte a besoin d'être modifié ? En un clic, corrigez vos erreurs, rajoutez de la consistance à votre récit, puis publiez votre article corrigé.";
@@ -8,7 +7,6 @@ $ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=updateArticle
 $ogTitle = 'Modifier un article';
 /* 150-200 words */
 $ogDescription = "Votre texte a besoin d'être modifié ? En un clic, corrigez vos erreurs, rajoutez de la consistance à votre récit, puis publiez votre article corrigé.";
-
 /* début de la variable $content */
 ob_start();
 ?>
@@ -36,7 +34,10 @@ ob_start();
 
 <?php
 $content = ob_get_clean(); // fin du contenu de la variable $content
-$script =  '<script src="public/js/article.js"></script>';
+$script =  '
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script src="public/js/article.js"></script>
+';
 // appel du template
 require('templateBackend.php');
 ?>

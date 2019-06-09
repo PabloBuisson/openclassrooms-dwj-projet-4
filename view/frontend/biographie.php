@@ -1,5 +1,4 @@
 <?php
-
 /* variables à remplir */
 $title = 'Jean Forteroche, écrivain facétieux';
 $metaDescription = "Portrait de Jean Forteroche, romancier qui aime manier l'absurde et les personnages pittoresques.";
@@ -8,7 +7,6 @@ $ogUrl = 'https://jean-forteroche.pablobuisson.fr/index.php?action=biographie';
 $ogTitle = 'Jean Forteroche, écrivain facétieux';
 /* 150-200 words */
 $ogDescription = "Portrait de Jean Forteroche, romancier qui aime manier l'absurde et les personnages pittoresques.";
-
 /* début de la variable $content */
 ob_start();
 ?>
@@ -50,6 +48,7 @@ ob_start();
         </div>
     </div>
 </article>
+
 <?php
 $content = ob_get_clean(); // fin du contenu de la variable $content 
 // appel du template

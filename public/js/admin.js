@@ -26,5 +26,5 @@ $(document).ready(function () {
         }
     });
     $('.dataTables_length').addClass('bs-select');
-    $('.pagination').addClass('pagination-custom'); // add margin-top: 20px, etc.;
+    $('.pagination').addClass('pagination-custom'); // add CSS to the table
 });

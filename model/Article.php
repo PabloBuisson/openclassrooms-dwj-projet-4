@@ -8,7 +8,7 @@ class Article
     private $date_update;
     private $on_line;
     
-    public function __construct(Array $data) // oblige à ce que soit un tableau
+    public function __construct(Array $data) // oblige à ce que le paramètre soit un tableau
     {
         $this->hydrate($data);
     }
