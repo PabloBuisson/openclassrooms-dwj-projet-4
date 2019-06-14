@@ -2,12 +2,18 @@
 class BackendController
 {
 
-    public function admin()
+    public function sessionExists()
     {
-        if (empty($_SESSION['id'])) {
+        if (empty($_SESSION['id']))
+        {
             header('Location: index.php?action=login');
             exit(); // interrompt le reste du code
         }
+    }
+
+    public function admin()
+    {
+        $this->sessionExists();
 
         if (!empty($_GET['session']) && $_GET['session'] == 'end') {
             // Suppression des variables de session et de la session
@@ -94,10 +100,7 @@ class BackendController
 
     public function newArticle()
     {
-        if (empty($_SESSION['id'])) {
-            header('Location: index.php?action=login');
-            exit(); // interrompt le reste du code
-        }
+        $this->sessionExists();
 
         $error = null;
 
@@ -154,10 +157,7 @@ class BackendController
 
     public function updateArticle()
     {
-        if (empty($_SESSION['id'])) {
-            header('Location: index.php?action=login');
-            exit(); // interrompt le reste du code
-        }
+        $this->sessionExists();
 
         $articleManager = new ArticleManager(); // création de l'Article Manager pour centraliser toutes les requêtes
         $error = null;
