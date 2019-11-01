@@ -26,7 +26,7 @@ ob_start();
     <div class="container-fluid">
         <div class="row">
             <div class="col-6 offset-3 col-sm-4 offset-sm-4 col-md-3 offset-md-1 text-justify article-picture">
-                <img src="public/img/jean-forteroche-portrait.jpg" class="img-responsive" alt="Photo de Jean Forteroche" />
+                <img src="public/img/jean-forteroche-portrait.jpg" class="img-fluid" alt="Photo de Jean Forteroche" />
             </div>
         </div>
     </div>

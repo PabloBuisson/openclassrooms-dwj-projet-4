@@ -36,6 +36,7 @@ $(document).ready(function () {
         messages: {
             "form-mail": {
                 required: "Veuillez saisir votre adresse mail",
+                email: "Veuillez saisir une adresse mail valide",
                 mailverified: "Veuillez saisir une adresse mail valide", // remplace la propriété mail
                 minlength: "Veuillez saisir une adresse mail valide",
                 maxlength: "Veuillez saisir une adresse mail valide"
