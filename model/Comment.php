@@ -114,7 +114,7 @@ class Comment
 
     public function setComment($comment)
     {
-        $this->comment = htmlspecialchars_decode($comment);
+        $this->comment = htmlspecialchars($comment);
 
         return $this;
     }

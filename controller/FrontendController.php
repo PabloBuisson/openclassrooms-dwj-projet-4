@@ -51,6 +51,11 @@ class FrontendController
                 $validation = false;
             }
 
+            // delete all malicious comments 
+            if (preg_grep('/script/i', $_POST)) {
+                $validation = false;
+            }
+
             // si les champs sont remplis et conformes
             if ($validation) {
 
