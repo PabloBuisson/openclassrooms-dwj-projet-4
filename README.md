@@ -18,11 +18,6 @@ Grâce à l’utilisation d’une interface WYSIWYG basée sur TinyMCE, l'utilis
 
 Le site utilise l'architecture MVC et est développé selon les codes de la Programmation Orientée Objet.
 
-## Fonctionnement 
-
-Après vous êtes inscrit, vous êtes dirigé vers un tableau de bord, d'où vous pourrez créer et modifier vos cartes et vos tags. Après avoir ajouté une carte, revenez sur la page d'accueil, et tentez de répondre avec précision à la carte affichée. Selon le bouton de difficulté choisi, la carte reviendra à intervalles réguliers sur votre page d'accueil. 
-Ainsi, voyez la page d'accueil comme l'interface de l'application ; n'oubliez pas de vous y rendre quotidiennement !
-
 ### Environnement
 * PHP 7.3
 * Architecture MVC
