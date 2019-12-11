@@ -4,6 +4,7 @@ Code source du Projet 4 de la formation Développeur Web Junior d'OpenClassrooms
 ## Version 1.0.1
 
 ### Derniers changements
+* README plus complet
 * Amélioration de la sécurité des commentaires entrants
 
 ## Le projet
