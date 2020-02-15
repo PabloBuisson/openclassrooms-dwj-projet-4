@@ -1,11 +1,12 @@
 # openclassrooms-dwj-projet-4
 Code source du Projet 4 de la formation Développeur Web Junior d'OpenClassrooms, intitulé "Créez un blog pour un écrivain"
 
-## Version 1.0.2
+## Version 1.0.4
 
 ### Derniers changements
 * README plus complet
 * Amélioration de la sécurité des commentaires entrants
+* Amélioration de la sécurité du formulaire de contact
 
 ## Le projet
 

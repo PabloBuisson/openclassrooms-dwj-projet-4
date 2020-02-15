@@ -111,9 +111,10 @@ class FrontendController
             // si toutes les conditions sont remplies, on peut envoyer le mail
             if ($validation) {
                 $to = "pablo.buisson@gmail.com";
-                $subject = $_POST['form-subject'];
+                $subject = "Depuis J.Forteroche : " . htmlspecialchars($_POST['form-subject']);
+                $securedMessage = htmlspecialchars($_POST['form-message']);
                 // Si les lignes ont plus de 70 cactères, on utilise wordwrap()
-                $message = wordwrap($_POST['form-message'], 70, "\r\n");
+                $message = wordwrap($securedMessage, 70, "\r\n");
                 $headers = "From:" . htmlspecialchars($_POST['form-firstname']) . " " . htmlspecialchars($_POST['form-name']) . "<" . htmlspecialchars($_POST['form-mail']) . ">\r\n";
                 $headers .= "Reply-to:" . htmlspecialchars($_POST['form-mail']) . "\r\n";
                 $headers .= "Content-type: text/plain; charset=\"ISO-8859-1\"" . "\r\n";
